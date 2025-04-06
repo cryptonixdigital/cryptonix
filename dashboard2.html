@@ -1,0 +1,389 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dashboard - Digital Wallet</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+  <style>
+    /* Base Styles */
+    :root {
+      --primary: #4361ee;
+      --primary-dark: #3a0ca3;
+      --primary-light: #4cc9f0;
+      --secondary: #f8fafc;
+      --accent-pink: #f72585;
+      --accent-purple: #7209b7;
+      --text: #1e293b;
+      --text-light: #64748b;
+      --error: #dc2626;
+      --success: #16a34a;
+      --border: #e2e8f0;
+      --white: #ffffff;
+      --card-bg: #ffffff;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      line-height: 1.6;
+      color: var(--text);
+      background-color: var(--secondary);
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 1.5rem;
+      min-height: 100vh;
+    }
+
+    header {
+      margin-bottom: 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 1rem;
+    }
+
+    h1 {
+      font-size: 1.8rem;
+      color: var(--primary);
+      background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .user-info {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+
+    /* Button Styles */
+    .btn {
+      display: inline-block;
+      background-color: var(--primary);
+      color: var(--white);
+      padding: 0.75rem 1.5rem;
+      border: none;
+      border-radius: 0.5rem;
+      text-decoration: none;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
+
+    .btn:hover {
+      background-color: var(--primary-dark);
+      transform: translateY(-2px);
+      box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+    }
+
+    .btn.secondary {
+      background-color: transparent;
+      color: var(--primary);
+      border: 2px solid var(--primary);
+    }
+
+    .btn.small {
+      padding: 0.5rem 1rem;
+      font-size: 0.9rem;
+    }
+
+    /* Dashboard Grid */
+    .dashboard-grid {
+      display: grid;
+      gap: 2rem;
+    }
+
+    @media (min-width: 1024px) {
+      .dashboard-grid {
+        grid-template-columns: 1fr 2fr;
+      }
+    }
+
+    /* Balance Card */
+    .balance-card {
+      background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+      padding: 2rem;
+      border-radius: 1rem;
+      color: var(--white);
+      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+    }
+
+    .balance-card h2 {
+      font-size: 1.2rem;
+      margin-bottom: 0.5rem;
+      opacity: 0.9;
+    }
+
+    .amount {
+      font-size: 2.5rem;
+      font-weight: bold;
+    }
+
+    /* Quick Actions */
+    .quick-actions {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+      gap: 1rem;
+      margin-top: 1.5rem;
+    }
+
+    .action-btn {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 1rem;
+      border-radius: 0.5rem;
+      color: var(--white);
+      text-decoration: none;
+      font-weight: 600;
+      transition: all 0.3s;
+      text-align: center;
+    }
+
+    .action-btn i {
+      font-size: 1.5rem;
+      margin-bottom: 0.5rem;
+    }
+
+    .send-btn {
+      background-color: var(--accent-pink);
+    }
+
+    .receive-btn {
+      background-color: var(--primary-light);
+    }
+
+    .history-btn {
+      background-color: var(--accent-purple);
+    }
+
+    .action-btn:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+    }
+
+    /* Transactions Section */
+    .transactions-section {
+      background: var(--white);
+      padding: 1.5rem;
+      border-radius: 1rem;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+    }
+
+    .transactions-section h3 {
+      margin-bottom: 1rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .transaction-list {
+      margin: 1rem 0;
+    }
+
+    .transaction-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1rem;
+      margin-bottom: 0.75rem;
+      background: var(--secondary);
+      border-radius: 0.5rem;
+      transition: all 0.3s ease;
+    }
+
+    .transaction-item:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    .transaction-details {
+      flex-grow: 1;
+    }
+
+    .transaction-type {
+      font-weight: 600;
+      color: var(--text);
+    }
+
+    .transaction-date {
+      font-size: 0.8rem;
+      color: var(--text-light);
+    }
+
+    .transaction-amount {
+      font-weight: 700;
+    }
+
+    .credit {
+      color: var(--success);
+    }
+
+    .debit {
+      color: var(--accent-pink);
+    }
+
+    .view-all {
+      display: block;
+      text-align: center;
+      margin-top: 1rem;
+    }
+
+    /* Responsive Design */
+    @media (max-width: 768px) {
+      .container {
+        padding: 1rem;
+      }
+      
+      .quick-actions {
+        grid-template-columns: 1fr;
+      }
+      
+      .btn, .action-btn {
+        width: 100%;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1>Wallet Dashboard</h1>
+      <div class="user-info">
+        <span id="userName"></span>
+        <span id="userUid"></span>
+        <button id="logoutBtn" class="btn small">Logout</button>
+      </div>
+    </header>
+    
+    <main class="dashboard-grid">
+      <section class="balance-section">
+        <div class="balance-card">
+          <h2>Your Balance</h2>
+          <div class="amount" id="balanceAmount">₹0.00</div>
+        </div>
+        
+        <div class="quick-actions">
+          <a href="transfer.html" class="action-btn send-btn">
+            <i class="fas fa-paper-plane"></i>
+            <span>Send</span>
+          </a>
+          <a href="#" class="action-btn receive-btn">
+            <i class="fas fa-qrcode"></i>
+            <span>Receive</span>
+          </a>
+          <a href="history.html" class="action-btn history-btn">
+            <i class="fas fa-history"></i>
+            <span>History</span>
+          </a>
+        </div>
+      </section>
+      
+      <section class="transactions-section">
+        <h3><i class="fas fa-exchange-alt"></i> Recent Transactions</h3>
+        <div class="transaction-list" id="transactionsList">
+          <!-- Transactions will be loaded here by JavaScript -->
+        </div>
+        <a href="history.html" class="btn secondary view-all">View All Transactions</a>
+      </section>
+    </main>
+  </div>
+
+  <script type="module">
+    import { 
+      auth,
+      db,
+      ref,
+      get,
+      signOut
+    } from './firebase.js';
+
+    // Load user data and transactions
+    auth.onAuthStateChanged(async (user) => {
+      if (!user) return;
+      
+      // Load user info
+      const userSnapshot = await get(ref(db, `users/${user.uid}`));
+      if (userSnapshot.exists()) {
+        const userData = userSnapshot.val();
+        
+        if (document.getElementById('userName')) {
+          document.getElementById('userName').textContent = userData.name;
+        }
+        
+        if (document.getElementById('userUid')) {
+          document.getElementById('userUid').textContent = `UID: ${userData.uid}`;
+        }
+        
+        if (document.getElementById('balanceAmount')) {
+          document.getElementById('balanceAmount').textContent = `₹${userData.balance.toFixed(2)}`;
+        }
+      }
+      
+      // Load transactions
+      if (document.getElementById('transactionsList')) {
+        const transactionsRef = ref(db, 'transactions');
+        const snapshot = await get(transactionsRef);
+        
+        const transactions = [];
+        snapshot.forEach((child) => {
+          const tx = child.val();
+          if (tx.senderId === user.uid || tx.recipientId === user.uid) {
+            transactions.push({
+              id: child.key,
+              ...tx
+            });
+          }
+        });
+        
+        // Sort by timestamp (newest first)
+        transactions.sort((a, b) => b.timestamp - a.timestamp);
+        
+        // Display 5 most recent transactions
+        const container = document.getElementById('transactionsList');
+        if (container) {
+          container.innerHTML = transactions.slice(0, 5).map(tx => `
+            <div class="transaction-item">
+              <div class="transaction-details">
+                <div class="transaction-type">
+                  ${tx.senderId === user.uid ? 'Sent to' : 'Received from'} 
+                  ${tx.senderId === user.uid ? tx.recipientId.slice(0, 6) + '...' : tx.senderId.slice(0, 6) + '...'}
+                </div>
+                <div class="transaction-date">
+                  ${new Date(tx.timestamp).toLocaleString()}
+                </div>
+              </div>
+              <div class="transaction-amount ${tx.senderId === user.uid ? 'debit' : 'credit'}">
+                ₹${tx.amount.toFixed(2)}
+              </div>
+            </div>
+          `).join('');
+        }
+      }
+    });
+
+    // Logout functionality
+    document.getElementById('logoutBtn')?.addEventListener('click', async () => {
+      try {
+        await signOut(auth);
+        window.location.href = 'login.html';
+      } catch (error) {
+        console.error('Logout error:', error);
+        alert('Logout failed: ' + error.message);
+      }
+    });
+  </script>
+</body>
+</html>

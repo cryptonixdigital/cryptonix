@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>My Profile - Digital Wallet</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1>My Profile</h1>
+      <a href="dashboard.html" class="btn small">Back to Dashboard</a>
+    </header>
+    
+    <main>
+      <div class="profile-info" id="profileInfo">
+        <!-- Profile data will be loaded here -->
+      </div>
+      
+      <div class="profile-actions">
+        <h3>Security Settings</h3>
+        <button id="changeMpinBtn" class="btn secondary">Change MPIN</button>
+      </div>
+      
+      <div id="mpinChangeForm" class="hidden">
+        <h3>Change MPIN</h3>
+        <form id="mpinForm">
+          <div class="form-group">
+            <label for="currentMpin">Current 6-digit MPIN</label>
+            <input type="password" id="currentMpin" maxlength="6" required>
+          </div>
+          <div class="form-group">
+            <label for="newMpin">New 6-digit MPIN</label>
+            <input type="password" id="newMpin" maxlength="6" required>
+          </div>
+          <button type="submit" class="btn">Update MPIN</button>
+        </form>
+      </div>
+    </main>
+  </div>
+  
+  <script type="module" src="js/ui.js"></script>
+</body>
+</html>

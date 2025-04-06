@@ -1,0 +1,396 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Digital Wallet</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        /* Wallet Container Styles */
+        .wallet-container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        /* Wallet Header */
+        .wallet-header {
+            background: linear-gradient(135deg, #4361ee, #3a0ca3);
+            color: white;
+            padding: 25px;
+            border-radius: 15px;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+            margin-bottom: 30px;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .wallet-header::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
+        }
+        
+        .balance-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+        
+        .wallet-logo {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin-right: 10px;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+        }
+        
+        .wallet-balance {
+            font-size: 24px;
+            font-weight: bold;
+            opacity: 0.8;
+        }
+        
+        .wallet-amount {
+            font-size: 36px;
+            font-weight: bold;
+            margin: 10px 0;
+        }
+        
+        .wallet-currency {
+            font-size: 16px;
+            opacity: 0.8;
+        }
+        
+        /* Wallet Actions */
+        .wallet-actions {
+            display: flex;
+            justify-content: space-between;
+            margin: 25px 0 35px;
+            gap: 15px;
+        }
+        
+        .wallet-btn {
+            flex: 1;
+            padding: 15px;
+            border: none;
+            border-radius: 10px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s;
+        }
+        
+        .send-btn {
+            background-color: #f72585;
+            color: white;
+            text-decoration: none;       /* আন্ডারলাইন বন্ধ */
+        }
+        
+        .receive-btn {
+            background-color: #4cc9f0;
+            color: white;
+            text-decoration: none;       /* আন্ডারলাইন বন্ধ */
+        }
+        
+        .history-btn {
+            background-color: #7209b7;
+            color: white;
+            text-decoration: none;       /* আন্ডারলাইন বন্ধ */
+        }
+        
+        .wallet-btn i {
+            margin-right: 8px;
+            font-size: 18px;
+        }
+        
+        .wallet-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+        
+        /* Transaction History */
+        .history-section {
+            margin-top: 30px;
+        }
+        
+        .section-title {
+            font-size: 20px;
+            font-weight: 600;
+            margin-bottom: 20px;
+            color: #333;
+            display: flex;
+            align-items: center;
+        }
+        
+        .section-title i {
+            margin-right: 10px;
+            color: #4361ee;
+        }
+        
+        /* App Cards */
+        .apps-section {
+            margin-top: 40px;
+        }
+        
+        .apps-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+            gap: 15px;
+            margin-top: 20px;
+        }
+        
+        .app-card {
+            background-size: cover;
+            background-position: center;
+            border-radius: 12px;
+            padding: 15px;
+            text-align: center;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s;
+            cursor: pointer;
+            border: none;
+            height: 120px;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .app-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(to top, rgba(0,0,0,0.7), rgba(0,0,0,0.2));
+            z-index: 1;
+        }
+        
+        .app-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2);
+        }
+        
+        .app-icon {
+            width: 50px;
+            height: 50px;
+            background: rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(5px);
+            border-radius: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 10px;
+            color: white;
+            font-size: 20px;
+            position: relative;
+            z-index: 2;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+        
+        .app-name {
+            font-size: 14px;
+            font-weight: 500;
+            color: white;
+            margin-top: 5px;
+            position: relative;
+            z-index: 2;
+            text-shadow: 0 1px 3px rgba(0, 0, 0, 0.5);
+        }
+        
+        /* Transaction List */
+        .transaction-list {
+            background: white;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
+        }
+        
+        .transaction-item {
+            display: flex;
+            align-items: center;
+            padding: 15px 20px;
+            border-bottom: 1px solid #f0f0f0;
+        }
+        
+        .transaction-item:last-child {
+            border-bottom: none;
+        }
+        
+        .transaction-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: #f0f0f0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 15px;
+            color: #4361ee;
+        }
+        
+        .transaction-details {
+            flex: 1;
+        }
+        
+        .transaction-title {
+            font-weight: 500;
+            margin-bottom: 3px;
+        }
+        
+        .transaction-date {
+            font-size: 12px;
+            color: #888;
+        }
+        
+        .transaction-amount {
+            font-weight: 600;
+        }
+        
+        .positive {
+            color: #4cc9f0;
+        }
+        
+        .negative {
+            color: #f72585;
+        }
+        
+        
+    </style>
+</head>
+<body>
+    <div class="wallet-container">
+        <!-- Wallet Header -->
+        <div class="wallet-header">
+            <div class="balance-header">
+                <img src="logo.svg" alt="Wallet Logo" class="wallet-logo">
+                <div class="wallet-balance">Cryptonix (CRX)</div>
+            </div>
+            <div class="wallet-amount" id="balanceAmount">0.00<span class="wallet-currency">CRX</span></div>
+        </div>
+        
+        <!-- Wallet Actions -->
+<div class="wallet-actions">
+    <a href="transfer.html" class="wallet-btn send-btn">
+        <i class="fas fa-paper-plane"></i> Send
+    </a>
+    <a href="profile.html" class="wallet-btn receive-btn">
+        <i class="fas fa-wallet"></i> Receive
+    </a>
+    <a href="history.html" class="wallet-btn history-btn">
+        <i class="fas fa-history"></i> History
+    </a>
+</div>
+        
+        
+        <!-- Transaction History -->
+        <div class="history-section">
+            <div class="section-title">
+                <i class="fas fa-exchange-alt"></i> Recent Transactions
+            </div>
+            
+            <div class="transaction-list">
+                <div class="transaction-item">
+                    <div class="transaction-icon">
+                        <i class="fas fa-shopping-bag"></i>
+                    </div>
+                    <div class="transaction-details">
+                        <div class="transaction-title">Amazon Purchase</div>
+                        <div class="transaction-date">Today, 10:45 AM</div>
+                    </div>
+                    <div class="transaction-amount negative">-$42.99</div>
+                </div>
+                
+                <div class="transaction-item">
+                    <div class="transaction-icon">
+                        <i class="fas fa-user"></i>
+                    </div>
+                    <div class="transaction-details">
+                        <div class="transaction-title">John Doe</div>
+                        <div class="transaction-date">Yesterday, 3:20 PM</div>
+                    </div>
+                    <div class="transaction-amount positive">+$150.00</div>
+                </div>
+                
+                <div class="transaction-item">
+                    <div class="transaction-icon">
+                        <i class="fas fa-coffee"></i>
+                    </div>
+                    <div class="transaction-details">
+                        <div class="transaction-title">Starbucks</div>
+                        <div class="transaction-date">Yesterday, 9:15 AM</div>
+                    </div>
+                    <div class="transaction-amount negative">-$5.75</div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Apps Section -->
+        <div class="apps-section">
+            <div class="section-title">
+                <i class="fas fa-th-large"></i> Quick Access
+            </div>
+            
+            <div class="apps-grid">
+                <a href="#" class="app-card" style="background-image: url('https://via.placeholder.com/300/4361ee/ffffff?text=Mobile')">
+                    <div class="app-icon">
+                        <i class="fas fa-mobile-alt"></i>
+                    </div>
+                    <div class="app-name">Mobile Topup</div>
+                </a>
+                
+                <a href="#" class="app-card" style="background-image: url('https://via.placeholder.com/300/4cc9f0/ffffff?text=Electricity')">
+                    <div class="app-icon">
+                        <i class="fas fa-lightbulb"></i>
+                    </div>
+                    <div class="app-name">Electricity</div>
+                </a>
+                
+                <a href="#" class="app-card" style="background-image: url('https://via.placeholder.com/300/7209b7/ffffff?text=TV')">
+                    <div class="app-icon">
+                        <i class="fas fa-tv"></i>
+                    </div>
+                    <div class="app-name">TV Bill</div>
+                </a>
+                
+                <a href="#" class="app-card" style="background-image: url('https://via.placeholder.com/300/f72585/ffffff?text=Games')">
+                    <div class="app-icon">
+                        <i class="fas fa-gamepad"></i>
+                    </div>
+                    <div class="app-name">Games</div>
+                </a>
+                
+                <a href="#" class="app-card" style="background-image: url('https://via.placeholder.com/300/3a0ca3/ffffff?text=Gift')">
+                    <div class="app-icon">
+                        <i class="fas fa-gift"></i>
+                    </div>
+                    <div class="app-name">Gift Cards</div>
+                </a>
+                
+                <a href="#" class="app-card" style="background-image: url('https://via.placeholder.com/300/4895ef/ffffff?text=More')">
+                    <div class="app-icon">
+                        <i class="fas fa-plus"></i>
+                    </div>
+                    <div class="app-name">More</div>
+                </a>
+            </div>
+        </div>
+    </div>
+    
+    
+    <script type="module" src="js/wallet.js"></script>
+  <script type="module" src="js/ui.js"></script>
+</body>
+</html>
