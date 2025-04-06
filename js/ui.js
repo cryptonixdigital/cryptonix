@@ -35,11 +35,11 @@ document.getElementById('changeMpinBtn')?.addEventListener('click', () => {
 // Load profile info
 auth.onAuthStateChanged(async (user) => {
   if (!user || !document.getElementById('profileInfo')) return;
-  
+
   const snapshot = await get(ref(db, `users/${user.uid}`));
   if (snapshot.exists()) {
     const userData = snapshot.val();
-    
+
     document.getElementById('profileInfo').innerHTML = `
       <div class="profile-field">
         <span class="field-label">Name:</span>
@@ -51,13 +51,37 @@ auth.onAuthStateChanged(async (user) => {
       </div>
       <div class="profile-field">
         <span class="field-label">Wallet UID:</span>
-        <span>${userData.uid}</span>
+        <div id="walletSection">
+          <div id="walletQr"></div>
+          <div style="display: flex; align-items: center; margin-top: 5px;">
+            <span id="walletAddress" style="margin-right: 10px;">${userData.uid}</span>
+            <button id="copyButton">Copy</button>
+          </div>
+        </div>
       </div>
       <div class="profile-field">
         <span class="field-label">Balance:</span>
-        <span>৳${userData.balance.toFixed(2)}</span>
+        <span>₹${userData.balance.toFixed(2)}</span>
       </div>
     `;
+
+    // Wait for DOM to render, then generate QR and attach event
+    setTimeout(() => {
+      new QRCode(document.getElementById("walletQr"), {
+        text: userData.uid,
+        width: 100,
+        height: 100,
+      });
+
+      document.getElementById("copyButton").addEventListener("click", () => {
+        const text = document.getElementById("walletAddress").textContent;
+        navigator.clipboard.writeText(text).then(() => {
+          alert("Wallet UID copied!");
+        }).catch(err => {
+          alert("Failed to copy: " + err);
+        });
+      });
+    }, 100); // slight delay to ensure elements are in DOM
   }
 });
 
