@@ -57,7 +57,7 @@ document.getElementById('transferForm')?.addEventListener('submit', async (e) =>
       status: 'completed'
     });
     
-    alert(`Successfully transferred ₹${amount.toFixed(2)}`);
+    alert(`Successfully transferred CRX${amount.toFixed(2)}`);
     window.location.href = 'dashboard.html';
   } catch (error) {
     console.error('Transfer error:', error);
@@ -85,7 +85,7 @@ auth.onAuthStateChanged(async (user) => {
     }
     
     if (document.getElementById('balanceAmount')) {
-      document.getElementById('balanceAmount').textContent = `₹${userData.balance.toFixed(2)}`;
+      document.getElementById('balanceAmount').textContent = `CRX,${userData.balance.toFixed(2)}`;
     }
   }
   
@@ -122,7 +122,7 @@ async function loadRecentTransactions(userId) {
           ${tx.senderId === userId ? 'Sent to' : 'Received from'} 
           ${tx.senderId === userId ? '...' + tx.recipientId.slice(-4) : '...' + tx.senderId.slice(-4)}
         </div>
-        <div>₹${tx.amount.toFixed(2)}</div>
+        <div>CRX,${tx.amount.toFixed(2)}</div>
       </div>
     `).join('');
   }
