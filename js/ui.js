@@ -72,7 +72,7 @@ auth.onAuthStateChanged(async (user) => {
     </div>
     <div class="profile-field">
       <span class="field-label">Balance:</span>
-      <span>₹${userData.balance.toFixed(2)}</span>
+      <span>CRX${userData.balance.toFixed(2)}</span>
     </div>
   `;
 
