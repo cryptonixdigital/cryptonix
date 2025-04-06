@@ -114,7 +114,7 @@ document.getElementById('loginForm')?.addEventListener('submit', async (e) => {
       throw new Error('User data not found. Please register again.');
     }
     
-    window.location.href = 'dashboard.html';
+    window.location.href = 'index.html';
   } catch (error) {
     console.error('Login error:', error);
     
