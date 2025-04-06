@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Transaction Details</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+    
+    body {
+      background-color: #f5f5f5;
+      color: #333;
+    }
+    
+    .container {
+      max-width: 600px;
+      margin: 0 auto;
+      padding: 20px;
+      background-color: white;
+      min-height: 100vh;
+    }
+    
+    .back-button {
+      background: none;
+      border: none;
+      font-size: 24px;
+      margin-bottom: 20px;
+      cursor: pointer;
+      color: #333;
+    }
+    
+    header {
+      margin-bottom: 30px;
+      text-align: center;
+    }
+    
+    header h1 {
+      font-size: 24px;
+      color: #333;
+    }
+    
+    .transaction-card {
+      padding: 20px;
+      border-radius: 10px;
+      background: #f9f9f9;
+      margin-bottom: 20px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    }
+    
+    .transaction-row {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 10px;
+      padding-bottom: 10px;
+      border-bottom: 1px solid #eee;
+    }
+    
+    .transaction-label {
+      font-weight: bold;
+      color: #555;
+    }
+    
+    .transaction-value {
+      text-align: right;
+    }
+    
+    .amount {
+      font-size: 24px;
+      font-weight: bold;
+      text-align: center;
+      margin: 20px 0;
+    }
+    
+    .debit {
+      color: #e74c3c;
+    }
+    
+    .credit {
+      color: #2ecc71;
+    }
+    
+    .status-completed {
+      color: #2ecc71;
+      font-weight: bold;
+    }
+    
+    .tx-id {
+      font-family: monospace;
+      font-size: 12px;
+      color: #777;
+      word-break: break-all;
+      margin-top: 15px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <button class="back-button" onclick="window.history.back()">←</button>
+    <header>
+      <h1>Transaction Details</h1>
+    </header>
+    
+    <main id="transactionDetails">
+      <div class="loading">Loading transaction details...</div>
+    </main>
+  </div>
+   
+  <script type="module">
+    import { auth, db, ref, get } from './firebase.js';
+
+    // URL থেকে ট্রানজাকশন আইডি পাওয়া
+    const urlParams = new URLSearchParams(window.location.search);
+    const transactionId = urlParams.get('id');
+
+    async function loadTransactionDetails() {
+      const user = auth.currentUser;
+      if (!user) {
+        window.location.href = 'login.html';
+        return;
+      }
+
+      if (!transactionId) {
+        document.getElementById('transactionDetails').innerHTML = `
+          <div class="error">Transaction ID not provided</div>
+        `;
+        return;
+      }
+
+      try {
+        const txRef = ref(db, `transactions/${transactionId}`);
+        const snapshot = await get(txRef);
+        
+        if (!snapshot.exists()) {
+          document.getElementById('transactionDetails').innerHTML = `
+            <div class="error">Transaction not found</div>
+          `;
+          return;
+        }
+
+        const tx = snapshot.val();
+        const isSender = tx.senderId === user.uid;
+
+        // সংশ্লিষ্ট ইউজারদের ডেটা লোড করুন
+        const senderRef = ref(db, `users/${tx.senderId}`);
+        const recipientRef = ref(db, `users/${tx.recipientId}`);
+        
+        const [senderSnapshot, recipientSnapshot] = await Promise.all([
+          get(senderRef),
+          get(recipientRef)
+        ]);
+
+        const sender = senderSnapshot.val() || { name: 'Unknown', uid: tx.senderId };
+        const recipient = recipientSnapshot.val() || { name: 'Unknown', uid: tx.recipientId };
+
+        // ট্রানজাকশন ডিটেইলস ডিসপ্লে করুন
+        document.getElementById('transactionDetails').innerHTML = `
+          <div class="transaction-card">
+            <div class="amount ${isSender ? 'debit' : 'credit'}">
+              ${isSender ? '-' : '+'} ₹${tx.amount.toFixed(2)}
+            </div>
+            
+            <div class="transaction-row">
+              <span class="transaction-label">${isSender ? 'To' : 'From'}</span>
+              <span class="transaction-value">
+                ${isSender ? recipient.name : sender.name}<br>
+                (${isSender ? recipient.uid.slice(-4) : sender.uid.slice(-4)})
+              </span>
+            </div>
+            
+            <div class="transaction-row">
+              <span class="transaction-label">Date & Time</span>
+              <span class="transaction-value">${new Date(tx.timestamp).toLocaleString()}</span>
+            </div>
+            
+            <div class="transaction-row">
+              <span class="transaction-label">Status</span>
+              <span class="transaction-value status-completed">${tx.status || 'completed'}</span>
+            </div>
+            
+            <div class="transaction-row">
+              <span class="transaction-label">Transaction ID</span>
+              <span class="transaction-value tx-id">${transactionId}</span>
+            </div>
+          </div>
+        `;
+
+      } catch (error) {
+        console.error("Error loading transaction:", error);
+        document.getElementById('transactionDetails').innerHTML = `
+          <div class="error">Error loading transaction: ${error.message}</div>
+        `;
+      }
+    }
+
+    // পেইজ লোড হলে ডেটা লোড করুন
+    document.addEventListener('DOMContentLoaded', () => {
+      loadTransactionDetails();
+    });
+
+    // অথেন্টিকেশন স্টেট চেক করুন
+    auth.onAuthStateChanged((user) => {
+      if (!user) {
+        window.location.href = 'login.html';
+      }
+    });
+  </script>
+</body>
+</html>

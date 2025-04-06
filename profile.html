@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>My Profile - Digital Wallet</title>
+  <link rel="stylesheet" href="css/profile.css">
+</head>
+<body>
+  <div class="profile-container">
+    <header class="profile-header">
+      <a href="index.html" class="back-button">←</a>
+      <h1>User Profile</h1>
+    </header>
+    
+    <main class="profile-main">
+      <div class="profile-card">
+        <div class="profile-section" id="profileInfo">
+          <!-- Profile data will be loaded here -->
+        </div>
+        
+        <div class="security-section">
+          <h3 class="section-title">Security Settings</h3>
+          <button id="changeMpinBtn" class="btn secondary">Change MPIN</button>
+          <button id="editProfileBtn" class="btn secondary">Edit Profile</button>
+        </div>
+        
+        <div id="mpinChangeForm" class="hidden">
+          <h3 class="section-title">Change MPIN</h3>
+          <form id="mpinForm">
+            <div class="form-group">
+              <label for="currentMpin">Current 6-digit MPIN</label>
+              <input type="password" id="currentMpin" maxlength="6" required>
+            </div>
+            <div class="form-group">
+              <label for="newMpin">New 6-digit MPIN</label>
+              <input type="password" id="newMpin" maxlength="6" required>
+            </div>
+            <button type="submit" class="btn">Update MPIN</button>
+          </form>
+        </div>
+        
+        <div id="editProfileForm" class="hidden">
+          <h3 class="section-title">Edit Profile</h3>
+          <form id="profileForm">
+            <div class="form-group">
+              <label for="editName">Full Name</label>
+              <input type="text" id="editName" required>
+            </div>
+            <div class="form-group">
+              <label for="editMobile">Mobile Number</label>
+              <input type="tel" id="editMobile" required>
+            </div>
+            <div class="form-group">
+              <label for="editDob">Date of Birth</label>
+              <input type="date" id="editDob" required>
+            </div>
+            <div class="form-group">
+              <label for="editGender">Gender</label>
+              <select id="editGender" required>
+                <option value="">Select Gender</option>
+                <option value="male">Male</option>
+                <option value="female">Female</option>
+                <option value="other">Other</option>
+                <option value="prefer-not-to-say">Prefer not to say</option>
+              </select>
+            </div>
+            <div class="form-actions">
+              <button type="button" id="cancelEdit" class="btn secondary">Cancel</button>
+              <button type="submit" class="btn">Save Changes</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </main>
+  </div>
+  
+  <script type="module" src="js/ui.js"></script>
+</body>
+</html>
