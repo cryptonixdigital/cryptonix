@@ -199,3 +199,45 @@
     padding: 1rem;
   }
 }
+
+/* body স্টাইল আপডেট করুন */
+body {
+  margin: 0;
+  padding: 0;
+  background-color: #000; /* সম্পূর্ণ কালো ব্যাকগ্রাউন্ড */
+  font-family: 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+  color: #ffffff;
+  min-height: 100vh;
+}
+
+/* profile-container স্টাইল আপডেট করুন */
+.profile-container {
+  max-width: 480px;
+  margin: 0 auto;
+  background-color: #121212;
+  color: #ffffff;
+  min-height: 100vh;
+}
+
+/* লগআউট বাটনের জন্য নতুন স্টাইল যোগ করুন */
+.logout-btn {
+  display: block;
+  width: calc(100% - 3rem);
+  margin: 1.5rem auto;
+  padding: 0.75rem;
+  background-color: #ff3a3a;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-weight: 500;
+  font-size: 1rem;
+  text-align: center;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.logout-btn:hover {
+  background-color: #ff5252;
+  box-shadow: 0 2px 12px rgba(255, 58, 58, 0.4);
+}
+
