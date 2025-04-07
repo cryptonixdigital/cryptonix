@@ -270,6 +270,86 @@
         
         
     </style>
+
+ <style>
+    /* বেসিক স্টাইল রিসেট */
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
+    
+    /* মূল স্লাইড স্টাইল */
+    .slide {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        opacity: 0;
+        transition: opacity 1s ease-in-out;
+        background-size: cover;
+        background-repeat: no-repeat;
+        background-position: center;
+        border-radius: 12px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+    
+    .slide.active {
+        opacity: 1;
+    }
+    
+    /* কার্ড স্টাইল */
+    .history-section {
+        position: relative;
+        overflow: hidden;
+        border-radius: 12px;
+        background: rgba(255, 255, 255, 0.1);
+        backdrop-filter: blur(5px);
+        margin: 15px;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    }
+    
+    /* ব্যাকগ্রাউন্ড ইমেজ স্টাইল */
+    .card-background {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-size: cover;
+        background-position: center;
+        opacity: 0.3;
+        z-index: 0;
+        border-radius: 12px;
+    }
+    
+    /* সেকশন টাইটেল */
+    .section-title {
+        position: relative;
+        z-index: 1;
+        padding: 15px;
+        font-size: 18px;
+        font-weight: bold;
+        color: #ffffff;
+    }
+    
+    /* ইমেজ স্লাইডার কন্টেইনার */
+    .image-slider {
+        position: relative;
+        z-index: 1;
+        height: 180px;
+        margin: 0 15px 15px 15px;
+        border-radius: 12px;
+        overflow: hidden;
+    }
+    
+    /* ফন্ট অ্যাওয়েসম আইকন স্টাইল */
+    .fas {
+        margin-right: 10px;
+        color: #4a6bff;
+    }
+</style>
 </head>
 <body>
     <div class="wallet-container">
@@ -296,47 +376,18 @@
 </div>
         
         
-        <!-- Transaction History -->
         <div class="history-section">
-            <div class="section-title">
-                <i class="fas fa-exchange-alt"></i> Recent Transactions
-            </div>
-            
-            <div class="transaction-list">
-                <div class="transaction-item">
-                    <div class="transaction-icon">
-                        <i class="fas fa-shopping-bag"></i>
-                    </div>
-                    <div class="transaction-details">
-                        <div class="transaction-title">Amazon Purchase</div>
-                        <div class="transaction-date">Today, 10:45 AM</div>
-                    </div>
-                    <div class="transaction-amount negative">-$42.99</div>
-                </div>
-                
-                <div class="transaction-item">
-                    <div class="transaction-icon">
-                        <i class="fas fa-user"></i>
-                    </div>
-                    <div class="transaction-details">
-                        <div class="transaction-title">John Doe</div>
-                        <div class="transaction-date">Yesterday, 3:20 PM</div>
-                    </div>
-                    <div class="transaction-amount positive">+$150.00</div>
-                </div>
-                
-                <div class="transaction-item">
-                    <div class="transaction-icon">
-                        <i class="fas fa-coffee"></i>
-                    </div>
-                    <div class="transaction-details">
-                        <div class="transaction-title">Starbucks</div>
-                        <div class="transaction-date">Yesterday, 9:15 AM</div>
-                    </div>
-                    <div class="transaction-amount negative">-$5.75</div>
-                </div>
-            </div>
-        </div>
+    <!-- Background Image -->
+    <div class="card-background"></div>
+    
+    <div class="section-title">
+        <i class="fas fa-exchange-alt"></i> Recently Update
+    </div>
+    
+    <div class="image-slider">
+        <!-- Slides will be added here by JavaScript -->
+    </div>
+</div>
         
         <!-- Apps Section -->
         <div class="apps-section">
@@ -390,6 +441,50 @@
         </div>
     </div>
     
+
+<script>
+    // Image URLs for the slider
+    const sliderImages = [
+        'image/recent_update/image.png',
+        'image/recent_update/image2.png',
+        'image/recent_update/image3.png'
+    ];
+    
+    // Background image URL
+    const backgroundImageUrl = 'https://example.com/background.jpg';
+    
+    // Set background image
+    document.querySelector('.card-background').style.backgroundImage = `url('${backgroundImageUrl}')`;
+    
+    // Create slides
+    const sliderContainer = document.querySelector('.image-slider');
+    
+    sliderImages.forEach((imageUrl, index) => {
+        const slide = document.createElement('div');
+        slide.className = `slide ${index === 0 ? 'active' : ''}`;
+        slide.style.backgroundImage = `url('${imageUrl}')`;
+        sliderContainer.appendChild(slide);
+    });
+    
+    // Auto-slide functionality
+    let currentSlide = 0;
+    const slides = document.querySelectorAll('.slide');
+    
+    function showNextSlide() {
+        slides[currentSlide].classList.remove('active');
+        currentSlide = (currentSlide + 1) % slides.length;
+        slides[currentSlide].classList.add('active');
+    }
+    
+    // Change slide every 5 seconds
+    const slideInterval = setInterval(showNextSlide, 5000);
+    
+    // পেজ আনলোড হলে ইন্টারভাল ক্লিয়ার করার জন্য
+    window.addEventListener('beforeunload', () => {
+        clearInterval(slideInterval);
+    });
+</script>
+
     
     <script type="module" src="js/wallet.js"></script>
   <script type="module" src="js/ui.js"></script>
