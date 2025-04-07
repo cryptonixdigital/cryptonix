@@ -9,7 +9,8 @@
 <body>
   <div class="profile-container">
     <header class="profile-header">
-      <a href="index.html" class="back-button">←</a>
+      <!-- Back Button -->
+    <button class="back-button" onclick="window.history.back()">←</button>
       <h1>User Profile</h1>
     </header>
     
@@ -72,9 +73,44 @@
           </form>
         </div>
       </div>
+      
+      <!-- Logout Button placed outside the profile-card but inside main -->
+      <button id="logoutBtn" class="logout-btn">Log Out</button>
     </main>
   </div>
-  
+
+  <!-- Firebase and other scripts -->
+  <script type="module">
+    import { auth } from './js/firebase.js';
+    import { signOut } from "https://www.gstatic.com/firebasejs/9.6.0/firebase-auth.js";
+
+    // Logout function
+    document.getElementById('logoutBtn')?.addEventListener('click', async () => {
+      try {
+        // Sign out from Firebase
+        await signOut(auth);
+        
+        // Clear local storage
+        localStorage.clear();
+        sessionStorage.clear();
+        
+        // Redirect to login page
+        window.location.href = 'login.html';
+      } catch (error) {
+        console.error('Logout error:', error);
+        alert('Logout failed: ' + error.message);
+      }
+    });
+
+    // Authentication check
+    auth.onAuthStateChanged((user) => {
+      if (!user) {
+        // Redirect to login if not authenticated
+        window.location.href = 'login.html';
+      }
+    });
+  </script>
+
   <script type="module" src="js/ui.js"></script>
 </body>
 </html>
