@@ -70,7 +70,7 @@ document.getElementById('registerForm')?.addEventListener('submit', async (e) =>
     await set(ref(db, `users/${userId}`), userData);
     
     alert(`Registration successful!\nWallet Address: ${walletAddress}`);
-    window.location.href = 'dashboard.html';
+    window.location.href = 'index.html';
   } catch (error) {
     console.error('Registration error:', error);
     
