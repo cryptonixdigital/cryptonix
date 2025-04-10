@@ -3,7 +3,8 @@ import {
   getAuth, 
   createUserWithEmailAndPassword, 
   signInWithEmailAndPassword,
-  signOut
+  signOut,
+  sendEmailVerification // ✅ নতুন যোগ করা
 } from "https://www.gstatic.com/firebasejs/10.5.0/firebase-auth.js";
 import { 
   getDatabase, 
@@ -26,7 +27,6 @@ const firebaseConfig = {
     measurementId: "G-Y131E5B1QF"
   };
 
-// Initialize Firebase
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const db = getDatabase(app);
@@ -37,6 +37,7 @@ export {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
   signOut,
+  sendEmailVerification, // ✅ নতুন যোগ করা
   ref,
   set,
   get,
