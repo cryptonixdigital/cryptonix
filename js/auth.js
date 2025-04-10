@@ -6,7 +6,8 @@ import {
   get,
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
-  signOut
+  signOut,
+  sendEmailVerification // ✅ নতুন যোগ করা
 } from './firebase.js';
 
 // Generate 35-character wallet address
@@ -23,7 +24,7 @@ function generateWalletAddress(userId) {
   return result;
 }
 
-// Registration with complete validation
+// Registration with email verification
 document.getElementById('registerForm')?.addEventListener('submit', async (e) => {
   e.preventDefault();
   
@@ -51,30 +52,33 @@ document.getElementById('registerForm')?.addEventListener('submit', async (e) =>
   try {
     // 1. Create user in Firebase Authentication
     const userCredential = await createUserWithEmailAndPassword(auth, email, password);
-    const userId = userCredential.user.uid;
+    const user = userCredential.user;
     
-    // 2. Generate wallet address
-    const walletAddress = generateWalletAddress(userId);
+    // 2. Send email verification
+    await sendEmailVerification(user);
     
-    // 3. Prepare user data
+    // 3. Generate wallet address
+    const walletAddress = generateWalletAddress(user.uid);
+    
+    // 4. Prepare user data
     const userData = {
       name,
       email,
       mpin,
       uid: walletAddress,
       balance: 10.00,
-      createdAt: new Date().toISOString()
+      createdAt: new Date().toISOString(),
+      emailVerified: false // ✅ নতুন যোগ করা
     };
     
-    // 4. Save to Realtime Database
-    await set(ref(db, `users/${userId}`), userData);
+    // 5. Save to Realtime Database
+    await set(ref(db, `users/${user.uid}`), userData);
     
-    alert(`Registration successful!\nWallet Address: ${walletAddress}`);
-    window.location.href = 'index.html';
+    alert(`Registration successful! Please check your email (${email}) for verification link.\nYour Wallet Address: ${walletAddress}`);
+    window.location.href = 'verify-email.html'; // ✅ নতুন যোগ করা
   } catch (error) {
     console.error('Registration error:', error);
     
-    // User-friendly error messages
     let errorMessage = 'Registration failed. Please try again.';
     switch(error.code) {
       case 'auth/email-already-in-use':
@@ -95,7 +99,7 @@ document.getElementById('registerForm')?.addEventListener('submit', async (e) =>
   }
 });
 
-// Login function
+// Login with email verification check
 document.getElementById('loginForm')?.addEventListener('submit', async (e) => {
   e.preventDefault();
   
@@ -104,13 +108,20 @@ document.getElementById('loginForm')?.addEventListener('submit', async (e) => {
   
   try {
     const userCredential = await signInWithEmailAndPassword(auth, email, password);
+    const user = userCredential.user;
+    
+    // Check if email is verified ✅ নতুন যোগ করা
+    if (!user.emailVerified) {
+      await signOut(auth);
+      throw new Error('EMAIL_NOT_VERIFIED');
+    }
     
     // Verify user exists in database
-    const userRef = ref(db, `users/${userCredential.user.uid}`);
+    const userRef = ref(db, `users/${user.uid}`);
     const snapshot = await get(userRef);
     
     if (!snapshot.exists()) {
-      await auth.signOut();
+      await signOut(auth);
       throw new Error('User data not found. Please register again.');
     }
     
@@ -119,17 +130,19 @@ document.getElementById('loginForm')?.addEventListener('submit', async (e) => {
     console.error('Login error:', error);
     
     let errorMessage = 'Login failed. Please try again.';
-    if (error.code === 'auth/user-not-found') {
+    if (error.code === 'auth/user-not-found' || error.message === 'User data not found. Please register again.') {
       errorMessage = 'No account found with this email.';
     } else if (error.code === 'auth/wrong-password') {
       errorMessage = 'Incorrect password.';
+    } else if (error.message === 'EMAIL_NOT_VERIFIED') { // ✅ নতুন যোগ করা
+      errorMessage = 'Email not verified. Please check your inbox for verification link.';
     }
     
     alert(errorMessage);
   }
 });
 
-// Logout function
+// Logout function (no changes)
 document.getElementById('logoutBtn')?.addEventListener('click', async () => {
   try {
     await signOut(auth);
