@@ -32,7 +32,7 @@ document.getElementById('transferForm')?.addEventListener('submit', async (e) =>
     const allUsers = await get(ref(db, 'users'));
     let recipientId = null;
     allUsers.forEach((child) => {
-      if (child.val().uid === recipientUid) {
+      if ((child.val().uid || '').toUpperCase() === recipientUid) {
         recipientId = child.key;
       }
     });
@@ -46,7 +46,7 @@ document.getElementById('transferForm')?.addEventListener('submit', async (e) =>
     
     await update(ref(db, 'users'), {
       [`${user.uid}/balance`]: userData.balance - amount,
-      [`${recipientId}/balance`]: (allUsers.val()[recipientId].balance || 0) + amount
+      [`${recipientId}/balance`]: parseFloat((allUsers.val()[recipientId].balance || 0)) + amount
     });
     
     await set(ref(db, `transactions/${transactionId}`), {
@@ -85,8 +85,9 @@ auth.onAuthStateChanged(async (user) => {
     }
     
     if (document.getElementById('balanceAmount')) {
-      document.getElementById('balanceAmount').textContent = `CRX,${userData.balance.toFixed(2)}`;
-    }
+  const balance = parseFloat(userData.balance || 0).toFixed(2);
+  document.getElementById('balanceAmount').textContent = `CRX,${balance}`;
+}
   }
   
   // Load transactions for dashboard
