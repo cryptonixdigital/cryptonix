@@ -89,7 +89,7 @@ QR Code Generator
 ## 👨‍💻 Developer
 
 <p align="center">
-<strong>Polash Mondal</strong><br/>
+<strong>Palash Mondal</strong><br/>
 <img src="profile.png" alt="Developer Logo" width="100"/>
 </p>
 
