@@ -12,16 +12,17 @@ import {
 
 // Generate 35-character wallet address
 function generateWalletAddress(userId) {
-  const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+  const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
   let result = '';
   const seed = userId + Date.now().toString();
-  
+
   for (let i = 0; i < 35; i++) {
-    const randomIndex = seed.charCodeAt(i % seed.length) % chars.length;
+    const mix = seed.charCodeAt(i % seed.length) + Math.floor(Math.random() * 100);
+    const randomIndex = mix % chars.length;
     result += chars[randomIndex];
   }
-  
-  return result;
+
+  return 'CRX' + result; // CRX prefix added
 }
 
 // Registration with email verification
