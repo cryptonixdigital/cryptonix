@@ -7,25 +7,25 @@ import {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
   signOut,
-  sendEmailVerification // ✅ নতুন যোগ করা
+  sendEmailVerification
 } from './firebase.js';
 
-// Generate 35-character wallet address
+// Generate 38-character wallet address (CRX + 35 characters)
 function generateWalletAddress(userId) {
   const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-  let result = '';
+  let result = 'CRX'; // First 3 characters CRX
   const seed = userId + Date.now().toString();
-
-  for (let i = 0; i < 35; i++) {
+  
+  for (let i = 0; i < 35; i++) { // Remaining 35 characters
     const mix = seed.charCodeAt(i % seed.length) + Math.floor(Math.random() * 100);
     const randomIndex = mix % chars.length;
     result += chars[randomIndex];
   }
-
-  return 'CRX' + result; // CRX prefix added
+  
+  return result; // Total 38 characters (CRX + 35)
 }
 
-// Registration with email verification
+// Registration function
 document.getElementById('registerForm')?.addEventListener('submit', async (e) => {
   e.preventDefault();
   
@@ -34,31 +34,31 @@ document.getElementById('registerForm')?.addEventListener('submit', async (e) =>
   const password = document.getElementById('password').value;
   const mpin = document.getElementById('mpin').value;
   
-  // Validate inputs
+  // Validation
   if (!name || !email || !password || !mpin) {
-    alert('All fields are required');
+    alert('Please fill all fields');
     return;
   }
   
   if (password.length < 8 || password.length > 12) {
-    alert('Password must be between 8 to 12 characters');
+    alert('Password must be 8-12 characters');
     return;
   }
   
   if (!/^\d{6}$/.test(mpin)) {
-    alert('MPIN must be exactly 6 digits');
+    alert('MPIN must be 6 digits');
     return;
   }
 
   try {
-    // 1. Create user in Firebase Authentication
+    // 1. Create user in Firebase Auth
     const userCredential = await createUserWithEmailAndPassword(auth, email, password);
     const user = userCredential.user;
     
     // 2. Send email verification
     await sendEmailVerification(user);
     
-    // 3. Generate wallet address
+    // 3. Generate wallet address (38 characters)
     const walletAddress = generateWalletAddress(user.uid);
     
     // 4. Prepare user data
@@ -66,33 +66,33 @@ document.getElementById('registerForm')?.addEventListener('submit', async (e) =>
       name,
       email,
       mpin,
-      uid: walletAddress,
+      uid: walletAddress, // 38-character address
       balance: 10.00,
       createdAt: new Date().toISOString(),
-      emailVerified: false // ✅ নতুন যোগ করা
+      emailVerified: false
     };
     
-    // 5. Save to Realtime Database
+    // 5. Save to database
     await set(ref(db, `users/${user.uid}`), userData);
     
-    alert(`Registration successful! Please check your email (${email}) for verification link.\nYour Wallet Address: ${walletAddress}`);
-    window.location.href = 'verify-email.html'; // ✅ নতুন যোগ করা
+    alert(`Registration successful! Verification link sent to ${email}\nYour wallet address: ${walletAddress}`);
+    window.location.href = 'verify-email.html';
   } catch (error) {
     console.error('Registration error:', error);
     
     let errorMessage = 'Registration failed. Please try again.';
     switch(error.code) {
       case 'auth/email-already-in-use':
-        errorMessage = 'This email is already registered.';
+        errorMessage = 'Email already registered';
         break;
       case 'auth/invalid-email':
-        errorMessage = 'Please enter a valid email address.';
+        errorMessage = 'Please enter valid email';
         break;
       case 'auth/weak-password':
-        errorMessage = 'Password should be 8-12 characters.';
+        errorMessage = 'Password must be 8-12 characters';
         break;
       case 'PERMISSION_DENIED':
-        errorMessage = 'Database error. Please contact support.';
+        errorMessage = 'Database error. Please contact support';
         break;
     }
     
@@ -100,7 +100,7 @@ document.getElementById('registerForm')?.addEventListener('submit', async (e) =>
   }
 });
 
-// Login with email verification check
+// Login function with email verification check
 document.getElementById('loginForm')?.addEventListener('submit', async (e) => {
   e.preventDefault();
   
@@ -111,7 +111,7 @@ document.getElementById('loginForm')?.addEventListener('submit', async (e) => {
     const userCredential = await signInWithEmailAndPassword(auth, email, password);
     const user = userCredential.user;
     
-    // Check if email is verified ✅ নতুন যোগ করা
+    // Check if email is verified
     if (!user.emailVerified) {
       await signOut(auth);
       throw new Error('EMAIL_NOT_VERIFIED');
@@ -135,7 +135,7 @@ document.getElementById('loginForm')?.addEventListener('submit', async (e) => {
       errorMessage = 'No account found with this email.';
     } else if (error.code === 'auth/wrong-password') {
       errorMessage = 'Incorrect password.';
-    } else if (error.message === 'EMAIL_NOT_VERIFIED') { // ✅ নতুন যোগ করা
+    } else if (error.message === 'EMAIL_NOT_VERIFIED') {
       errorMessage = 'Email not verified. Please check your inbox for verification link.';
     }
     
@@ -143,7 +143,7 @@ document.getElementById('loginForm')?.addEventListener('submit', async (e) => {
   }
 });
 
-// Logout function (no changes)
+// Logout function
 document.getElementById('logoutBtn')?.addEventListener('click', async () => {
   try {
     await signOut(auth);
