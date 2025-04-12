@@ -203,12 +203,6 @@
   </div>
    
   <script>
-    // Check if running in HTTPS
-    if (window.location.protocol !== 'https:' && !window.location.hostname.includes('localhost')) {
-      console.warn('For best results, use HTTPS connection');
-    }
-
-    // Clipboard paste functionality
     document.querySelector('.paste-btn').addEventListener('click', async () => {
       try {
         const text = await navigator.clipboard.readText();
@@ -224,7 +218,6 @@
       }
     });
 
-    // QR Scanner functionality
     document.querySelector('.scan-btn').addEventListener('click', () => {
       const scannerModal = document.createElement('div');
       scannerModal.className = 'scanner-modal';
@@ -272,16 +265,13 @@
 
       // Function to stop and clean up scanner
       const stopScanner = () => {
-        if (html5QrCode && html5QrCode.isScanning) {
-          html5QrCode.stop().then(() => {
-            scannerModal.remove();
-          }).catch(err => {
-            console.error("Error stopping scanner:", err);
-            scannerModal.remove();
-          });
-        } else {
+        html5QrCode.stop().then(() => {
+          html5QrCode.clear();
           scannerModal.remove();
-        }
+        }).catch(err => {
+          console.error("Error stopping scanner:", err);
+          scannerModal.remove();
+        });
       };
 
       // Function to switch between cameras
@@ -308,7 +298,7 @@
         if (devices && devices.length) {
           cameras = devices;
           
-          // Try to find rear camera first
+          // Try to find rear camera first (usually labeled "environment")
           const rearCamera = devices.find(device => 
             device.label.toLowerCase().includes('back') || 
             device.label.toLowerCase().includes('rear') ||
@@ -334,7 +324,9 @@
       });
 
       // Cancel button handler
-      scannerModal.querySelector('.cancel-scan').addEventListener('click', stopScanner);
+      scannerModal.querySelector('.cancel-scan').addEventListener('click', () => {
+        stopScanner();
+      });
 
       // Image upload handler
       scannerModal.querySelector('.upload-image').addEventListener('click', () => {
