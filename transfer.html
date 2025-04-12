@@ -140,6 +140,22 @@
       margin-bottom: 1rem;
       color: #333;
     }
+
+    .camera-switch {
+      background: #4CAF50;
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 1rem;
+      transition: background 0.2s;
+      margin-top: 1rem;
+    }
+
+    .camera-switch:hover {
+      background: #3e8e41;
+    }
   </style>
 </head>
 <body>
@@ -209,6 +225,7 @@
         <div class="scanner-container">
           <div id="qr-reader"></div>
           <p class="scan-instruction">Place the QR code within the frame</p>
+          <button class="camera-switch">Switch Camera</button>
           <div class="scanner-footer">
             <button class="upload-image">Upload Image</button>
             <button class="cancel-scan">Cancel</button>
@@ -219,43 +236,34 @@
 
       const input = document.getElementById('recipientUid');
       const html5QrCode = new Html5Qrcode("qr-reader");
-      
-      // Start the camera
-      Html5Qrcode.getCameras().then(devices => {
-        if (devices && devices.length) {
-          const cameraId = devices[0].id; // Use the first available camera
-          
-          html5QrCode.start(
-            cameraId,
-            {
-              fps: 10,
-              qrbox: { width: 250, height: 250 }
-            },
-            (decodedText) => {
-              if (decodedText.length === 38 && decodedText.startsWith("CRX")) {
-                input.value = decodedText;
-                stopScanner();
-              } else {
-                alert("Scanned QR code does not contain a valid CRX address.");
-              }
-            },
-            (errorMessage) => {
-              // Handle scan error
-              console.log(errorMessage);
-            }
-          ).catch(err => {
-            console.error("Unable to start QR scanner:", err);
-            alert("Unable to access camera. Please try the upload option.");
-          });
-        } else {
-          alert("No cameras found. Please use the upload option.");
-        }
-      }).catch(err => {
-        console.error("Camera access error:", err);
-        alert("Unable to access camera. Please use the upload option.");
-      });
+      let currentCameraId = null;
+      let cameras = [];
 
-      // Function to clean up scanner
+      // Function to start camera
+      const startCamera = (cameraId) => {
+        return html5QrCode.start(
+          cameraId,
+          {
+            fps: 10,
+            qrbox: { width: 250, height: 250 }
+          },
+          (decodedText) => {
+            if (decodedText.length === 38 && decodedText.startsWith("CRX")) {
+              input.value = decodedText;
+              stopScanner();
+            } else {
+              alert("Scanned QR code does not contain a valid CRX address.");
+            }
+          },
+          (errorMessage) => {
+            console.log("QR Code scan error:", errorMessage);
+          }
+        ).then(() => {
+          currentCameraId = cameraId;
+        });
+      };
+
+      // Function to stop and clean up scanner
       const stopScanner = () => {
         html5QrCode.stop().then(() => {
           html5QrCode.clear();
@@ -265,6 +273,55 @@
           scannerModal.remove();
         });
       };
+
+      // Function to switch between cameras
+      const switchCamera = () => {
+        if (cameras.length < 2) {
+          alert("Only one camera available.");
+          return;
+        }
+        
+        const currentIndex = cameras.findIndex(cam => cam.id === currentCameraId);
+        const nextIndex = (currentIndex + 1) % cameras.length;
+        const nextCameraId = cameras[nextIndex].id;
+        
+        html5QrCode.stop().then(() => {
+          startCamera(nextCameraId).catch(err => {
+            console.error("Error starting next camera:", err);
+            alert("Failed to switch camera.");
+          });
+        });
+      };
+
+      // Get available cameras and start with rear camera if available
+      Html5Qrcode.getCameras().then(devices => {
+        if (devices && devices.length) {
+          cameras = devices;
+          
+          // Try to find rear camera first (usually labeled "environment")
+          const rearCamera = devices.find(device => 
+            device.label.toLowerCase().includes('back') || 
+            device.label.toLowerCase().includes('rear') ||
+            device.label.toLowerCase().includes('environment')
+          );
+          
+          // Fallback to front camera if rear not found
+          const defaultCamera = rearCamera || devices[0];
+          
+          startCamera(defaultCamera.id).catch(err => {
+            console.error("Unable to start QR scanner:", err);
+            alert("Unable to access camera. Please try the upload option.");
+          });
+          
+          // Add switch camera button handler
+          scannerModal.querySelector('.camera-switch').addEventListener('click', switchCamera);
+        } else {
+          alert("No cameras found. Please use the upload option.");
+        }
+      }).catch(err => {
+        console.error("Camera access error:", err);
+        alert("Unable to access camera. Please use the upload option.");
+      });
 
       // Cancel button handler
       scannerModal.querySelector('.cancel-scan').addEventListener('click', () => {
