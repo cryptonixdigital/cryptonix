@@ -1,0 +1,189 @@
+{
+  "rules": {
+    "users": {
+      "$uid": {
+        ".read": "auth != null && auth.uid == $uid",
+        ".write": "auth != null && auth.uid == $uid",
+        ".validate": "newData.hasChildren(['name', 'email', 'mpin', 'uid', 'balance', 'createdAt'])"
+      },
+      ".read": "auth != null",
+      ".write": "auth != null"
+    },
+    "transactions": {
+      "$transactionId": {
+        ".read": "auth != null && (data.child('senderId').val() == auth.uid || data.child('recipientId').val() == auth.uid)",
+        ".write": "auth != null && (newData.child('senderId').val() == auth.uid || newData.child('recipientId').val() == auth.uid)"
+      }
+    }
+  }
+}
+
+fast
+
+{
+  "rules": {
+    ".read": "auth != null",
+    ".write": "auth != null"
+  }
+}
+
+second 
+
+{
+  "rules": {
+    ".read": "auth != null",
+    ".write": "auth != null",
+    
+    "users": {
+      "$uid": {
+        ".read": "auth.uid === $uid",
+        ".write": "auth.uid === $uid"
+      }
+    },
+    
+    "transactions": {
+      ".read": "auth != null",
+      "$txid": {
+        ".write": "auth != null && (
+          newData.child('senderId').val() === auth.uid || 
+          newData.child('recipientId').val() === auth.uid
+        )"
+      }
+    }
+  }
+}
+
+3rd
+
+{
+  "rules": {
+    ".read": "auth != null",
+    ".write": "auth != null",
+    
+    "users": {
+      "$uid": {
+        ".read": "auth.uid === $uid",
+        ".write": "auth.uid === $uid"
+      }
+    },
+    
+    "transactions": {
+  "$txid": {
+    ".read": "auth != null && (
+      data.child('senderId').val() === auth.uid || 
+      data.child('recipientId').val() === auth.uid
+    )",
+    ".write": "auth != null && (
+      newData.child('senderId').val() === auth.uid || 
+      newData.child('recipientId').val() === auth.uid
+    )"
+  }
+}
+  }
+}
+
+4th
+
+{
+  "rules": {
+    ".read": "auth != null",
+    ".write": "auth != null",
+    
+    "users": {
+      "$uid": {
+        ".read": "auth.uid === $uid",
+        ".write": "auth.uid === $uid"
+      }
+    },
+    
+    "transactions": {
+  "$txid": {
+    ".read": "auth != null && (
+      data.child('senderId').val() === auth.uid || 
+      data.child('recipientId').val() === auth.uid
+    )",
+    ".write": "auth != null && (
+      newData.child('senderId').val() === auth.uid || 
+      newData.child('recipientId').val() === auth.uid
+    )"
+  }
+}
+  }
+}
+
+5th
+
+{
+  "rules": {
+    ".read": "auth != null",
+    ".write": "auth != null",
+    
+    "users": {
+      "$uid": {
+        ".read": "auth.uid === $uid",
+        ".write": "auth.uid === $uid || auth.token.isAdmin === true",
+        ".validate": "newData.hasChildren(['name', 'email'])"
+      }
+    },
+    
+    "transactions": {
+      "$txid": {
+        ".read": "auth != null && (
+          data.child('senderId').val() === auth.uid || 
+          data.child('recipientId').val() === auth.uid
+        )",
+        ".write": "auth != null && 
+          newData.child('senderId').val() === auth.uid && 
+          !data.exists() &&
+          root.child('users').child(newData.child('recipientId').val()).exists()",
+        ".validate": "
+          newData.hasChildren(['amount', 'senderId', 'recipientId', 'timestamp']) &&
+          newData.child('amount').val() > 0 &&
+          newData.child('senderId').val() == auth.uid &&
+          newData.child('timestamp').val() <= now &&
+          newData.child('recipientId').val() != auth.uid
+        "
+      }
+    }
+  }
+}
+
+6th
+
+
+{
+  "rules": {
+    ".read": "auth != null",
+    ".write": "auth != null",
+    
+    "users": {
+      "$uid": {
+        ".read": "auth.uid === $uid",
+        ".write": "auth.uid === $uid || auth.token.isAdmin === true",
+        ".validate": "newData.hasChildren(['name', 'email'])"
+      }
+    },
+    
+    "transactions": {
+      "$txid": {
+        ".read": "auth != null && (
+          data.child('senderId').val() === auth.uid || 
+          data.child('recipientId').val() === auth.uid
+        )",
+        ".write": "auth != null && 
+          newData.child('senderId').val() === auth.uid && 
+          !data.exists() &&
+          root.child('users').child(newData.child('recipientId').val()).exists()",
+        ".validate": "
+          newData.hasChildren(['amount', 'senderId', 'recipientId', 'timestamp']) &&
+          newData.child('amount').val() > 0 &&
+          newData.child('senderId').val() == auth.uid &&
+          newData.child('timestamp').val() <= now &&
+          newData.child('recipientId').val() != auth.uid
+        "
+      }
+    }
+  }
+}
+
+
