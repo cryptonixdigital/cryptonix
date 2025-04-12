@@ -69,54 +69,67 @@
         }
         
         /* Wallet Actions */
-        .wallet-actions {
-            display: flex;
-            justify-content: space-between;
-            margin: 25px 0 35px;
-            gap: 15px;
-        }
-        
-        .wallet-btn {
-            flex: 1;
-            padding: 15px;
-            border: none;
-            border-radius: 10px;
-            font-size: 16px;
-            font-weight: 600;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: all 0.3s;
-        }
-        
-        .send-btn {
-            background-color: #f72585;
-            color: white;
-            text-decoration: none;       /* আন্ডারলাইন বন্ধ */
-        }
-        
-        .receive-btn {
-            background-color: #4cc9f0;
-            color: white;
-            text-decoration: none;       /* আন্ডারলাইন বন্ধ */
-        }
-        
-        .history-btn {
-            background-color: #7209b7;
-            color: white;
-            text-decoration: none;       /* আন্ডারলাইন বন্ধ */
-        }
-        
-        .wallet-btn i {
-            margin-right: 8px;
-            font-size: 18px;
-        }
-        
-        .wallet-btn:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
-        }
+.wallet-actions {
+    display: flex;
+    justify-content: space-between;
+    margin: 25px 0 35px;
+    gap: 15px;
+}
+
+.wallet-btn {
+    flex: 1;
+    padding: 15px;
+    border: none;
+    border-radius: 10px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s;
+    text-decoration: none;
+}
+
+.send-btn {
+    background-color: #f72585;
+    color: white;
+}
+
+.receive-btn {
+    background-color: #4cc9f0;
+    color: white;
+}
+
+.buy-btn {
+    background-color: #2ec4b6;
+    color: white;
+}
+
+.sell-btn {
+    background-color: #e71d36;
+    color: white;
+}
+
+.wallet-btn i {
+    margin-right: 8px;
+    font-size: 18px;
+}
+
+.wallet-btn:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+}
+
+.wallet-actions {
+    gap: 10px; /* গ্যাপ কমিয়ে দিন */
+}
+
+.wallet-btn {
+    padding: 12px 8px; /* প্যাডিং কমিয়ে দিন */
+    font-size: 14px; /* ফন্ট সাইজ ছোট করুন */
+    white-space: nowrap; /* টেক্সট যেন লাইন ব্রেক না হয় */
+}
         
         /* Transaction History */
         .history-section {
@@ -370,8 +383,11 @@
     <a href="QRcode.html" class="wallet-btn receive-btn">
         <i class="fas fa-wallet"></i> Receive
     </a>
-    <a href="history.html" class="wallet-btn history-btn">
-        <i class="fas fa-history"></i> History
+    <a href="buy.html" class="wallet-btn buy-btn">
+        <i class="fas fa-shopping-cart"></i> Buy
+    </a>
+    <a href="sell.html" class="wallet-btn sell-btn">
+        <i class="fas fa-money-bill-wave"></i> Sell
     </a>
 </div>
         
