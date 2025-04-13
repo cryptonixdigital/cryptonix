@@ -1,0 +1,30 @@
+<svg width="200" height="200" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+  <!-- মেইন হেক্সাগন -->
+  <path d="M100 30 L170 70 L170 130 L100 170 L30 130 L30 70 Z" fill="url(#hexGradient)" stroke="#FFD700" stroke-width="4"/>
+  
+  <!-- ইন্টার্নাল ডিজাইন -->
+  <path d="M100 60 L150 90 L150 110 L100 140 L50 110 L50 90 Z" fill="none" stroke="#FFDF00" stroke-width="3" stroke-dasharray="5,3"/>
+  
+  <!-- ডায়নামিক টেক্স্ট -->
+  <text x="100" y="100" font-family="Arial" font-size="28" font-weight="bold" fill="#FFD700" text-anchor="middle" style="text-shadow: 0 0 5px #3d2e01">CRX</text>
+  <text x="100" y="115" font-family="Arial" font-size="9" fill="#FFFFFF" text-anchor="middle">Cryptonix Coin</text>
+  
+  <!-- ছোট গোল্ডেন পাতা ডিজাইন (উপরে উঠানো) -->
+  <path d="M95 120 Q100 118 105 120 Q107 123 105 125 Q100 127 95 125 Q93 123 95 120 Z" fill="#FFD700" opacity="0.8"/>
+  <path d="M100 122 Q103 120 105 122 Q107 124 105 126 Q103 128 100 126 Q97 124 100 122 Z" fill="#D4AF37" opacity="0.9"/>
+  <path d="M105 120 Q110 118 115 120 Q117 123 115 125 Q110 127 105 125 Q103 123 105 120 Z" fill="#FFDF00" opacity="0.7"/>
+  
+  <defs>
+    <linearGradient id="hexGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#1a1400"/>
+      <stop offset="50%" stop-color="#3d2e01"/>
+      <stop offset="100%" stop-color="#1a1400"/>
+    </linearGradient>
+    
+    <!-- গোল্ডেন গ্লো ইফেক্ট -->
+    <filter id="goldGlow" x="-20%" y="-20%" width="140%" height="140%">
+      <feGaussianBlur stdDeviation="2" result="blur"/>
+      <feComposite in="SourceGraphic" in2="blur" operator="over"/>
+    </filter>
+  </defs>
+</svg>
