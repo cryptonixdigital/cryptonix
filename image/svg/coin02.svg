@@ -1,0 +1,46 @@
+<svg width="200" height="200" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+  <!-- Coin Base with Rich Gold Gradient -->
+  <circle cx="100" cy="100" r="90" fill="url(#coinGradient)" stroke="#FFD700" stroke-width="4"/>
+  
+  <!-- Inner Circle with Golden Shadow -->
+  <circle cx="100" cy="100" r="70" fill="#3d2e01" filter="url(#innerShadow)"/>
+  
+  <!-- Crypto Icon (Hexagon with "CRX") -->
+  <path d="M100 50 L125 65 L125 95 L100 110 L75 95 L75 65 Z" fill="none" stroke="#FFDF00" stroke-width="3"/>
+  <text x="100" y="90" font-family="Arial" font-size="24" font-weight="bold" fill="#FFDF00" text-anchor="middle">CRX</text>
+  
+  <!-- Main Text: Cryptonix -->
+  <text x="100" y="130" font-family="Arial" font-size="18" font-weight="bold" fill="#FFE44D" text-anchor="middle">CRYPTONIX</text>
+  <text x="100" y="150" font-family="Arial" font-size="12" fill="#D4AF37" text-anchor="middle">BLOCKCHAIN</text>
+  
+  <!-- Enhanced Shine Effect -->
+  <circle cx="140" cy="60" r="20" fill="white" opacity="0.15" filter="url(#blur)"/>
+  
+  <!-- Gradient & Effects -->
+  <defs>
+    <linearGradient id="coinGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#D4AF37"/> <!-- Metallic gold -->
+      <stop offset="50%" stop-color="#FFD700"/> <!-- Pure gold -->
+      <stop offset="100%" stop-color="#CFB53B"/> <!-- Old gold -->
+    </linearGradient>
+    
+    <filter id="innerShadow">
+      <feDropShadow dx="0" dy="0" stdDeviation="5" flood-color="#FFD700" flood-opacity="0.7"/>
+    </filter>
+    
+    <filter id="blur">
+      <feGaussianBlur stdDeviation="5"/>
+    </filter>
+    
+    <!-- Additional gold shine effect -->
+    <radialGradient id="goldShine" cx="30%" cy="30%" r="70%" fx="30%" fy="30%">
+      <stop offset="0%" stop-color="#FFFFFF" stop-opacity="0.8"/>
+      <stop offset="100%" stop-color="#FFD700" stop-opacity="0"/>
+    </radialGradient>
+    <circle cx="100" cy="100" r="90" fill="url(#goldShine)" opacity="0.3"/>
+  </defs>
+  
+  <!-- Additional decorative elements for luxury effect -->
+  <path d="M100 40 Q110 50 100 60 Q90 50 100 40 Z" fill="#FFD700" opacity="0.8"/>
+  <path d="M100 140 Q110 150 100 160 Q90 150 100 140 Z" fill="#FFD700" opacity="0.8"/>
+</svg>
