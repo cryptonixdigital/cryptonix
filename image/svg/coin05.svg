@@ -1,0 +1,19 @@
+<svg width="200" height="200" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+  <!-- বেস কয়েন -->
+  <circle cx="100" cy="100" r="90" fill="url(#crownGradient)" stroke="#FFD700" stroke-width="3"/>
+  
+  <!-- ক্রাউন ডিজাইন -->
+  <path d="M60 110 L70 70 L100 90 L130 70 L140 110 Z" fill="#FFD700" stroke="#CFB53B" stroke-width="2"/>
+  <circle cx="100" cy="60" r="15" fill="#D4AF37" stroke="#FFD700" stroke-width="2"/>
+  
+  <!-- টেক্সট -->
+  <text x="100" y="140" font-family="Arial" font-size="20" font-weight="bold" fill="#FFE44D" text-anchor="middle">CRX</text>
+  <text x="100" y="160" font-family="Arial" font-size="12" fill="#FFD700" text-anchor="middle">CRYPTONIX</text>
+  
+  <defs>
+    <linearGradient id="crownGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#3d2e01"/>
+      <stop offset="100%" stop-color="#1a1400"/>
+    </linearGradient>
+  </defs>
+</svg>
