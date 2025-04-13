@@ -1,0 +1,19 @@
+<svg width="200" height="200" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+  <!-- শিল্ড বেস -->
+  <path d="M100 30 L160 70 L160 130 L100 170 L40 130 L40 70 Z" fill="url(#shieldGradient)" stroke="#FFD700" stroke-width="4"/>
+  
+  <!-- ইন্টার্নাল ডিজাইন -->
+  <path d="M100 50 L140 80 L140 120 L100 150 L60 120 L60 80 Z" fill="none" stroke="#FFD700" stroke-width="2"/>
+  <circle cx="100" cy="100" r="30" fill="#3d2e01" stroke="#FFD700" stroke-width="2"/>
+  
+  <!-- টেক্সট -->
+  <text x="100" y="100" font-family="Arial" font-size="24" font-weight="bold" fill="#FFD700" text-anchor="middle" dy="7">CRX</text>
+  <text x="100" y="130" font-family="Arial" font-size="12" fill="#FFE44D" text-anchor="middle">Cryptonix</text>
+  
+  <defs>
+    <linearGradient id="shieldGradient" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#D4AF37"/>
+      <stop offset="100%" stop-color="#3d2e01"/>
+    </linearGradient>
+  </defs>
+</svg>
