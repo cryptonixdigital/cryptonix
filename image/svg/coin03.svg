@@ -1,0 +1,34 @@
+<svg width="200" height="200" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+  <!-- Coin Base with Gold Gradient -->
+  <circle cx="100" cy="100" r="90" fill="url(#coinGradient)" stroke="#d8b42a" stroke-width="4"/>
+  
+  <!-- Inner Circle with Shadow -->
+  <circle cx="100" cy="100" r="70" fill="#3d300f" filter="url(#innerShadow)"/>
+  
+  <!-- Crypto Icon (Hexagon with "CRX") -->
+  <path d="M100 50 L125 65 L125 95 L100 110 L75 95 L75 65 Z" fill="none" stroke="#ffd700" stroke-width="3"/>
+  <text x="100" y="90" font-family="Arial" font-size="24" font-weight="bold" fill="#ffd700" text-anchor="middle">CRX</text>
+  
+  <!-- Main Text: Cryptonix -->
+  <text x="100" y="130" font-family="Arial" font-size="18" font-weight="bold" fill="#fff" text-anchor="middle">CRYPTONIX</text>
+  <text x="100" y="150" font-family="Arial" font-size="12" fill="#aaa" text-anchor="middle">BLOCKCHAIN</text>
+  
+  <!-- Shine Effect -->
+  <circle cx="140" cy="60" r="20" fill="white" opacity="0.1" filter="url(#blur)"/>
+  
+  <!-- Gradient & Effects -->
+  <defs>
+    <linearGradient id="coinGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#b7931a"/>
+      <stop offset="100%" stop-color="#573e0a"/>
+    </linearGradient>
+    
+    <filter id="innerShadow">
+      <feDropShadow dx="0" dy="0" stdDeviation="5" flood-color="#ffd700" flood-opacity="0.5"/>
+    </filter>
+    
+    <filter id="blur">
+      <feGaussianBlur stdDeviation="5"/>
+    </filter>
+  </defs>
+</svg>
