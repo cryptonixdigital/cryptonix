@@ -1,0 +1,19 @@
+<svg width="200" height="200" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+  <!-- মেইন হেক্সাগন -->
+  <path d="M100 30 L170 70 L170 130 L100 170 L30 130 L30 70 Z" fill="url(#hexGradient)" stroke="#FFD700" stroke-width="4"/>
+  
+  <!-- ইন্টার্নাল ডিজাইন -->
+  <path d="M100 60 L150 90 L150 110 L100 140 L50 110 L50 90 Z" fill="none" stroke="#FFDF00" stroke-width="3" stroke-dasharray="5,3"/>
+  
+  <!-- ডায়নামিক টেক্স্ট -->
+  <text x="100" y="100" font-family="Arial" font-size="28" font-weight="bold" fill="#FFD700" text-anchor="middle" style="text-shadow: 0 0 5px #3d2e01">CRX</text>
+  <text x="100" y="110" font-family="Arial" font-size="10" fill="#FFFFFF" text-anchor="middle">Cryptonix Coin</text>
+  
+  <defs>
+    <linearGradient id="hexGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#1a1400"/>
+      <stop offset="50%" stop-color="#3d2e01"/>
+      <stop offset="100%" stop-color="#1a1400"/>
+    </linearGradient>
+  </defs>
+</svg>
