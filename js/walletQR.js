@@ -7,15 +7,22 @@ auth.onAuthStateChanged(async (user) => {
   const snapshot = await get(ref(db, `users/${user.uid}`));
   if (snapshot.exists()) {
     const data = snapshot.val();
-    const walletUID = data.uid;
+    let walletUID = data.uid;
+
+    // Ensure the UID follows CRX format
+    if (!walletUID.startsWith('CRX')) {
+      walletUID = `CRX${walletUID}`;
+      // Optionally update it in Firebase
+      // await update(ref(db, `users/${user.uid}`), { uid: walletUID });
+    }
 
     // Show QR Code
     new QRCode(document.getElementById("walletQr"), {
       text: walletUID,
       width: 150,
       height: 150,
-      colorDark: "#fff",
-      colorLight: "#000",
+      colorDark: "#000",
+      colorLight: "#fff",
     });
 
     // Show UID and Copy Function
