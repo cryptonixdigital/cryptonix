@@ -6,6 +6,7 @@
   <title>Transfer Money - Digital Wallet</title>
   <link rel="stylesheet" href="css/transaction.css">
   <script src="https://unpkg.com/html5-qrcode" type="text/javascript"></script>
+  
   <style>
     body {
       font-family: sans-serif;
@@ -84,18 +85,22 @@
 
     .scanner-container {
       width: 90%;
-      max-width: 320px;
+      max-width: 500px;
       text-align: center;
     }
 
     #qr-reader {
       width: 100% !important;
       margin: 0 auto;
+      border: 2px solid white;
+      border-radius: 8px;
+      overflow: hidden;
     }
 
     .scan-instruction {
       color: white;
       margin-top: 1rem;
+      font-size: 1.1rem;
     }
 
     .scanner-footer {
@@ -126,6 +131,31 @@
 
     .upload-image:hover {
       background: #1976d2;
+    }
+
+    .back-button {
+      background: none;
+      border: none;
+      font-size: 1.5rem;
+      cursor: pointer;
+      margin-bottom: 1rem;
+      color: #333;
+    }
+
+    .camera-switch {
+      background: #4CAF50;
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 1rem;
+      transition: background 0.2s;
+      margin-top: 1rem;
+    }
+
+    .camera-switch:hover {
+      background: #3e8e41;
     }
   </style>
 </head>
@@ -174,7 +204,8 @@
   </div>
    
   <script>
-    document.querySelector('.paste-btn').addEventListener('click', async () => {
+    // Clipboard paste functionality
+    document.querySelector('.paste-btn').addEventListener('click', async function() {
       try {
         const text = await navigator.clipboard.readText();
         const input = document.getElementById('recipientUid');
@@ -186,9 +217,12 @@
         }
       } catch (err) {
         alert('Clipboard access denied. Please paste manually.');
+        const input = document.getElementById('recipientUid');
+        input.focus();
       }
     });
 
+    // QR Scanner Functionality
     document.querySelector('.scan-btn').addEventListener('click', () => {
       const scannerModal = document.createElement('div');
       scannerModal.className = 'scanner-modal';
@@ -196,8 +230,9 @@
         <div class="scanner-container">
           <div id="qr-reader"></div>
           <p class="scan-instruction">Place the QR code within the frame</p>
+          <button class="camera-switch">Switch Camera</button>
           <div class="scanner-footer">
-            <button class="upload-image">Scan from Image</button>
+            <button class="upload-image">Upload Image</button>
             <button class="cancel-scan">Cancel</button>
           </div>
         </div>
@@ -206,33 +241,37 @@
 
       const input = document.getElementById('recipientUid');
       const html5QrCode = new Html5Qrcode("qr-reader");
+      let currentCameraId = null;
+      let cameras = [];
 
-      // Start camera scanner
-      html5QrCode.start(
-        { facingMode: "environment" }, // Prefer rear camera
-        { 
-          fps: 10, 
-          qrbox: { width: 250, height: 250 } 
-        },
-        (decodedText) => {
-          if (decodedText.length === 38 && decodedText.startsWith("CRX")) {
-            input.value = decodedText;
-            stopScanner();
-          } else {
-            alert("Scanned QR code does not contain a valid CRX address.");
+      // Function to start camera
+      const startCamera = (cameraId) => {
+        return html5QrCode.start(
+          cameraId,
+          {
+            fps: 10,
+            qrbox: { width: 250, height: 250 }
+          },
+          (decodedText) => {
+            if (decodedText.length === 38 && decodedText.startsWith("CRX")) {
+              input.value = decodedText;
+              stopScanner();
+            } else {
+              alert("Scanned QR code does not contain a valid CRX address.");
+            }
+          },
+          (errorMessage) => {
+            console.log("QR Code scan error:", errorMessage);
           }
-        },
-        (errorMessage) => {
-          // Error handling, ignore if user canceled
-        }
-      ).catch(err => {
-        console.error("Unable to start scanner:", err);
-        alert("Unable to access camera. Please use image upload instead.");
-      });
+        ).then(() => {
+          currentCameraId = cameraId;
+        });
+      };
 
       // Function to stop and clean up scanner
       const stopScanner = () => {
         html5QrCode.stop().then(() => {
+          html5QrCode.clear();
           scannerModal.remove();
         }).catch(err => {
           console.error("Error stopping scanner:", err);
@@ -240,49 +279,84 @@
         });
       };
 
+      // Function to switch between cameras
+      const switchCamera = () => {
+        if (cameras.length < 2) {
+          alert("Only one camera available.");
+          return;
+        }
+        
+        const currentIndex = cameras.findIndex(cam => cam.id === currentCameraId);
+        const nextIndex = (currentIndex + 1) % cameras.length;
+        const nextCameraId = cameras[nextIndex].id;
+        
+        html5QrCode.stop().then(() => {
+          startCamera(nextCameraId).catch(err => {
+            console.error("Error starting next camera:", err);
+            alert("Failed to switch camera.");
+          });
+        });
+      };
+
+      // Get available cameras and start with rear camera if available
+      Html5Qrcode.getCameras().then(devices => {
+        if (devices && devices.length) {
+          cameras = devices;
+          
+          // Try to find rear camera first
+          const rearCamera = devices.find(device => 
+            device.label.toLowerCase().includes('back') || 
+            device.label.toLowerCase().includes('rear') ||
+            device.label.toLowerCase().includes('environment')
+          );
+          
+          // Fallback to front camera if rear not found
+          const defaultCamera = rearCamera || devices[0];
+          
+          startCamera(defaultCamera.id).catch(err => {
+            console.error("Unable to start QR scanner:", err);
+            alert("Unable to access camera. Please try the upload option.");
+          });
+          
+          // Add switch camera button handler
+          scannerModal.querySelector('.camera-switch').addEventListener('click', switchCamera);
+        } else {
+          alert("No cameras found. Please use the upload option.");
+        }
+      }).catch(err => {
+        console.error("Camera access error:", err);
+        alert("Unable to access camera. Please use the upload option.");
+      });
+
       // Cancel button handler
       scannerModal.querySelector('.cancel-scan').addEventListener('click', () => {
         stopScanner();
       });
 
-      // Image upload handler - Fixed version
+      // Image upload handler
       scannerModal.querySelector('.upload-image').addEventListener('click', () => {
         const fileInput = document.createElement("input");
         fileInput.type = "file";
         fileInput.accept = "image/*";
         fileInput.click();
 
-        fileInput.addEventListener("change", async () => {
+        fileInput.addEventListener("change", () => {
           if (fileInput.files.length === 0) return;
+          const file = fileInput.files[0];
           
-          try {
-            // First try with the newer scanFileV2 API
-            const decodedText = await html5QrCode.scanFileV2(fileInput.files[0], true);
-            
-            if (decodedText && decodedText.length === 38 && decodedText.startsWith("CRX")) {
-              input.value = decodedText;
-              stopScanner();
-            } else {
-              alert("The image does not contain a valid CRX address.");
-            }
-          } catch (error) {
-            console.error("Error scanning with scanFileV2:", error);
-            
-            // Fallback to older scanFile API if scanFileV2 fails
-            try {
-              const decodedText = await html5QrCode.scanFile(fileInput.files[0], true);
-              
-              if (decodedText && decodedText.length === 38 && decodedText.startsWith("CRX")) {
+          html5QrCode.scanFile(file, true)
+            .then(decodedText => {
+              if (decodedText.length === 38 && decodedText.startsWith("CRX")) {
                 input.value = decodedText;
-                stopScanner();
               } else {
                 alert("The image does not contain a valid CRX address.");
               }
-            } catch (fallbackError) {
-              console.error("Error scanning with scanFile:", fallbackError);
-              alert("Failed to scan the image. Please make sure it's a clear QR code image.");
-            }
-          }
+              stopScanner();
+            })
+            .catch(err => {
+              alert("Failed to scan the image. Please try another image.");
+              console.error("Error scanning file:", err);
+            });
         });
       });
     });
