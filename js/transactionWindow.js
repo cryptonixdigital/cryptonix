@@ -94,16 +94,13 @@ function showTransactionWindow(tx) {
 }
 
 function setupCloseButtons(modal) {
-  // মডাল বন্ধ করার ফাংশন
   const closeModal = () => {
     document.body.removeChild(modal);
   };
 
-  // ক্লোজ বাটন ইভেন্ট লিসেনার
   modal.querySelector('.close-modal').addEventListener('click', closeModal);
   modal.querySelector('.close-btn').addEventListener('click', closeModal);
 
-  // বাইরে ক্লিক করলে বন্ধ হওয়ার অপশন
   modal.addEventListener('click', (e) => {
     if (e.target === modal) {
       closeModal();
@@ -115,15 +112,15 @@ function createDetailRow(label, value, withCopy = false) {
   if (withCopy) {
     return `
       <div class="detail-row">
-  <span class="detail-label">${label}</span>
-  <span class="detail-value">${value}</span>
-  <button class="copy-btn" data-value="${value}" aria-label="Copy to clipboard">
-    <svg class="copy-icon" viewBox="0 0 24 24" width="16" height="16">
-      <path fill="currentColor" d="M19,21H8V7H19M19,5H8A2,2 0 0,0 6,7V21A2,2 0 0,0 8,23H19A2,2 0 0,0 21,21V7A2,2 0 0,0 19,5M16,1H4A2,2 0 0,0 2,3V17H4V3H16V1Z"/>
-    </svg>
-    Copy
-  </button>
-</div>
+        <span class="detail-label">${label}</span>
+        <span class="detail-value">${value}</span>
+        <button class="copy-btn" data-value="${value}" aria-label="Copy to clipboard">
+          <svg class="copy-icon" viewBox="0 0 24 24" width="16" height="16">
+            <path fill="currentColor" d="M19,21H8V7H19M19,5H8A2,2 0 0,0 6,7V21A2,2 0 0,0 8,23H19A2,2 0 0,0 21,21V7A2,2 0 0,0 19,5M16,1H4A2,2 0 0,0 2,3V17H4V3H16V1Z"/>
+          </svg>
+          Copy
+        </button>
+      </div>
     `;
   }
   return `
@@ -149,3 +146,34 @@ function setupCopyButtons(modal) {
     });
   });
 }
+
+// QR Code Image Upload Functionality
+document.addEventListener('DOMContentLoaded', () => {
+  const qrImageInput = document.createElement('input');
+  qrImageInput.type = 'file';
+  qrImageInput.id = 'qrImage';
+  qrImageInput.accept = 'image/*';
+  qrImageInput.style.display = 'none';
+  document.body.appendChild(qrImageInput);
+
+  qrImageInput.addEventListener('change', (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
+
+    const reader = new FileReader();
+    reader.onload = () => {
+      const qr = new Html5Qrcode("qr-reader");
+      qr.scanFile(file, true)
+        .then(decodedText => {
+          const inputField = document.getElementById('recipientUid');
+          if (inputField) {
+            inputField.value = decodedText;
+          }
+        })
+        .catch(err => {
+          alert("Could not decode image: " + err);
+        });
+    };
+    reader.readAsDataURL(file);
+  });
+});
