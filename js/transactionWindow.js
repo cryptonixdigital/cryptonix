@@ -11,6 +11,7 @@ export async function setupTransactionDetails() {
           senderId: this.dataset.sender,
           recipientId: this.dataset.recipient,
           amount: this.dataset.amount,
+          fee: this.dataset.fee || 0,
           timestamp: this.dataset.timestamp
         };
 
@@ -51,6 +52,7 @@ function showTransactionWindow(tx) {
   });
   
   const shortTxId = tx.id.length > 13 ? tx.id.substring(0, 13) + '...' : tx.id;
+  const totalAmount = parseFloat(tx.amount) + parseFloat(tx.fee);
   
   modal.innerHTML = `
     <div class="modal-content">
@@ -67,6 +69,8 @@ function showTransactionWindow(tx) {
         ${createDetailRow('Date:', formattedDate)}
         ${createDetailRow('Time:', formattedTime)}
         ${createDetailRow('Amount:', `CRX ${parseFloat(tx.amount).toFixed(2)}`)}
+        ${createDetailRow('Transaction Fee:', `CRX ${parseFloat(tx.fee).toFixed(2)} (1%)`)}
+        ${createDetailRow('Total Amount:', `CRX ${totalAmount.toFixed(2)}`)}
         
         <div class="user-detail-section">
           <div class="user-detail-box sender">
@@ -146,34 +150,3 @@ function setupCopyButtons(modal) {
     });
   });
 }
-
-// QR Code Image Upload Functionality
-document.addEventListener('DOMContentLoaded', () => {
-  const qrImageInput = document.createElement('input');
-  qrImageInput.type = 'file';
-  qrImageInput.id = 'qrImage';
-  qrImageInput.accept = 'image/*';
-  qrImageInput.style.display = 'none';
-  document.body.appendChild(qrImageInput);
-
-  qrImageInput.addEventListener('change', (e) => {
-    const file = e.target.files[0];
-    if (!file) return;
-
-    const reader = new FileReader();
-    reader.onload = () => {
-      const qr = new Html5Qrcode("qr-reader");
-      qr.scanFile(file, true)
-        .then(decodedText => {
-          const inputField = document.getElementById('recipientUid');
-          if (inputField) {
-            inputField.value = decodedText;
-          }
-        })
-        .catch(err => {
-          alert("Could not decode image: " + err);
-        });
-    };
-    reader.readAsDataURL(file);
-  });
-});
