@@ -204,162 +204,162 @@
   </div>
    
   <script>
-    // Clipboard paste functionality
+    // উন্নত পেস্ট ফাংশনালিটি
     document.querySelector('.paste-btn').addEventListener('click', async function() {
+      const inputField = document.getElementById('recipientUid');
       try {
         const text = await navigator.clipboard.readText();
-        const input = document.getElementById('recipientUid');
-        if (text.length === 38 && text.startsWith('CRX')) {
-          input.value = text;
+        if (validateCRXAddress(text)) {
+          inputField.value = text;
         } else {
-          alert('Please copy a valid 38-character CRX address.');
-          input.focus();
+          throw new Error('Invalid CRX format');
         }
       } catch (err) {
-        alert('Clipboard access denied. Please paste manually.');
-        const input = document.getElementById('recipientUid');
-        input.focus();
+        showAlert('Please paste (Ctrl+V) a valid CRX address manually');
+        inputField.focus();
       }
     });
 
-    // QR Scanner Functionality
-    document.querySelector('.scan-btn').addEventListener('click', () => {
-      const scannerModal = document.createElement('div');
-      scannerModal.className = 'scanner-modal';
-      scannerModal.innerHTML = `
-        <div class="scanner-container">
-          <div id="qr-reader"></div>
-          <p class="scan-instruction">Place the QR code within the frame</p>
-          <button class="camera-switch">Switch Camera</button>
-          <div class="scanner-footer">
-            <button class="upload-image">Upload Image</button>
-            <button class="cancel-scan">Cancel</button>
+    // QR স্ক্যানার ইমপ্লিমেন্টেশন (GitHub Pages অপ্টিমাইজড)
+    document.querySelector('.scan-btn').addEventListener('click', function() {
+      const modalHtml = `
+        <div class="scanner-modal">
+          <div class="scanner-container">
+            <div id="qr-reader" style="width:500px"></div>
+            <p class="scan-instruction">Place QR code in frame</p>
+            <div class="scanner-footer">
+              <button class="upload-image">Upload Image</button>
+              <button class="cancel-scan">Cancel</button>
+            </div>
           </div>
-        </div>
-      `;
-      document.body.appendChild(scannerModal);
-
-      const input = document.getElementById('recipientUid');
-      const html5QrCode = new Html5Qrcode("qr-reader");
-      let currentCameraId = null;
-      let cameras = [];
-
-      // Function to start camera
-      const startCamera = (cameraId) => {
-        return html5QrCode.start(
-          cameraId,
-          {
-            fps: 10,
-            qrbox: { width: 250, height: 250 }
-          },
-          (decodedText) => {
-            if (decodedText.length === 38 && decodedText.startsWith("CRX")) {
-              input.value = decodedText;
-              stopScanner();
-            } else {
-              alert("Scanned QR code does not contain a valid CRX address.");
-            }
-          },
-          (errorMessage) => {
-            console.log("QR Code scan error:", errorMessage);
-          }
-        ).then(() => {
-          currentCameraId = cameraId;
-        });
-      };
-
-      // Function to stop and clean up scanner
-      const stopScanner = () => {
-        html5QrCode.stop().then(() => {
-          html5QrCode.clear();
-          scannerModal.remove();
-        }).catch(err => {
-          console.error("Error stopping scanner:", err);
-          scannerModal.remove();
-        });
-      };
-
-      // Function to switch between cameras
-      const switchCamera = () => {
-        if (cameras.length < 2) {
-          alert("Only one camera available.");
-          return;
-        }
-        
-        const currentIndex = cameras.findIndex(cam => cam.id === currentCameraId);
-        const nextIndex = (currentIndex + 1) % cameras.length;
-        const nextCameraId = cameras[nextIndex].id;
-        
-        html5QrCode.stop().then(() => {
-          startCamera(nextCameraId).catch(err => {
-            console.error("Error starting next camera:", err);
-            alert("Failed to switch camera.");
-          });
-        });
-      };
-
-      // Get available cameras and start with rear camera if available
-      Html5Qrcode.getCameras().then(devices => {
-        if (devices && devices.length) {
-          cameras = devices;
-          
-          // Try to find rear camera first
-          const rearCamera = devices.find(device => 
-            device.label.toLowerCase().includes('back') || 
-            device.label.toLowerCase().includes('rear') ||
-            device.label.toLowerCase().includes('environment')
-          );
-          
-          // Fallback to front camera if rear not found
-          const defaultCamera = rearCamera || devices[0];
-          
-          startCamera(defaultCamera.id).catch(err => {
-            console.error("Unable to start QR scanner:", err);
-            alert("Unable to access camera. Please try the upload option.");
-          });
-          
-          // Add switch camera button handler
-          scannerModal.querySelector('.camera-switch').addEventListener('click', switchCamera);
-        } else {
-          alert("No cameras found. Please use the upload option.");
-        }
-      }).catch(err => {
-        console.error("Camera access error:", err);
-        alert("Unable to access camera. Please use the upload option.");
-      });
-
-      // Cancel button handler
-      scannerModal.querySelector('.cancel-scan').addEventListener('click', () => {
-        stopScanner();
-      });
-
-      // Image upload handler
-      scannerModal.querySelector('.upload-image').addEventListener('click', () => {
-        const fileInput = document.createElement("input");
-        fileInput.type = "file";
-        fileInput.accept = "image/*";
-        fileInput.click();
-
-        fileInput.addEventListener("change", () => {
-          if (fileInput.files.length === 0) return;
-          const file = fileInput.files[0];
-          
-          html5QrCode.scanFile(file, true)
-            .then(decodedText => {
-              if (decodedText.length === 38 && decodedText.startsWith("CRX")) {
-                input.value = decodedText;
-              } else {
-                alert("The image does not contain a valid CRX address.");
-              }
-              stopScanner();
-            })
-            .catch(err => {
-              alert("Failed to scan the image. Please try another image.");
-              console.error("Error scanning file:", err);
-            });
-        });
-      });
+        </div>`;
+      
+      const modal = createModal(modalHtml);
+      setupScanner(modal);
     });
+
+    // ভ্যালিডেশন ফাংশন
+    function validateCRXAddress(address) {
+      return address.length === 38 && address.startsWith("CRX");
+    }
+
+    // অ্যালার্ট প্রদর্শন
+    function showAlert(message) {
+      const alertBox = document.createElement('div');
+      alertBox.className = 'custom-alert';
+      alertBox.textContent = message;
+      document.body.appendChild(alertBox);
+      setTimeout(() => alertBox.remove(), 3000);
+    }
+
+    // মোডাল তৈরি
+    function createModal(html) {
+      const modal = document.createElement('div');
+      modal.innerHTML = html;
+      document.body.appendChild(modal);
+      return modal;
+    }
+
+    // স্ক্যানার সেটআপ (GitHub Pages কম্প্যাটিবল)
+    function setupScanner(modal) {
+      const inputField = document.getElementById('recipientUid');
+      const qrScanner = new Html5Qrcode("qr-reader");
+      let activeCamera = null;
+
+      // ক্যামেরা স্টার্ট
+      function startCamera(cameraId) {
+        return qrScanner.start(
+          cameraId,
+          { fps: 10, qrbox: 250 },
+          qrSuccessHandler,
+          qrErrorHandler
+        ).then(() => { activeCamera = cameraId; });
+      }
+
+      // স্ক্যান সাকসেস হ্যান্ডলার
+      function qrSuccessHandler(decodedText) {
+        if (validateCRXAddress(decodedText)) {
+          inputField.value = decodedText;
+          closeScanner();
+        } else {
+          showAlert('Invalid CRX address in QR');
+        }
+      }
+
+      // এরর হ্যান্ডলার
+      function qrErrorHandler(error) {
+        console.error("QR Error:", error);
+        showAlert('Scanning failed. Try image upload.');
+      }
+
+      // স্ক্যানার বন্ধ
+      function closeScanner() {
+        qrScanner.stop().finally(() => modal.remove());
+      }
+
+      // ইমেজ আপলোড হ্যান্ডলার (GitHub Pages ফ্রেন্ডলি)
+      modal.querySelector('.upload-image').addEventListener('click', () => {
+        const fileInput = document.createElement('input');
+        fileInput.type = 'file';
+        fileInput.accept = 'image/*';
+        fileInput.onchange = async (e) => {
+          const file = e.target.files[0];
+          if (!file) return;
+
+          try {
+            const decodedText = await qrScanner.scanFile(file, true);
+            if (validateCRXAddress(decodedText)) {
+              inputField.value = decodedText;
+              closeScanner();
+            } else {
+              showAlert('QR does not contain valid CRX address');
+            }
+          } catch (err) {
+            showAlert('Failed to scan image: ' + err.message);
+          }
+        };
+        fileInput.click();
+      });
+
+      // ক্যান্সেল বাটন
+      modal.querySelector('.cancel-scan').addEventListener('click', closeScanner);
+
+      // ক্যামেরা ইনিশিয়ালাইজেশন
+      Html5Qrcode.getCameras()
+        .then(devices => {
+          if (devices.length) {
+            const backCamera = devices.find(d => d.label.includes('back'));
+            return startCamera(backCamera?.id || devices[0].id);
+          }
+          showAlert('No camera found. Use image upload.');
+        })
+        .catch(err => {
+          console.error("Camera Error:", err);
+          showAlert('Camera access denied. Use image upload.');
+        });
+    }
+
+    // GitHub Pages-এর জন্য অতিরিক্ত স্টাইল
+    const style = document.createElement('style');
+    style.textContent = `
+      .custom-alert {
+        position: fixed;
+        top: 20px;
+        left: 50%;
+        transform: translateX(-50%);
+        background: #ff4444;
+        color: white;
+        padding: 10px 20px;
+        border-radius: 5px;
+        z-index: 1001;
+        animation: fadeInOut 3s;
+      }
+      @keyframes fadeInOut {
+        0%, 100% { opacity: 0; }
+        10%, 90% { opacity: 1; }
+      }
+    `;
+    document.head.appendChild(style);
   </script>
 
   <script type="module" src="js/wallet.js"></script>
