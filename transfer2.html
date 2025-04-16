@@ -6,6 +6,7 @@
   <title>Transfer Money - Digital Wallet</title>
   <link rel="stylesheet" href="css/transaction.css">
   <script src="https://unpkg.com/html5-qrcode" type="text/javascript"></script>
+  
   <style>
     body {
       font-family: sans-serif;
@@ -84,18 +85,22 @@
 
     .scanner-container {
       width: 90%;
-      max-width: 320px;
+      max-width: 500px;
       text-align: center;
     }
 
     #qr-reader {
       width: 100% !important;
       margin: 0 auto;
+      border: 2px solid white;
+      border-radius: 8px;
+      overflow: hidden;
     }
 
     .scan-instruction {
       color: white;
       margin-top: 1rem;
+      font-size: 1.1rem;
     }
 
     .scanner-footer {
@@ -127,11 +132,36 @@
     .upload-image:hover {
       background: #1976d2;
     }
+
+    .back-button {
+      background: none;
+      border: none;
+      font-size: 1.5rem;
+      cursor: pointer;
+      margin-bottom: 1rem;
+      color: #333;
+    }
+
+    .camera-switch {
+      background: #4CAF50;
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 1rem;
+      transition: background 0.2s;
+      margin-top: 1rem;
+    }
+
+    .camera-switch:hover {
+      background: #3e8e41;
+    }
   </style>
 </head>
 <body>
   <div class="container">
-  	<button class="back-button" onclick="window.history.back()">←</button>
+    <button class="back-button" onclick="window.history.back()">←</button>
     <header>
       <h1>Transfer Money</h1>
     </header>
@@ -139,25 +169,24 @@
     <main>
       <form id="transferForm">
         <div class="form-group">
-    <label for="recipientUid">Recipient Wallet Address</label>
-    <div class="input-with-icons">
-      <input type="text" id="recipientUid" placeholder="Enter CRX address (38 characters)" required>
-      <div class="input-icons">
-        <button type="button" class="icon-btn paste-btn" title="Paste from clipboard">
-          <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-            <path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/>
-            <rect x="8" y="2" width="8" height="4" rx="1"/>
-          </svg>
-        </button>
-        <button type="button" class="icon-btn scan-btn" title="Scan QR code">
-          <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-            <path d="M3 7V5a2 2 0 0 1 2-2h2m10 0h2a2 2 0 0 1 2 2v2m0 10v2a2 2 0 0 1-2 2h-2M7 21H5a2 2 0 0 1-2-2v-2"/>
-          </svg>
-        </button>
-      </div>
-    </div>
-  </div>
-
+          <label for="recipientUid">Recipient Wallet Address</label>
+          <div class="input-with-icons">
+            <input type="text" id="recipientUid" placeholder="Enter CRX address (38 characters)" required>
+            <div class="input-icons">
+              <button type="button" class="icon-btn paste-btn" title="Paste from clipboard">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                  <path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/>
+                  <rect x="8" y="2" width="8" height="4" rx="1"/>
+                </svg>
+              </button>
+              <button type="button" class="icon-btn scan-btn" title="Scan QR code">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                  <path d="M3 7V5a2 2 0 0 1 2-2h2m10 0h2a2 2 0 0 1 2 2v2m0 10v2a2 2 0 0 1-2 2h-2M7 21H5a2 2 0 0 1-2-2v-2"/>
+                </svg>
+              </button>
+            </div>
+          </div>
+        </div>
         
         <div class="form-group">
           <label for="amount">Amount (CRX)</label>
@@ -170,13 +199,13 @@
         </div>
         
         <button type="submit" class="btn" id="transferBtn">Transfer Now</button>
-        
       </form>
     </main>
   </div>
    
- <script>
-    document.querySelector('.paste-btn').addEventListener('click', async () => {
+  <script>
+    // Clipboard paste functionality
+    document.querySelector('.paste-btn').addEventListener('click', async function() {
       try {
         const text = await navigator.clipboard.readText();
         const input = document.getElementById('recipientUid');
@@ -188,9 +217,12 @@
         }
       } catch (err) {
         alert('Clipboard access denied. Please paste manually.');
+        const input = document.getElementById('recipientUid');
+        input.focus();
       }
     });
 
+    // QR Scanner Functionality
     document.querySelector('.scan-btn').addEventListener('click', () => {
       const scannerModal = document.createElement('div');
       scannerModal.className = 'scanner-modal';
@@ -198,8 +230,9 @@
         <div class="scanner-container">
           <div id="qr-reader"></div>
           <p class="scan-instruction">Place the QR code within the frame</p>
+          <button class="camera-switch">Switch Camera</button>
           <div class="scanner-footer">
-            <button class="upload-image">Scan from Image</button>
+            <button class="upload-image">Upload Image</button>
             <button class="cancel-scan">Cancel</button>
           </div>
         </div>
@@ -207,61 +240,129 @@
       document.body.appendChild(scannerModal);
 
       const input = document.getElementById('recipientUid');
-      const scanner = new Html5Qrcode("qr-reader");
+      const html5QrCode = new Html5Qrcode("qr-reader");
+      let currentCameraId = null;
+      let cameras = [];
 
-      scanner.start(
-        { facingMode: "environment" }, // Rear camera
-        { fps: 10, qrbox: 250 },
-        decodedText => {
-          if (decodedText.length === 38 && decodedText.startsWith("CRX")) {
-            input.value = decodedText;
-            scanner.stop().then(() => {
-              scanner.clear();
-              scannerModal.remove();
-            });
-          } else {
-            alert("Scanned QR code does not contain a valid CRX address.");
+      // Function to start camera
+      const startCamera = (cameraId) => {
+        return html5QrCode.start(
+          cameraId,
+          {
+            fps: 10,
+            qrbox: { width: 250, height: 250 }
+          },
+          (decodedText) => {
+            if (decodedText.length === 38 && decodedText.startsWith("CRX")) {
+              input.value = decodedText;
+              stopScanner();
+            } else {
+              alert("Scanned QR code does not contain a valid CRX address.");
+            }
+          },
+          (errorMessage) => {
+            console.log("QR Code scan error:", errorMessage);
           }
-        },
-        error => { }
-      );
+        ).then(() => {
+          currentCameraId = cameraId;
+        });
+      };
 
-      scannerModal.querySelector('.cancel-scan').addEventListener('click', () => {
-        scanner.stop().then(() => {
-          scanner.clear();
+      // Function to stop and clean up scanner
+      const stopScanner = () => {
+        html5QrCode.stop().then(() => {
+          html5QrCode.clear();
+          scannerModal.remove();
+        }).catch(err => {
+          console.error("Error stopping scanner:", err);
           scannerModal.remove();
         });
+      };
+
+      // Function to switch between cameras
+      const switchCamera = () => {
+        if (cameras.length < 2) {
+          alert("Only one camera available.");
+          return;
+        }
+        
+        const currentIndex = cameras.findIndex(cam => cam.id === currentCameraId);
+        const nextIndex = (currentIndex + 1) % cameras.length;
+        const nextCameraId = cameras[nextIndex].id;
+        
+        html5QrCode.stop().then(() => {
+          startCamera(nextCameraId).catch(err => {
+            console.error("Error starting next camera:", err);
+            alert("Failed to switch camera.");
+          });
+        });
+      };
+
+      // Get available cameras and start with rear camera if available
+      Html5Qrcode.getCameras().then(devices => {
+        if (devices && devices.length) {
+          cameras = devices;
+          
+          // Try to find rear camera first
+          const rearCamera = devices.find(device => 
+            device.label.toLowerCase().includes('back') || 
+            device.label.toLowerCase().includes('rear') ||
+            device.label.toLowerCase().includes('environment')
+          );
+          
+          // Fallback to front camera if rear not found
+          const defaultCamera = rearCamera || devices[0];
+          
+          startCamera(defaultCamera.id).catch(err => {
+            console.error("Unable to start QR scanner:", err);
+            alert("Unable to access camera. Please try the upload option.");
+          });
+          
+          // Add switch camera button handler
+          scannerModal.querySelector('.camera-switch').addEventListener('click', switchCamera);
+        } else {
+          alert("No cameras found. Please use the upload option.");
+        }
+      }).catch(err => {
+        console.error("Camera access error:", err);
+        alert("Unable to access camera. Please use the upload option.");
       });
 
+      // Cancel button handler
+      scannerModal.querySelector('.cancel-scan').addEventListener('click', () => {
+        stopScanner();
+      });
+
+      // Image upload handler
       scannerModal.querySelector('.upload-image').addEventListener('click', () => {
         const fileInput = document.createElement("input");
         fileInput.type = "file";
         fileInput.accept = "image/*";
         fileInput.click();
 
-        fileInput.addEventListener("change", async () => {
+        fileInput.addEventListener("change", () => {
           if (fileInput.files.length === 0) return;
           const file = fileInput.files[0];
-          try {
-            const result = await scanner.scanFile(file, true);
-            if (result.length === 38 && result.startsWith("CRX")) {
-              input.value = result;
-            } else {
-              alert("The image does not contain a valid CRX address.");
-            }
-            scannerModal.remove();
-          } catch (e) {
-            alert("Failed to scan the image.");
-          }
+          
+          html5QrCode.scanFile(file, true)
+            .then(decodedText => {
+              if (decodedText.length === 38 && decodedText.startsWith("CRX")) {
+                input.value = decodedText;
+              } else {
+                alert("The image does not contain a valid CRX address.");
+              }
+              stopScanner();
+            })
+            .catch(err => {
+              alert("Failed to scan the image. Please try another image.");
+              console.error("Error scanning file:", err);
+            });
         });
       });
     });
   </script>
 
-
-<!-- body এর শেষে স্ক্রিপ্ট হিসেবে যোগ করুন -->
-<script type="module" src="js/wallet.js"></script>
-<script type="module" src="js/transactionWindow.js"></script>
+  <script type="module" src="js/wallet.js"></script>
+  <script type="module" src="js/transactionWindow.js"></script>
 </body>
 </html>
-
