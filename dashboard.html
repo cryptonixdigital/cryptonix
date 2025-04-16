@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Digital Wallet</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link href="https://cdn.jsdelivr.net/npm/qrcodejs@1.0.0/qrcode.min.css" rel="stylesheet">
     <style>
         /* Wallet Container Styles */
         .wallet-container {
@@ -58,78 +59,78 @@
         }
         
         .wallet-amount {
-            font-size: 14px;
+            font-size: 28px;
             font-weight: bold;
             margin: 10px 0;
         }
         
         .wallet-currency {
-            font-size: 16px;
+            font-size: 20px;
+            opacity: 0.8;
+        }
+        
+        .wallet-info {
+            margin-top: 10px;
+            font-size: 14px;
+        }
+        
+        .wallet-info small {
+            display: block;
             opacity: 0.8;
         }
         
         /* Wallet Actions */
-.wallet-actions {
-    display: flex;
-    justify-content: space-between;
-    margin: 25px 0 35px;
-    gap: 15px;
-}
+        .wallet-actions {
+            display: flex;
+            justify-content: space-between;
+            margin: 25px 0 35px;
+            gap: 15px;
+        }
 
-.wallet-btn {
-    flex: 1;
-    padding: 15px;
-    border: none;
-    border-radius: 10px;
-    font-size: 16px;
-    font-weight: 600;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    transition: all 0.3s;
-    text-decoration: none;
-}
+        .wallet-btn {
+            flex: 1;
+            padding: 15px;
+            border: none;
+            border-radius: 10px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s;
+            text-decoration: none;
+        }
 
-.send-btn {
-    background-color: #f72585;
-    color: white;
-}
+        .send-btn {
+            background-color: #f72585;
+            color: white;
+        }
 
-.receive-btn {
-    background-color: #4cc9f0;
-    color: white;
-}
+        .receive-btn {
+            background-color: #4cc9f0;
+            color: white;
+        }
 
-.buy-btn {
-    background-color: #2ec4b6;
-    color: white;
-}
+        .buy-btn {
+            background-color: #2ec4b6;
+            color: white;
+        }
 
-.sell-btn {
-    background-color: #e71d36;
-    color: white;
-}
+        .sell-btn {
+            background-color: #e71d36;
+            color: white;
+        }
 
-.wallet-btn i {
-    margin-right: 8px;
-    font-size: 18px;
-}
+        .wallet-btn i {
+            margin-right: 8px;
+            font-size: 18px;
+        }
 
-.wallet-btn:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
-}
-
-.wallet-actions {
-    gap: 10px; /* গ্যাপ কমিয়ে দিন */
-}
-
-.wallet-btn {
-    padding: 12px 8px; /* প্যাডিং কমিয়ে দিন */
-    font-size: 14px; /* ফন্ট সাইজ ছোট করুন */
-    white-space: nowrap; /* টেক্সট যেন লাইন ব্রেক না হয় */
-}
+        .wallet-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
         
         /* Transaction History */
         .history-section {
@@ -178,7 +179,7 @@
             justify-content: flex-end;
             position: relative;
             overflow: hidden;
-            text-decoration: none;       /* আন্ডারলাইন বন্ধ */
+            text-decoration: none;
         }
         
         .app-card::before {
@@ -281,88 +282,22 @@
             color: #f72585;
         }
         
+        /* Loading Spinner */
+        .loading-spinner {
+            border: 4px solid rgba(0, 0, 0, 0.1);
+            border-radius: 50%;
+            border-top: 4px solid #4361ee;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin: 20px auto;
+        }
         
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
     </style>
-
- <style>
-    /* বেসিক স্টাইল রিসেট */
-    * {
-        margin: 0;
-        padding: 0;
-        box-sizing: border-box;
-    }
-    
-    /* মূল স্লাইড স্টাইল */
-    .slide {
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        opacity: 0;
-        transition: opacity 1s ease-in-out;
-        background-size: cover;
-        background-repeat: no-repeat;
-        background-position: center;
-        border-radius: 12px;
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    }
-    
-    .slide.active {
-        opacity: 1;
-    }
-    
-    /* কার্ড স্টাইল */
-    .history-section {
-        position: relative;
-        overflow: hidden;
-        border-radius: 12px;
-        background: rgba(255, 255, 255, 0.1);
-        backdrop-filter: blur(5px);
-        margin: 15px;
-        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-    }
-    
-    /* ব্যাকগ্রাউন্ড ইমেজ স্টাইল */
-    .card-background {
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background-size: cover;
-        background-position: center;
-        opacity: 0.3;
-        z-index: 0;
-        border-radius: 12px;
-    }
-    
-    /* সেকশন টাইটেল */
-    .section-title {
-        position: relative;
-        z-index: 1;
-        padding: 15px;
-        font-size: 18px;
-        font-weight: bold;
-        color: #ffffff;
-    }
-    
-    /* ইমেজ স্লাইডার কন্টেইনার */
-    .image-slider {
-        position: relative;
-        z-index: 1;
-        height: 180px;
-        margin: 0 15px 15px 15px;
-        border-radius: 12px;
-        overflow: hidden;
-    }
-    
-    /* ফন্ট অ্যাওয়েসম আইকন স্টাইল */
-    .fas {
-        margin-right: 10px;
-        color: #4a6bff;
-    }
-</style>
 </head>
 <body>
     <div class="wallet-container">
@@ -372,38 +307,42 @@
                 <img src="logo.svg" alt="Wallet Logo" class="wallet-logo">
                 <div class="wallet-balance">Cryptonix (CRX)</div>
             </div>
-            <div class="wallet-amount" id="balanceAmount">0.00<span class="wallet-currency">CRX</span></div>
+            <div class="wallet-amount">
+                <span id="balanceAmount">0.00</span>
+                <span class="wallet-currency">CRX</span>
+            </div>
+            <div class="wallet-info">
+                <small>Available Balance</small>
+                <small id="lastUpdated" data-time-updated>Last updated: Just now</small>
+            </div>
         </div>
         
         <!-- Wallet Actions -->
-<div class="wallet-actions">
-    <a href="transfer.html" class="wallet-btn send-btn">
-        <i class="fas fa-paper-plane"></i> Send
-    </a>
-    <a href="QRcode.html" class="wallet-btn receive-btn">
-        <i class="fas fa-wallet"></i> Receive
-    </a>
-    <a href="buy.html" class="wallet-btn buy-btn">
-        <i class="fas fa-shopping-cart"></i> Buy
-    </a>
-    <a href="sell.html" class="wallet-btn sell-btn">
-        <i class="fas fa-money-bill-wave"></i> Sell
-    </a>
-</div>
+        <div class="wallet-actions">
+            <a href="transfer.html" class="wallet-btn send-btn">
+                <i class="fas fa-paper-plane"></i> Send
+            </a>
+            <a href="QRcode.html" class="wallet-btn receive-btn">
+                <i class="fas fa-wallet"></i> Receive
+            </a>
+            <a href="buy.html" class="wallet-btn buy-btn">
+                <i class="fas fa-shopping-cart"></i> Buy
+            </a>
+            <a href="sell.html" class="wallet-btn sell-btn">
+                <i class="fas fa-money-bill-wave"></i> Sell
+            </a>
+        </div>
         
-        
+        <!-- Transaction History -->
         <div class="history-section">
-    <!-- Background Image -->
-    <div class="card-background"></div>
-    
-    <div class="section-title">
-        <i class="fas fa-exchange-alt"></i> Recently Update
-    </div>
-    
-    <div class="image-slider">
-        <!-- Slides will be added here by JavaScript -->
-    </div>
-</div>
+            <div class="section-title">
+                <i class="fas fa-exchange-alt"></i> Recent Transactions
+            </div>
+            
+            <div class="transaction-list" id="transactionsList">
+                <div class="loading-spinner"></div>
+            </div>
+        </div>
         
         <!-- Apps Section -->
         <div class="apps-section">
@@ -457,52 +396,8 @@
         </div>
     </div>
     
-
-<script>
-    // Image URLs for the slider
-    const sliderImages = [
-        'image/recent_update/image.png',
-        'image/recent_update/image2.png',
-        'image/recent_update/image3.png'
-    ];
-    
-    // Background image URL
-    const backgroundImageUrl = 'https://example.com/background.jpg';
-    
-    // Set background image
-    document.querySelector('.card-background').style.backgroundImage = `url('${backgroundImageUrl}')`;
-    
-    // Create slides
-    const sliderContainer = document.querySelector('.image-slider');
-    
-    sliderImages.forEach((imageUrl, index) => {
-        const slide = document.createElement('div');
-        slide.className = `slide ${index === 0 ? 'active' : ''}`;
-        slide.style.backgroundImage = `url('${imageUrl}')`;
-        sliderContainer.appendChild(slide);
-    });
-    
-    // Auto-slide functionality
-    let currentSlide = 0;
-    const slides = document.querySelectorAll('.slide');
-    
-    function showNextSlide() {
-        slides[currentSlide].classList.remove('active');
-        currentSlide = (currentSlide + 1) % slides.length;
-        slides[currentSlide].classList.add('active');
-    }
-    
-    // Change slide every 5 seconds
-    const slideInterval = setInterval(showNextSlide, 5000);
-    
-    // পেজ আনলোড হলে ইন্টারভাল ক্লিয়ার করার জন্য
-    window.addEventListener('beforeunload', () => {
-        clearInterval(slideInterval);
-    });
-</script>
-
-    
+    <script src="https://cdn.jsdelivr.net/npm/qrcodejs@1.0.0/qrcode.min.js"></script>
     <script type="module" src="js/wallet.js"></script>
-  <script type="module" src="js/ui.js"></script>
+    <script type="module" src="js/ui.js"></script>
 </body>
 </html>
