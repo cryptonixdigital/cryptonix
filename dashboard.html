@@ -7,7 +7,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link href="https://cdn.jsdelivr.net/npm/qrcodejs@1.0.0/qrcode.min.css" rel="stylesheet">
     <style>
-        /* Wallet Container Styles */
+       /* Wallet Container Styles */
         .wallet-container {
             max-width: 800px;
             margin: 0 auto;
@@ -59,39 +59,26 @@
         }
         
         .wallet-amount {
-            font-size: 28px;
+            font-size: 14px;
             font-weight: bold;
             margin: 10px 0;
         }
         
         .wallet-currency {
-            font-size: 20px;
-            opacity: 0.8;
-        }
-        
-        .wallet-info {
-            margin-top: 10px;
-            font-size: 14px;
-        }
-        
-        .wallet-info small {
-            display: block;
+            font-size: 16px;
             opacity: 0.8;
         }
         
         /* Wallet Actions */
-        /* Wallet Actions - Improved for mobile responsiveness */
 .wallet-actions {
     display: flex;
-    flex-wrap: wrap; /* Allow buttons to wrap on small screens */
     justify-content: space-between;
     margin: 25px 0 35px;
     gap: 15px;
 }
 
 .wallet-btn {
-    flex: 1 1 calc(50% - 15px); /* Each button takes half width minus gap */
-    min-width: 120px; /* Minimum width to prevent too small buttons */
+    flex: 1;
     padding: 15px;
     border: none;
     border-radius: 10px;
@@ -103,10 +90,8 @@
     justify-content: center;
     transition: all 0.3s;
     text-decoration: none;
-    box-sizing: border-box; /* Include padding in width calculation */
 }
 
-/* Color styles remain the same */
 .send-btn {
     background-color: #f72585;
     color: white;
@@ -129,7 +114,7 @@
 
 .wallet-btn i {
     margin-right: 8px;
-    font-size: 14px;
+    font-size: 18px;
 }
 
 .wallet-btn:hover {
@@ -137,27 +122,14 @@
     box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
 }
 
-/* Mobile-specific adjustments */
-@media (max-width: 480px) {
-    .wallet-actions {
-        gap: 10px; /* Reduce gap on small screens */
-    }
-    
-    .wallet-btn {
-        padding: 12px; /* Slightly smaller padding */
-        font-size: 14px; /* Slightly smaller font */
-    }
-    
-    .wallet-btn i {
-        font-size: 16px; /* Slightly smaller icons */
-    }
+.wallet-actions {
+    gap: 10px; /* গ্যাপ কমিয়ে দিন */
 }
 
-/* For very small screens - stack vertically */
-@media (max-width: 360px) {
-    .wallet-btn {
-        flex: 1 1 100%; /* Full width buttons */
-    }
+.wallet-btn {
+    padding: 12px 8px; /* প্যাডিং কমিয়ে দিন */
+    font-size: 14px; /* ফন্ট সাইজ ছোট করুন */
+    white-space: nowrap; /* টেক্সট যেন লাইন ব্রেক না হয় */
 }
         
         /* Transaction History */
@@ -207,7 +179,7 @@
             justify-content: flex-end;
             position: relative;
             overflow: hidden;
-            text-decoration: none;
+            text-decoration: none;       /* আন্ডারলাইন বন্ধ */
         }
         
         .app-card::before {
@@ -310,21 +282,87 @@
             color: #f72585;
         }
         
-        /* Loading Spinner */
-        .loading-spinner {
-            border: 4px solid rgba(0, 0, 0, 0.1);
-            border-radius: 50%;
-            border-top: 4px solid #4361ee;
-            width: 40px;
-            height: 40px;
-            animation: spin 1s linear infinite;
-            margin: 20px auto;
-        }
         
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
+    </style>
+
+ <style>
+    /* বেসিক স্টাইল রিসেট */
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
+    
+    /* মূল স্লাইড স্টাইল */
+    .slide {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        opacity: 0;
+        transition: opacity 1s ease-in-out;
+        background-size: cover;
+        background-repeat: no-repeat;
+        background-position: center;
+        border-radius: 12px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+    
+    .slide.active {
+        opacity: 1;
+    }
+    
+    /* কার্ড স্টাইল */
+    .history-section {
+        position: relative;
+        overflow: hidden;
+        border-radius: 12px;
+        background: rgba(255, 255, 255, 0.1);
+        backdrop-filter: blur(5px);
+        margin: 15px;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    }
+    
+    /* ব্যাকগ্রাউন্ড ইমেজ স্টাইল */
+    .card-background {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-size: cover;
+        background-position: center;
+        opacity: 0.3;
+        z-index: 0;
+        border-radius: 12px;
+    }
+    
+    /* সেকশন টাইটেল */
+    .section-title {
+        position: relative;
+        z-index: 1;
+        padding: 15px;
+        font-size: 18px;
+        font-weight: bold;
+        color: #ffffff;
+    }
+    
+    /* ইমেজ স্লাইডার কন্টেইনার */
+    .image-slider {
+        position: relative;
+        z-index: 1;
+        height: 180px;
+        margin: 0 15px 15px 15px;
+        border-radius: 12px;
+        overflow: hidden;
+    }
+    
+    /* ফন্ট অ্যাওয়েসম আইকন স্টাইল */
+    .fas {
+        margin-right: 10px;
+        color: #4a6bff;
+    }
         
         
     </style>
