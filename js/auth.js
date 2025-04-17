@@ -10,19 +10,51 @@ import {
   sendEmailVerification
 } from './firebase.js';
 
-// Generate 38-character wallet address (CRX + 35 characters)
+// Improved wallet address generator
 function generateWalletAddress(userId) {
-  const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-  let result = 'CRX'; // First 3 characters CRX
-  const seed = userId + Date.now().toString();
+  // Crypto-friendly character set (removed ambiguous characters)
+  const cryptoChars = 'ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz23456789';
+  const hexChars = '0123456789abcdef';
   
-  for (let i = 0; i < 35; i++) { // Remaining 35 characters
-    const mix = seed.charCodeAt(i % seed.length) + Math.floor(Math.random() * 100);
-    const randomIndex = mix % chars.length;
-    result += chars[randomIndex];
+  // Create hash from user ID for more uniqueness
+  let hash = 0;
+  for (let i = 0; i < userId.length; i++) {
+    const char = userId.charCodeAt(i);
+    hash = ((hash << 5) - hash) + char;
+    hash = hash & hash; // Convert to 32bit integer
   }
+  hash = Math.abs(hash);
+
+  // Generate 35-character mixed string
+  let addressPart = '';
+  const timestamp = Date.now().toString(36).slice(-8);
   
-  return result; // Total 38 characters (CRX + 35)
+  for (let i = 0; i < 35; i++) {
+    // Alternate between crypto chars and hex chars for better appearance
+    const charset = i % 2 === 0 ? cryptoChars : hexChars;
+    const seed = (hash + i + timestamp.charCodeAt(i % timestamp.length)) % charset.length;
+    addressPart += charset[seed];
+  }
+
+  // Ensure no trailing zeros or patterns
+  while (addressPart.endsWith('0') || 
+         addressPart.endsWith('000') || 
+         /(.)\1{3,}$/.test(addressPart)) {
+    addressPart = addressPart.slice(0, -1) + 
+                 cryptoChars[(hash + addressPart.length) % cryptoChars.length];
+  }
+
+  const walletAddress = 'CRX' + addressPart;
+  
+  // Final validation
+  if (walletAddress.length !== 38) {
+    console.error('Invalid address length:', walletAddress);
+    // Fallback generation
+    return 'CRX' + Array.from({length: 35}, (_, i) => 
+      cryptoChars[(hash + i) % cryptoChars.length]).join('');
+  }
+
+  return walletAddress;
 }
 
 // Registration function
@@ -66,7 +98,7 @@ document.getElementById('registerForm')?.addEventListener('submit', async (e) =>
       name,
       email,
       mpin,
-      uid: walletAddress, // 38-character address
+      uid: walletAddress,
       balance: 10.00,
       createdAt: new Date().toISOString(),
       emailVerified: false
