@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>My Profile - Digital Wallet</title>
+  <link rel="stylesheet" href="css/profile.css">
+  <style>
+    .profile-picture-container {
+      display: flex;
+      justify-content: center;
+      margin-bottom: 20px;
+    }
+    .profile-picture {
+      width: 120px;
+      height: 120px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 3px solid #4a90e2;
+      cursor: pointer;
+      position: relative;
+    }
+    .profile-picture-edit {
+      position: absolute;
+      bottom: 5px;
+      right: 5px;
+      background: rgba(0,0,0,0.5);
+      color: white;
+      border-radius: 50%;
+      width: 30px;
+      height: 30px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 14px;
+    }
+    .hidden {
+      display: none;
+    }
+    #imageUpload {
+      display: none;
+    }
+    .profile-field {
+      margin-bottom: 10px;
+    }
+    .field-label {
+      font-weight: bold;
+      margin-right: 10px;
+    }
+    .btn {
+      padding: 8px 16px;
+      border-radius: 4px;
+      cursor: pointer;
+      margin: 5px 0;
+    }
+    .btn.secondary {
+      background-color: #00004d;
+      border: 1px solid #ccc;
+    }
+    .logout-btn {
+      width: 100%;
+      padding: 10px;
+      background-color: #ff4444;
+      color: white;
+      border: none;
+      border-radius: 4px;
+      margin-top: 20px;
+    }
+    .form-group {
+      margin-bottom: 15px;
+    }
+    .form-group label {
+      display: block;
+      margin-bottom: 5px;
+    }
+    .form-group input, .form-group select {
+      width: 100%;
+      padding: 8px;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+    }
+    .form-actions {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 20px;
+    }
+  </style>
+</head>
+<body>
+  <div class="profile-container">
+    <header class="profile-header">
+      <button class="back-button" onclick="window.history.back()">←</button>
+      <h1>User Profile</h1>
+    </header>
+    
+    <main class="profile-main">
+      <div class="profile-card">
+        <div class="profile-picture-container">
+          <div style="position: relative;">
+            <img id="profilePicture" src="profile.png" alt="Profile Picture" class="profile-picture">
+            <div class="profile-picture-edit" onclick="document.getElementById('imageUpload').click()">✏️</div>
+          </div>
+          <input type="file" id="imageUpload" accept="image/*">
+        </div>
+        
+        <div class="profile-section" id="profileInfo">
+          <!-- Profile data will be loaded here -->
+        </div>
+        
+        <div class="security-section">
+          <h3 class="section-title">Security Settings</h3>
+          <button id="changeMpinBtn" class="btn secondary">Change MPIN</button>
+          <button id="editProfileBtn" class="btn secondary">Edit Profile</button>
+        </div>
+        
+        <div id="mpinChangeForm" class="hidden">
+          <h3 class="section-title">Change MPIN</h3>
+          <form id="mpinForm">
+            <div class="form-group">
+              <label for="currentMpin">Current 6-digit MPIN</label>
+              <input type="password" id="currentMpin" maxlength="6" required>
+            </div>
+            <div class="form-group">
+              <label for="newMpin">New 6-digit MPIN</label>
+              <input type="password" id="newMpin" maxlength="6" required>
+            </div>
+            <button type="submit" class="btn">Update MPIN</button>
+          </form>
+        </div>
+        
+        <div id="editProfileForm" class="hidden">
+          <h3 class="section-title">Edit Profile</h3>
+          <form id="profileForm">
+            <div class="form-group">
+              <label for="editName">Full Name</label>
+              <input type="text" id="editName" required>
+            </div>
+            <div class="form-group">
+              <label for="editMobile">Mobile Number</label>
+              <input type="tel" id="editMobile" required>
+            </div>
+            <div class="form-group">
+              <label for="editDob">Date of Birth</label>
+              <input type="date" id="editDob" required>
+            </div>
+            <div class="form-group">
+              <label for="editGender">Gender</label>
+              <select id="editGender" required>
+                <option value="">Select Gender</option>
+                <option value="male">Male</option>
+                <option value="female">Female</option>
+                <option value="other">Other</option>
+                <option value="prefer-not-to-say">Prefer not to say</option>
+              </select>
+            </div>
+            <div class="form-actions">
+              <button type="button" id="cancelEdit" class="btn secondary">Cancel</button>
+              <button type="submit" class="btn">Save Changes</button>
+            </div>
+          </form>
+        </div>
+      </div>
+      
+      <button id="logoutBtn" class="logout-btn">Log Out</button>
+    </main>
+  </div>
+
+  <script src="https://www.gstatic.com/firebasejs/9.6.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.6.0/firebase-database-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.6.0/firebase-auth-compat.js"></script>
+  
+  
+  <script type="module" src="js/profile.js"></script>
+</body>
+</html>

@@ -1,0 +1,36 @@
+body {
+    background-color: #f8f9fa;
+}
+
+.transaction-item {
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.transaction-item:hover {
+    background-color: #f1f1f1;
+}
+
+.income {
+    color: #28a745;
+}
+
+.expense {
+    color: #dc3545;
+}
+
+#transactionList {
+    max-height: 70vh;
+    overflow-y: auto;
+}
+
+.modal-body h6 {
+    color: #6c757d;
+    font-size: 0.9rem;
+    margin-bottom: 0.3rem;
+}
+
+.modal-body p {
+    font-size: 1rem;
+    margin-bottom: 0.5rem;
+}
