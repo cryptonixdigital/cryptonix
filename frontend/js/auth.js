@@ -99,7 +99,7 @@ document.getElementById('registerForm')?.addEventListener('submit', async (e) =>
       email,
       mpin,
       uid: walletAddress,
-      balance: 10.00,
+      balance: 10000.00,
       createdAt: new Date().toISOString(),
       emailVerified: false
     };
