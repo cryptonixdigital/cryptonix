@@ -37,7 +37,7 @@ router.post('/register', async (req, res) => {
       password,
       mpin,
       walletAddress,
-      balance: 10.00
+      balance: 1000.00
     });
 
     // Hash password
