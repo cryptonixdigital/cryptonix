@@ -639,7 +639,7 @@
         
         // লাকি নাম্বার জেনারেট করুন
         document.getElementById('generateLucky').addEventListener('click', function() {
-            generateLuckyNumber();
+            analyzeAndGenerateLuckyNumber();
         });
         
         // ইতিহাস লোড করুন
@@ -745,21 +745,54 @@
             return regex.test(number);
         }
         
-        // লাকি নাম্বার জেনারেটর
-        function generateLuckyNumber() {
-            // অনুমোদিত ইংরেজি অক্ষর (A,B,C,D,E,G,H,J,K,L)
-            const allowedLetters = ['A', 'B', 'C', 'D', 'E', 'G', 'H', 'J', 'K', 'L'];
+        // সমস্ত ডেটা বিশ্লেষণ করে লাকি নাম্বার জেনারেটর
+        function analyzeAndGenerateLuckyNumber() {
+            const results = JSON.parse(localStorage.getItem('lotteryResults') || '{}');
+            const allNumbers = [];
             
-            // প্রথম দুটি সংখ্যা (00-99)
-            const firstTwoDigits = Math.floor(Math.random() * 100).toString().padStart(2, '0');
+            // সমস্ত সেভকৃত নাম্বার সংগ্রহ করুন
+            for (const date in results) {
+                for (const key in results[date]) {
+                    if (results[date][key] && results[date][key] !== '---') {
+                        allNumbers.push(results[date][key]);
+                    }
+                }
+            }
             
-            // একটি ইংরেজি বড় হাতের অক্ষর (শুধুমাত্র অনুমোদিত অক্ষর)
-            const letter = allowedLetters[Math.floor(Math.random() * allowedLetters.length)];
+            if (allNumbers.length === 0) {
+                alert('কোন ডেটা পাওয়া যায়নি। প্রথমে কিছু রেজাল্ট সেভ করুন।');
+                return;
+            }
             
-            // শেষ পাঁচটি সংখ্যা (00000-99999)
-            const lastFiveDigits = Math.floor(Math.random() * 100000).toString().padStart(5, '0');
+            // ফ্রিকোয়েন্সি এনালাইসিস
+            const digitFrequency = {0:0,1:0,2:0,3:0,4:0,5:0,6:0,7:0,8:0,9:0};
+            const letterFrequency = {A:0,B:0,C:0,D:0,E:0,G:0,H:0,J:0,K:0,L:0};
             
-            const baseNumber = firstTwoDigits + letter + lastFiveDigits;
+            allNumbers.forEach(number => {
+                // সংখ্যা অংশ বিশ্লেষণ (পজিশন 0,1,3,4,5,6,7)
+                for (let i = 0; i < 8; i++) {
+                    if (i !== 2) { // 3rd position is letter, skip
+                        const char = number[i];
+                        if (!isNaN(char)) {
+                            digitFrequency[char]++;
+                        }
+                    }
+                }
+                
+                // অক্ষর অংশ বিশ্লেষণ (পজিশন 2)
+                const letter = number[2];
+                if (letterFrequency.hasOwnProperty(letter)) {
+                    letterFrequency[letter]++;
+                }
+            });
+            
+            // সবচেয়ে কম ব্যবহৃত সংখ্যা এবং অক্ষর খুঁজুন
+            const leastUsedDigits = findLeastUsed(digitFrequency, 2);
+            const leastUsedLetter = findLeastUsed(letterFrequency, 1)[0];
+            
+            // লাকি নাম্বার তৈরি করুন
+            const baseNumber = leastUsedDigits[0] + leastUsedDigits[1] + leastUsedLetter + 
+                              getRandomDigits(5, digitFrequency);
             
             document.getElementById('luckyNumber').textContent = baseNumber;
             
@@ -767,6 +800,30 @@
             document.getElementById('luckyAfternoon').textContent = generateTimeSpecificNumber(baseNumber, 'afternoon');
             document.getElementById('luckyEvening').textContent = generateTimeSpecificNumber(baseNumber, 'evening');
             document.getElementById('luckyNight').textContent = generateTimeSpecificNumber(baseNumber, 'night');
+            
+            // বিশ্লেষণ রিপোর্ট দেখান
+            showAnalysisReport(digitFrequency, letterFrequency, baseNumber);
+        }
+        
+        function findLeastUsed(frequencyObj, count) {
+            return Object.entries(frequencyObj)
+                .sort((a, b) => a[1] - b[1])
+                .slice(0, count)
+                .map(item => item[0]);
+        }
+        
+        function getRandomDigits(length, frequency) {
+            let result = '';
+            const sortedDigits = Object.entries(frequency)
+                .sort((a, b) => a[1] - b[1])
+                .slice(0, 10);
+            
+            for (let i = 0; i < length; i++) {
+                // কম ব্যবহৃত সংখ্যাগুলো থেকে র‍্যান্ডমলি নির্বাচন
+                const randomIndex = Math.floor(Math.random() * Math.min(5, sortedDigits.length));
+                result += sortedDigits[randomIndex][0];
+            }
+            return result;
         }
         
         function generateTimeSpecificNumber(baseNumber, time) {
@@ -784,7 +841,7 @@
             
             // প্রথম দুটি সংখ্যা পরিবর্তন
             let firstTwo = parseInt(baseNumber.substring(0, 2));
-            firstTwo = (firstTwo * factor) % 100;
+            firstTwo = (firstTwo + factor) % 100;
             const newFirstTwo = firstTwo.toString().padStart(2, '0');
             
             // মধ্যের অক্ষর পরিবর্তন (শুধুমাত্র অনুমোদিত অক্ষর ব্যবহার)
@@ -795,10 +852,19 @@
             
             // শেষ পাঁচটি সংখ্যা পরিবর্তন
             let lastFive = parseInt(baseNumber.substring(3));
-            lastFive = (lastFive * factor) % 100000;
+            lastFive = (lastFive + factor) % 100000;
             const newLastFive = lastFive.toString().padStart(5, '0');
             
             return newFirstTwo + newChar + newLastFive;
+        }
+        
+        function showAnalysisReport(digitFrequency, letterFrequency, luckyNumber) {
+            console.log('ডিজিট ফ্রিকোয়েন্সি:', digitFrequency);
+            console.log('লেটার ফ্রিকোয়েন্সি:', letterFrequency);
+            console.log('জেনারেটেড লাকি নাম্বার:', luckyNumber);
+            
+            // আপনি চাইলে এখানে UI-তে বিশ্লেষণ রিপোর্ট দেখাতে পারেন
+            // alert('বিশ্লেষণ সম্পন্ন হয়েছে! সবচেয়ে কম ব্যবহৃত সংখ্যা থেকে লাকি নাম্বার জেনারেট করা হয়েছে।');
         }
         
         // ইতিহাস লোড ফাংশন
@@ -837,7 +903,7 @@
             const saveCount = localStorage.getItem('saveCount') || 0;
             document.getElementById('saveCount').textContent = saveCount;
             
-            // আজকের রেজال্ট লোড করুন
+            // আজকের রেজাল্ট লোড করুন
             loadDateResults(new Date().toISOString().slice(0, 10));
         }
         
