@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ডিয়ার লটারি - এডিট/ডিলিট功能 সহ</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body style="display: none;">
+    <div class="container">
+        <div class="header">
+            <h1>ডিয়ার লটারি - এডিট/ডিলিট功能 সহ</h1>
+            <p class="description">প্রতিদিন ৬টি গেম - 1CR (৩টি) এবং 5CR (৩টি)</p>
+        </div>
+        
+        <div class="tabs">
+            <button class="tab active" data-tab="entry">রেজাল্ট</button>
+            <button class="tab" data-tab="prediction">লাকি নাম্বার</button>
+            <button class="tab" data-tab="history">ইতিহাস</button>
+            <button class="tab" data-tab="manage">ডেটা ম্যানেজ</button>
+        </div>
+        
+        <div class="tab-content active" id="entry">
+            <h2>রেজাল্ট এন্ট্রি</h2>
+            
+            <div class="game-type-selector">
+                <button class="game-type-btn active" data-game-type="1cr">1CR গেম</button>
+                <button class="game-type-btn" data-game-type="5cr">5CR गेम</button>
+            </div>
+            
+            <div class="input-group">
+                <label for="resultDate">তারিখ</label>
+                <input type="date" id="resultDate">
+            </div>
+            
+            <div class="input-group">
+                <label for="drawTime">সময় নির্বাচন করুন</label>
+                <select id="drawTime">
+                    <option value="afternoon">দুপুর ১টা</option>
+                    <option value="evening">সন্ধ্যা ৬টা</option>
+                    <option value="night">রাত ৮টা</option>
+                </select>
+            </div>
+            
+            <div class="input-group">
+                <label for="lotteryNumber">জয়ী নাম্বার</label>
+                <input type="text" id="lotteryNumber" placeholder="65G93018">
+            </div>
+            
+            <button class="btn-success" id="saveResult">সেভ করুন</button>
+            
+            <div class="save-counter">মোট সেভ: <span id="saveCount">0</span></div>
+            
+            <div class="result">
+                <h3 id="selectedDateResult">আজকের রেজাল্ট</h3>
+                
+                <div class="game-results">
+                    <div class="game-result">
+                        <h3>1CR - দুপুর ১টা</h3>
+                        <div class="lottery-number" id="1crAfternoonResult">---</div>
+                        <div class="action-buttons">
+                            <button class="action-btn edit-btn" data-game-type="1cr" data-time="afternoon">এডিট</button>
+                            <button class="action-btn delete-btn" data-game-type="1cr" data-time="afternoon">ডিলিট</button>
+                        </div>
+                    </div>
+                    <div class="game-result">
+                        <h3>1CR - সন্ধ্যা ৬টা</h3>
+                        <div class="lottery-number" id="1crEveningResult">---</div>
+                        <div class="action-buttons">
+                            <button class="action-btn edit-btn" data-game-type="1cr" data-time="evening">এডিট</button>
+                            <button class="action-btn delete-btn" data-game-type="1cr" data-time="evening">ডিলিট</button>
+                        </div>
+                    </div>
+                    <div class="game-result">
+                        <h3>1CR - রাত ৮টা</h3>
+                        <div class="lottery-number" id="1crNightResult">---</div>
+                        <div class="action-buttons">
+                            <button class="action-btn edit-btn" data-game-type="1cr" data-time="night">এডিট</button>
+                            <button class="action-btn delete-btn" data-game-type="1cr" data-time="night">ডিলিট</button>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="game-results">
+                    <div class="game-result">
+                        <h3>5CR - দুপুর ১টা</h3>
+                        <div class="lottery-number" id="5crAfternoonResult">---</div>
+                        <div class="action-buttons">
+                            <button class="action-btn edit-btn" data-game-type="5cr" data-time="afternoon">এডিট</button>
+                            <button class="action-btn delete-btn" data-game-type="5cr" data-time="afternoon">डिलিট</button>
+                        </div>
+                    </div>
+                    <div class="game-result">
+                        <h3>5CR - সন্ধ্যা ৬টা</h3>
+                        <div class="lottery-number" id="5crEveningResult">---</div>
+                        <div class="action-buttons">
+                            <button class="action-btn edit-btn" data-game-type="5cr" data-time="evening">এডিট</button>
+                            <button class="action-btn delete-btn" data-game-type="5cr" data-time="evening">डिलিট</button>
+                        </div>
+                    </div>
+                    <div class="game-result">
+                        <h3>5CR - রাত ৮টা</h3>
+                        <div class="lottery-number" id="5crNightResult">---</div>
+                        <div class="action-buttons">
+                            <button class="action-btn edit-btn" data-game-type="5cr" data-time="night">এডিট</button>
+                            <button class="action-btn delete-btn" data-game-type="5cr" data-time="night">डिलিট</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="tab-content" id="prediction">
+            <h2>লাকি নাম্বার</h2>
+            
+            <div class="game-type-selector">
+                <button class="game-type-btn active" data-game-type="1cr">1CR গেম</button>
+                <button class="game-type-btn" data-game-type="5cr">5CR गेम</button>
+            </div>
+            
+            <button id="generateLucky">লাকি নাম্বার তৈরি করুন</button>
+            
+            <div class="result">
+                <h3 id="luckyNumberTitle">1CR গেমের লাকি নাম্বার</h3>
+                <div class="lottery-number" id="luckyNumber">---</div>
+                
+                <div class="game-results">
+                    <div class="game-result">
+                        <h3>দুপুর ১টার জন্য</h3>
+                        <div class="lottery-number" id="luckyAfternoon">---</div>
+                    </div>
+                    <div class="game-result">
+                        <h3>সন্ধ্যা ৬টার জন্য</h3>
+                        <div class="lottery-number" id="luckyEvening">---</div>
+                    </div>
+                    <div class="game-result">
+                        <h3>রাত ৮টার জন্য</h3>
+                        <div class="lottery-number" id="luckyNight">---</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="tab-content" id="history">
+            <h2>রেজাল্ট ইতিহাস</h2>
+            
+            <div class="game-type-selector">
+                <button class="game-type-btn active" data-game-type="1cr">1CR গেম</button>
+                <button class="game-type-btn" data-game-type="5cr">5CR गेम</button>
+            </div>
+            
+            <div class="input-group">
+                <label for="historyDate">তারিখ নির্বাচন</label>
+                <input type="date" id="historyDate">
+            </div>
+            
+            <button id="loadHistory">ইতিহাস দেখুন</button>
+            
+            <div class="result">
+                <h3 id="historyDateTitle">1CR গেমের ইতিহাস</h3>
+                <div id="historyResults"></div>
+            </div>
+        </div>
+        
+        <div class="tab-content" id="manage">
+            <h2>ডেটা ম্যানেজমেন্ট</h2>
+            
+            <div class="result">
+                <h3>সমস্ত ডেটা ম্যানেজ করুন</h3>
+                
+                <div class="input-group">
+                    <label for="manageDate">তারিখ নির্বাচন করুন</label>
+                    <input type="date" id="manageDate">
+                </div>
+                
+                <button id="loadManageData">ডেটা লোড করুন</button>
+                
+                <div id="manageResults" style="margin-top: 20px;"></div>
+                
+                <div style="margin-top: 30px;">
+                    <h3>ডেটা রিসেট</h3>
+                    <p style="color: #b21f1f; margin: 15px 0;">সতর্কতা: এই অপারেশনটি বিপরীতযোগ্য নয়। সমস্ত ডেটা মুছে ফেলা হবে।</p>
+                    <button class="btn-danger" id="resetAllData">সমস্ত ডেটা রিসেট করুন</button>
+                </div>
+            </div>
+        </div>
+        
+        <div class="footer">
+            <p>ভাগ্য আপনার সহায় হোক! দয়া করে জুয়াখেলার প্রতি দায়িত্বশীল আচরণ করুন।</p>
+        </div>
+    </div>
+
+    <!-- কনফার্মেশন মোডাল -->
+    <div class="confirmation-modal" id="confirmationModal">
+        <div class="modal-content">
+            <h3 id="modalTitle">আপনি কি নিশ্চিত?</h3>
+            <p id="modalMessage">এই কাজটিUndo করা যাবে না।</p>
+            <div class="modal-buttons">
+                <button class="btn-danger" id="modalConfirm">হ্যাঁ</button>
+                <button id="modalCancel">বাতিল করুন</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Firebase App and Auth -->
+    <script type="module" src="script.js"></script>
+</body>
+</html>

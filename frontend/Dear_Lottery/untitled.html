@@ -1,0 +1,750 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ডিয়ার লটারি - 1CR ও 5CR গেম</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #1a2a6c, #b21f1f, #fdbb2d);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            padding: 15px;
+        }
+        
+        .container {
+            background-color: rgba(255, 255, 255, 0.95);
+            border-radius: 15px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+            width: 100%;
+            max-width: 900px;
+            padding: 20px;
+            text-align: center;
+            margin-top: 20px;
+            margin-bottom: 20px;
+        }
+        
+        .header {
+            margin-bottom: 20px;
+        }
+        
+        h1 {
+            color: #b21f1f;
+            margin-bottom: 12px;
+            font-size: 24px;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
+        }
+        
+        .description {
+            color: #444;
+            margin-bottom: 8px;
+            line-height: 1.5;
+            font-size: 14px;
+        }
+        
+        .tabs {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 20px;
+            border-bottom: 2px solid #eee;
+            padding-bottom: 8px;
+            flex-wrap: wrap;
+            overflow-x: auto;
+            white-space: nowrap;
+            -webkit-overflow-scrolling: touch;
+        }
+        
+        .tab {
+            padding: 10px 15px;
+            background: #e0e0e0;
+            border: none;
+            border-radius: 6px 6px 0 0;
+            margin: 0 3px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 600;
+            transition: all 0.3s;
+            min-width: 100px;
+            color: #333;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        
+        .tab.active {
+            background: linear-gradient(to right, #1a2a6c, #b21f1f);
+            color: white;
+            box-shadow: 0 3px 6px rgba(0,0,0,0.2);
+        }
+        
+        .tab:hover {
+            background: #d0d0d0;
+            transform: translateY(-2px);
+        }
+        
+        .tab-content {
+            display: none;
+            padding: 15px;
+        }
+        
+        .tab-content.active {
+            display: block;
+        }
+        
+        .game-type-selector {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 20px;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+        
+        .game-type-btn {
+            padding: 12px 20px;
+            background: #e0e0e0;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: 600;
+            transition: all 0.3s;
+            color: #333;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        
+        .game-type-btn.active {
+            background: linear-gradient(to right, #1a2a6c, #b21f1f);
+            color: white;
+            box-shadow: 0 3px 6px rgba(0,0,0,0.2);
+        }
+        
+        .input-group {
+            margin-bottom: 15px;
+            text-align: left;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 6px;
+            color: #333;
+            font-weight: 500;
+            font-size: 14px;
+        }
+        
+        input, select {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #ddd;
+            border-radius: 6px;
+            font-size: 16px;
+            transition: border-color 0.3s;
+        }
+        
+        input:focus, select:focus {
+            border-color: #6a11cb;
+            outline: none;
+        }
+        
+        button {
+            background: linear-gradient(to right, #1a2a6c, #b21f1f);
+            color: white;
+            border: none;
+            padding: 14px 20px;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: 700;
+            transition: transform 0.3s, box-shadow 0.3s;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+            margin: 8px 3px;
+            width: 100%;
+        }
+        
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
+        }
+        
+        button:active {
+            transform: translateY(0);
+        }
+        
+        .btn-success {
+            background: linear-gradient(to right, #1a2a6c, #00b09b);
+        }
+        
+        .result {
+            margin-top: 20px;
+            padding: 20px;
+            background: linear-gradient(135deg, #f8f9fa, #e9ecef);
+            border-radius: 12px;
+            box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.08);
+        }
+        
+        .result h3 {
+            color: #1a2a6c;
+            margin-bottom: 15px;
+            font-size: 18px;
+        }
+        
+        .lottery-number {
+            font-size: 24px;
+            font-weight: 800;
+            color: #1a2a6c;
+            letter-spacing: 3px;
+            background: linear-gradient(135deg, #fdbb2d, #b21f1f);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
+            padding: 12px;
+            border: 2px dashed #b21f1f;
+            border-radius: 8px;
+            margin: 15px 0;
+            word-break: break-all;
+        }
+        
+        .game-results {
+            display: flex;
+            flex-direction: column;
+            margin: 15px 0;
+        }
+        
+        .game-result {
+            margin: 8px 0;
+            padding: 15px;
+            background: linear-gradient(135deg, #f8f9fa, #e9ecef);
+            border-radius: 10px;
+            box-shadow: 0 3px 8px rgba(0, 0, 0, 0.08);
+        }
+        
+        .game-result h3 {
+            color: #1a2a6c;
+            margin-bottom: 10px;
+            font-size: 16px;
+        }
+        
+        .save-counter {
+            background: #fdbb2d;
+            color: #1a2a6c;
+            padding: 8px 12px;
+            border-radius: 15px;
+            font-weight: bold;
+            margin-top: 12px;
+            display: inline-block;
+            font-size: 14px;
+        }
+        
+        .footer {
+            margin-top: 20px;
+            color: #666;
+            font-size: 14px;
+            line-height: 1.4;
+        }
+        
+        @media (min-width: 768px) {
+            .container {
+                padding: 30px;
+            }
+            
+            h1 {
+                font-size: 32px;
+                margin-bottom: 15px;
+            }
+            
+            .description {
+                font-size: 18px;
+                margin-bottom: 10px;
+            }
+            
+            .tab {
+                padding: 12px 25px;
+                font-size: 16px;
+                margin: 0 5px;
+                min-width: auto;
+            }
+            
+            .game-results {
+                flex-direction: row;
+                justify-content: space-between;
+                flex-wrap: wrap;
+            }
+            
+            .game-result {
+                flex: 1;
+                min-width: 220px;
+                margin: 10px;
+            }
+            
+            .lottery-number {
+                font-size: 32px;
+                letter-spacing: 4px;
+            }
+        }
+        
+        @media (max-width: 360px) {
+            .tab {
+                padding: 8px 12px;
+                font-size: 12px;
+                min-width: 80px;
+            }
+            
+            .game-type-btn {
+                padding: 10px 15px;
+                font-size: 14px;
+            }
+            
+            .lottery-number {
+                font-size: 20px;
+                letter-spacing: 2px;
+            }
+            
+            button {
+                padding: 12px 15px;
+                font-size: 14px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>ডিয়ার লটারি - 1CR ও 5CR গেম</h1>
+            <p class="description">প্রতিদিন ৬টি গেম - 1CR (৩টি) এবং 5CR (৩টি)</p>
+        </div>
+        
+        <div class="tabs">
+            <button class="tab active" data-tab="entry">রেজাল্ট</button>
+            <button class="tab" data-tab="prediction">লাকি নাম্বার</button>
+            <button class="tab" data-tab="history">ইতিহাস</button>
+        </div>
+        
+        <div class="tab-content active" id="entry">
+            <h2>রেজাল্ট এন্ট্রি</h2>
+            
+            <div class="game-type-selector">
+                <button class="game-type-btn active" data-game-type="1cr">1CR গেম</button>
+                <button class="game-type-btn" data-game-type="5cr">5CR গেম</button>
+            </div>
+            
+            <div class="input-group">
+                <label for="resultDate">তারিখ</label>
+                <input type="date" id="resultDate">
+            </div>
+            
+            <div class="input-group">
+                <label for="drawTime">সময় নির্বাচন করুন</label>
+                <select id="drawTime">
+                    <option value="afternoon">দুপুর ১টা</option>
+                    <option value="evening">সন্ধ্যা ৬টা</option>
+                    <option value="night">রাত ৮টা</option>
+                </select>
+            </div>
+            
+            <div class="input-group">
+                <label for="lotteryNumber">জয়ী নাম্বার</label>
+                <input type="text" id="lotteryNumber" placeholder="65G93018">
+            </div>
+            
+            <button class="btn-success" id="saveResult">সেভ করুন</button>
+            
+            <div class="save-counter">মোট সেভ: <span id="saveCount">0</span></div>
+            
+            <div class="result">
+                <h3 id="selectedDateResult">আজকের রেজাল্ট</h3>
+                
+                <div class="game-results">
+                    <div class="game-result">
+                        <h3>1CR - দুপুর ১টা</h3>
+                        <div class="lottery-number" id="1crAfternoonResult">---</div>
+                    </div>
+                    <div class="game-result">
+                        <h3>1CR - সন্ধ্যা ৬টা</h3>
+                        <div class="lottery-number" id="1crEveningResult">---</div>
+                    </div>
+                    <div class="game-result">
+                        <h3>1CR - রাত ৮টা</h3>
+                        <div class="lottery-number" id="1crNightResult">---</div>
+                    </div>
+                </div>
+                
+                <div class="game-results">
+                    <div class="game-result">
+                        <h3>5CR - দুপুর ১টা</h3>
+                        <div class="lottery-number" id="5crAfternoonResult">---</div>
+                    </div>
+                    <div class="game-result">
+                        <h3>5CR - সন্ধ্যা ৬টা</h3>
+                        <div class="lottery-number" id="5crEveningResult">---</div>
+                    </div>
+                    <div class="game-result">
+                        <h3>5CR - রাত ৮টা</h3>
+                        <div class="lottery-number" id="5crNightResult">---</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="tab-content" id="prediction">
+            <h2>লাকি নাম্বার</h2>
+            
+            <div class="game-type-selector">
+                <button class="game-type-btn active" data-game-type="1cr">1CR গেম</button>
+                <button class="game-type-btn" data-game-type="5cr">5CR গেম</button>
+            </div>
+            
+            <button id="generateLucky">লাকি নাম্বার তৈরি করুন</button>
+            
+            <div class="result">
+                <h3 id="luckyNumberTitle">1CR গেমের লাকি নাম্বার</h3>
+                <div class="lottery-number" id="luckyNumber">---</div>
+                
+                <div class="game-results">
+                    <div class="game-result">
+                        <h3>দুপুর ১টার জন্য</h3>
+                        <div class="lottery-number" id="luckyAfternoon">---</div>
+                    </div>
+                    <div class="game-result">
+                        <h3>সন্ধ্যা ৬টার জন্য</h3>
+                        <div class="lottery-number" id="luckyEvening">---</div>
+                    </div>
+                    <div class="game-result">
+                        <h3>রাত ৮টার জন্য</h3>
+                        <div class="lottery-number" id="luckyNight">---</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="tab-content" id="history">
+            <h2>রেজাল্ট ইতিহাস</h2>
+            
+            <div class="game-type-selector">
+                <button class="game-type-btn active" data-game-type="1cr">1CR গেম</button>
+                <button class="game-type-btn" data-game-type="5cr">5CR গেম</button>
+            </div>
+            
+            <div class="input-group">
+                <label for="historyDate">তারিখ নির্বাচন</label>
+                <input type="date" id="historyDate">
+            </div>
+            
+            <button id="loadHistory">ইতিহাস দেখুন</button>
+            
+            <div class="result">
+                <h3 id="historyDateTitle">1CR গেমের ইতিহাস</h3>
+                <div id="historyResults"></div>
+            </div>
+        </div>
+        
+        <div class="footer">
+            <p>ভাগ্য আপনার সহায় হোক! দয়া করে জুয়াখেলার প্রতি দায়িত্বশীল আচরণ করুন。</p>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // বর্তমানে নির্বাচিত গেমের ধরন
+            let selectedGameType = '1cr';
+            
+            // ট্যাব ফাংশনালিটি
+            const tabs = document.querySelectorAll('.tab');
+            const tabContents = document.querySelectorAll('.tab-content');
+            
+            tabs.forEach(tab => {
+                tab.addEventListener('click', () => {
+                    const tabId = tab.getAttribute('data-tab');
+                    
+                    // সকল ট্যাব এবং কন্টেন্ট থেকে active ক্লাস সরান
+                    tabs.forEach(t => t.classList.remove('active'));
+                    tabContents.forEach(tc => tc.classList.remove('active'));
+                    
+                    // নির্বাচিত ট্যাব এবং কন্টেন্টে active ক্লাস যোগ করুন
+                    tab.classList.add('active');
+                    document.getElementById(tabId).classList.add('active');
+                    
+                    // মোবাইল ডিভাইসে ট্যাব ক্লিক করলে পেজ স্ক্রল করে উপরে নিয়ে আসে
+                    if (window.innerWidth < 768) {
+                        window.scrollTo({ top: 0, behavior: 'smooth' });
+                    }
+                });
+            });
+            
+            // গেম টাইপ সিলেক্টর
+            const gameTypeBtns = document.querySelectorAll('.game-type-btn');
+            gameTypeBtns.forEach(btn => {
+                btn.addEventListener('click', () => {
+                    gameTypeBtns.forEach(b => b.classList.remove('active'));
+                    btn.classList.add('active');
+                    selectedGameType = btn.getAttribute('data-game-type');
+                    
+                    // UI আপডেট করুন
+                    updateGameTypeUI();
+                });
+            });
+            
+            // তারিখ সেট করুন
+            const today = new Date();
+            document.getElementById('resultDate').valueAsDate = today;
+            document.getElementById('historyDate').valueAsDate = today;
+            
+            // ডেটা লোড করুন
+            loadAllData();
+            
+            // রেজাল্ট সেভ করার ইভেন্ট
+            document.getElementById('saveResult').addEventListener('click', function() {
+                const date = document.getElementById('resultDate').value;
+                const time = document.getElementById('drawTime').value;
+                const number = document.getElementById('lotteryNumber').value.trim().toUpperCase();
+                
+                saveResult(date, time, number);
+            });
+            
+            // লাকি নাম্বার জেনারেট করুন
+            document.getElementById('generateLucky').addEventListener('click', function() {
+                generateLuckyNumber();
+            });
+            
+            // ইতিহাস লোড করুন
+            document.getElementById('loadHistory').addEventListener('click', function() {
+                loadHistory();
+            });
+            
+            // তারিখ পরিবর্তন হলে রেজাল্ট লোড করুন
+            document.getElementById('resultDate').addEventListener('change', function() {
+                loadDateResults(this.value);
+            });
+            
+            // গেম টাইপ UI আপডেট ফাংশন
+            function updateGameTypeUI() {
+                // লাকি নাম্বার টাইটেল আপডেট
+                const gameTypeText = selectedGameType === '1cr' ? '1CR' : '5CR';
+                document.getElementById('luckyNumberTitle').textContent = `${gameTypeText} গেমের লাকি নাম্বার`;
+                
+                // ইতিহাস টাইটেল আপডেট
+                document.getElementById('historyDateTitle').textContent = `${gameTypeText} গেমের ইতিহাস`;
+                
+                // তারিখের রেজাল্ট রিলোড
+                loadDateResults(document.getElementById('resultDate').value);
+            }
+            
+            // সময়ের নাম ফাংশন
+            function getTimeName(time) {
+                const timeNames = {
+                    'afternoon': 'দুপুর ১টা',
+                    'evening': 'সন্ধ্যা ৬টা', 
+                    'night': 'রাত ৮টা'
+                };
+                return timeNames[time] || time;
+            }
+            
+            // সময়ের কী ফাংশন
+            function getTimeKey(timeName) {
+                const timeKeys = {
+                    'দুপুর ১টা': 'afternoon',
+                    'সন্ধ্যা ৬টা': 'evening',
+                    'রাত ৮টা': 'night'
+                };
+                return timeKeys[timeName] || timeName;
+            }
+            
+            // ফাংশনগুলি
+            function loadAllData() {
+                // সেভ কাউন্টার লোড করুন
+                const saveCount = localStorage.getItem('saveCount') || 0;
+                document.getElementById('saveCount').textContent = saveCount;
+                
+                // আজকের রেজাল্ট লোড করুন
+                loadDateResults(new Date().toISOString().slice(0, 10));
+            }
+            
+            function loadDateResults(dateString) {
+                const date = new Date(dateString);
+                const dateKey = date.toDateString();
+                const results = JSON.parse(localStorage.getItem('lotteryResults') || '{}');
+                
+                // তারিখ শিরোনাম আপডেট করুন
+                const dateTitle = date.toLocaleDateString('bn-BD', {
+                    year: 'numeric',
+                    month: 'long',
+                    day: 'numeric'
+                });
+                document.getElementById('selectedDateResult').textContent = `${dateTitle} এর রেজাল্ট`;
+                
+                // 1CR গেমের রেজাল্ট
+                document.getElementById('1crAfternoonResult').textContent = (results[dateKey] && results[dateKey]['1cr_afternoon']) || '---';
+                document.getElementById('1crEveningResult').textContent = (results[dateKey] && results[dateKey]['1cr_evening']) || '---';
+                document.getElementById('1crNightResult').textContent = (results[dateKey] && results[dateKey]['1cr_night']) || '---';
+                
+                // 5CR গেমের রেজাল্ট
+                document.getElementById('5crAfternoonResult').textContent = (results[dateKey] && results[dateKey]['5cr_afternoon']) || '---';
+                document.getElementById('5crEveningResult').textContent = (results[dateKey] && results[dateKey]['5cr_evening']) || '---';
+                document.getElementById('5crNightResult').textContent = (results[dateKey] && results[dateKey]['5cr_night']) || '---';
+            }
+            
+            function saveResult(dateString, time, number) {
+                if (!number) {
+                    alert('দয়া করে একটি বৈধ নাম্বার লিখুন');
+                    return;
+                }
+                
+                if (!isValidNumber(number)) {
+                    alert('দয়া করে সঠিক ফরম্যাটে নাম্বার লিখুন (যেমন: 65G93018)');
+                    return;
+                }
+                
+                const date = new Date(dateString);
+                const dateKey = date.toDateString();
+                let results = JSON.parse(localStorage.getItem('lotteryResults') || '{}');
+                
+                if (!results[dateKey]) {
+                    results[dateKey] = {};
+                }
+                
+                // গেমের কী তৈরি করুন (যেমন: 1cr_afternoon)
+                const gameKey = `${selectedGameType}_${time}`;
+                results[dateKey][gameKey] = number;
+                localStorage.setItem('lotteryResults', JSON.stringify(results));
+                
+                // সেভ काउंटर বাড়ান
+                const saveCount = parseInt(localStorage.getItem('saveCount') || 0) + 1;
+                localStorage.setItem('saveCount', saveCount);
+                document.getElementById('saveCount').textContent = saveCount;
+                
+                // UI আপডেট করুন
+                loadDateResults(dateString);
+                
+                // ইনপুট ফিল্ড ক্লিয়ার করুন
+                document.getElementById('lotteryNumber').value = '';
+                
+                alert(`${selectedGameType.toUpperCase()} - ${getTimeName(time)} এর রেজাল্ট সেভ হয়েছে!`);
+            }
+            
+            function isValidNumber(number) {
+                // 65G93018 ফরম্যাট চেক করুন
+                const regex = /^\d{2}[A-Z]\d{5}$/;
+                return regex.test(number);
+            }
+            
+            function generateLuckyNumber() {
+                const results = JSON.parse(localStorage.getItem('lotteryResults') || '{}');
+                const allNumbers = [];
+                
+                // নির্বাচিত গেম টাইপের সকল সংরক্ষিত নাম্বার সংগ্রহ করুন
+                for (const date in results) {
+                    for (const gameKey in results[date]) {
+                        if (gameKey.startsWith(selectedGameType + '_') && results[date][gameKey]) {
+                            allNumbers.push(results[date][gameKey]);
+                        }
+                    }
+                }
+                
+                if (allNumbers.length === 0) {
+                    alert('রেজাল্টের ডেটা পাওয়া যায়নি। প্রথমে কিছু রেজাল্ট সেভ করুন।');
+                    return;
+                }
+                
+                // নাম্বার বিশ্লেষণ করুন
+                const numberAnalysis = analyzeNumbers(allNumbers);
+                
+                // লাকি নাম্বার জেনারেট করুন
+                const luckyNumber = generateNumberFromAnalysis(numberAnalysis);
+                
+                // UI আপডেট করুন
+                document.getElementById('luckyNumber').textContent = luckyNumber;
+                
+                // তিনটি সময়ের জন্য তিনটি আলাদা নাম্বার জেনারেট করুন
+                document.getElementById('luckyAfternoon').textContent = generateNumberFromAnalysis(numberAnalysis);
+                document.getElementById('luckyEvening').textContent = generateNumberFromAnalysis(numberAnalysis);
+                document.getElementById('luckyNight').textContent = generateNumberFromAnalysis(numberAnalysis);
+            }
+            
+            function analyzeNumbers(numbers) {
+                const analysis = {
+                    firstTwo: {},
+                    middleChar: {},
+                    lastFive: {}
+                };
+                
+                numbers.forEach(number => {
+                    const firstTwo = number.substring(0, 2);
+                    const middleChar = number.substring(2, 3);
+                    const lastFive = number.substring(3);
+                    
+                    analysis.firstTwo[firstTwo] = (analysis.firstTwo[firstTwo] || 0) + 1;
+                    analysis.middleChar[middleChar] = (analysis.middleChar[middleChar] || 0) + 1;
+                    analysis.lastFive[lastFive] = (analysis.lastFive[lastFive] || 0) + 1;
+                });
+                
+                return analysis;
+            }
+            
+            function generateNumberFromAnalysis(analysis) {
+                // সবচেয়ে কম ব্যবহৃত প্রথম দুই ডিজিট নির্বাচন করুন
+                const leastUsedFirstTwo = Object.keys(analysis.firstTwo).sort((a, b) => 
+                    analysis.firstTwo[a] - analysis.firstTwo[b]
+                )[0] || Math.floor(Math.random() * 90 + 10).toString().padStart(2, '0');
+                
+                // সবচেয়ে কম ব্যবহৃত মধ্যবর্তী অক্ষর নির্বাচন করুন
+                const leastUsedMiddleChar = Object.keys(analysis.middleChar).sort((a, b) => 
+                    analysis.middleChar[a] - analysis.middleChar[b]
+                )[0] || String.fromCharCode(65 + Math.floor(Math.random() * 26));
+                
+                // সবচেয়ে কম ব্যবহৃত শেষ পাঁচ ডিজিট নির্বাচন করুন
+                const leastUsedLastFive = Object.keys(analysis.lastFive).sort((a, b) => 
+                    analysis.lastFive[a] - analysis.lastFive[b]
+                )[0] || Math.floor(Math.random() * 90000 + 10000).toString();
+                
+                return `${leastUsedFirstTwo}${leastUsedMiddleChar}${leastUsedLastFive}`;
+            }
+            
+            function loadHistory() {
+                const date = document.getElementById('historyDate').value;
+                const dateTitle = new Date(date).toLocaleDateString('bn-BD', {
+                    year: 'numeric',
+                    month: 'long',
+                    day: 'numeric'
+                });
+                
+                const gameTypeText = selectedGameType === '1cr' ? '1CR' : '5CR';
+                document.getElementById('historyDateTitle').textContent = `${dateTitle} - ${gameTypeText} গেমের রেজাল্ট`;
+                
+                const results = JSON.parse(localStorage.getItem('lotteryResults') || '{}');
+                const dateKey = new Date(date).toDateString();
+                
+                const historyResults = document.getElementById('historyResults');
+                
+                if (results[dateKey]) {
+                    let html = '<div class="game-results">';
+                    
+                    // নির্বাচিত গেম টাইপের রেজাল্ট দেখান
+                    const times = ['afternoon', 'evening', 'night'];
+                    
+                    times.forEach(time => {
+                        const gameKey = `${selectedGameType}_${time}`;
+                        const result = results[dateKey][gameKey] || '---';
+                        
+                        html += `
+                            <div class="game-result">
+                                <h3>${gameTypeText} - ${getTimeName(time)}</h3>
+                                <div class="lottery-number">${result}</div>
+                            </div>
+                        `;
+                    });
+                    
+                    html += '</div>';
+                    historyResults.innerHTML = html;
+                } else {
+                    historyResults.innerHTML = '<p>এই তারিখে কোন রেজাল্ট পাওয়া যায়নি।</p>';
+                }
+            }
+        });
+    </script>
+</body>
+</html>
