@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="bn">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ডিয়ার লটারি - এডিট/ডিলিট功能 সহ</title>
+    <title>Dear Lottery - With Edit/Delete Function</title>
     <style>
         * {
             margin: 0;
@@ -411,110 +411,110 @@
 <body>
     <div class="container">
         <div class="header">
-            <h1>ডিয়ার লটারি - এডিট/ডিলিট功能 সহ</h1>
-            <p class="description">প্রতিদিন ৬টি গেম - 1CR (৩টি) এবং 5CR (৩টি)</p>
+            <h1>6 Games Daily - 1CR (3 Games) And 5CR (3 Games)</h1>
+            
         </div>
 
-        <!-- লগইন করা নেই এমন অবস্থায় দেখানোর জন্য -->
+        <!-- Show when user is not logged in -->
         <div id="loginRequired" class="login-message">
-            <h2>লগইন প্রয়োজন</h2>
-            <p>এই পেজটি অ্যাক্সেস করতে আপনাকে লগইন করতে হবে</p>
-            <button onclick="window.location.href='../login.html'">লগইন পেজে যান</button>
+            <h2>Login Required</h2>
+            <p>You need to login to access this page</p>
+            <button onclick="window.location.href='../login.html'">Go to Login Page</button>
         </div>
         
-        <!-- লগইন করা থাকলে দেখানোর জন্য -->
+        <!-- Show when user is logged in -->
         <div id="appContent" style="display: none;">
             <div class="tabs">
-                <button class="tab active" data-tab="entry">রেজাল্ট</button>
-                <button class="tab" data-tab="prediction">লাকি নাম্বার</button>
-                <button class="tab" data-tab="history">ইতিহাস</button>
-                <button class="tab" data-tab="manage">ডেটা ম্যানেজ</button>
+                <button class="tab active" data-tab="entry">Results</button>
+                <button class="tab" data-tab="prediction">Lucky Numbers</button>
+                <button class="tab" data-tab="history">History</button>
+                <button class="tab" data-tab="manage">Data Management</button>
             </div>
             
             <div class="tab-content active" id="entry">
-                <h2>রেজাল্ট এন্ট্রি</h2>
+                <h2>Result Entry</h2>
                 
                 <div class="game-type-selector">
-                    <button class="game-type-btn active" data-game-type="1cr">1CR গেম</button>
-                    <button class="game-type-btn" data-game-type="5cr">5CR गेम</button>
+                    <button class="game-type-btn active" data-game-type="1cr">1CR Game</button>
+                    <button class="game-type-btn" data-game-type="5cr">5CR Game</button>
                 </div>
                 
                 <div class="input-group">
-                    <label for="resultDate">তারিখ</label>
+                    <label for="resultDate">Date</label>
                     <input type="date" id="resultDate">
                 </div>
                 
                 <div class="input-group">
-                    <label for="drawTime">সময় নির্বাচন করুন</label>
+                    <label for="drawTime">Select Time</label>
                     <select id="drawTime">
-                        <option value="afternoon">দুপুর ১টা</option>
-                        <option value="evening">সন্ধ্যা ৬টা</option>
-                        <option value="night">রাত ৮টা</option>
+                        <option value="afternoon">1:00 PM</option>
+                        <option value="evening">6:00 PM</option>
+                        <option value="night">8:00 PM</option>
                     </select>
                 </div>
                 
                 <div class="input-group">
-                    <label for="lotteryNumber">জয়ী নাম্বার</label>
+                    <label for="lotteryNumber">Winning Number</label>
                     <input type="text" id="lotteryNumber" placeholder="65G93018">
                 </div>
                 
-                <button class="btn-success" id="saveResult">সেভ করুন</button>
+                <button class="btn-success" id="saveResult">Save</button>
                 
-                <div class="save-counter">মোট সেভ: <span id="saveCount">0</span></div>
+                <div class="save-counter">Total Saved: <span id="saveCount">0</span></div>
                 
                 <div class="result">
-                    <h3 id="selectedDateResult">আজকের রেজাল্ট</h3>
+                    <h3 id="selectedDateResult">Today's Results</h3>
                     
                     <div class="game-results">
                         <div class="game-result">
-                            <h3>1CR - দুপুর ১টা</h3>
+                            <h3>1CR - 1:00 PM</h3>
                             <div class="lottery-number" id="1crAfternoonResult">---</div>
                             <div class="action-buttons">
-                                <button class="action-btn edit-btn" data-game-type="1cr" data-time="afternoon">এডিট</button>
-                                <button class="action-btn delete-btn" data-game-type="1cr" data-time="afternoon">ডিলিট</button>
+                                <button class="action-btn edit-btn" data-game-type="1cr" data-time="afternoon">Edit</button>
+                                <button class="action-btn delete-btn" data-game-type="1cr" data-time="afternoon">Delete</button>
                             </div>
                         </div>
                         <div class="game-result">
-                            <h3>1CR - সন্ধ্যা ৬টা</h3>
+                            <h3>1CR - 6:00 PM</h3>
                             <div class="lottery-number" id="1crEveningResult">---</div>
                             <div class="action-buttons">
-                                <button class="action-btn edit-btn" data-game-type="1cr" data-time="evening">এডিট</button>
-                                <button class="action-btn delete-btn" data-game-type="1cr" data-time="evening">ডিলিট</button>
+                                <button class="action-btn edit-btn" data-game-type="1cr" data-time="evening">Edit</button>
+                                <button class="action-btn delete-btn" data-game-type="1cr" data-time="evening">Delete</button>
                             </div>
                         </div>
                         <div class="game-result">
-                            <h3>1CR - রাত ৮টা</h3>
+                            <h3>1CR - 8:00 PM</h3>
                             <div class="lottery-number" id="1crNightResult">---</div>
                             <div class="action-buttons">
-                                <button class="action-btn edit-btn" data-game-type="1cr" data-time="night">এডিট</button>
-                                <button class="action-btn delete-btn" data-game-type="1cr" data-time="night">ডিলিট</button>
+                                <button class="action-btn edit-btn" data-game-type="1cr" data-time="night">Edit</button>
+                                <button class="action-btn delete-btn" data-game-type="1cr" data-time="night">Delete</button>
                             </div>
                         </div>
                     </div>
                     
                     <div class="game-results">
                         <div class="game-result">
-                            <h3>5CR - দুপুর ১টা</h3>
+                            <h3>5CR - 1:00 PM</h3>
                             <div class="lottery-number" id="5crAfternoonResult">---</div>
                             <div class="action-buttons">
-                                <button class="action-btn edit-btn" data-game-type="5cr" data-time="afternoon">এডিট</button>
-                                <button class="action-btn delete-btn" data-game-type="5cr" data-time="afternoon">ডিলিট</button>
+                                <button class="action-btn edit-btn" data-game-type="5cr" data-time="afternoon">Edit</button>
+                                <button class="action-btn delete-btn" data-game-type="5cr" data-time="afternoon">Delete</button>
                             </div>
                         </div>
                         <div class="game-result">
-                            <h3>5CR - সন্ধ্যা ৬টা</h3>
+                            <h3>5CR - 6:00 PM</h3>
                             <div class="lottery-number" id="5crEveningResult">---</div>
                             <div class="action-buttons">
-                                <button class="action-btn edit-btn" data-game-type="5cr" data-time="evening">এডিট</button>
-                                <button class="action-btn delete-btn" data-game-type="5cr" data-time="evening">ডিলিট</button>
+                                <button class="action-btn edit-btn" data-game-type="5cr" data-time="evening">Edit</button>
+                                <button class="action-btn delete-btn" data-game-type="5cr" data-time="evening">Delete</button>
                             </div>
                         </div>
                         <div class="game-result">
-                            <h3>5CR - রাত ৮টা</h3>
+                            <h3>5CR - 8:00 PM</h3>
                             <div class="lottery-number" id="5crNightResult">---</div>
                             <div class="action-buttons">
-                                <button class="action-btn edit-btn" data-game-type="5cr" data-time="night">এডিট</button>
-                                <button class="action-btn delete-btn" data-game-type="5cr" data-time="night">ডিলিট</button>
+                                <button class="action-btn edit-btn" data-game-type="5cr" data-time="night">Edit</button>
+                                <button class="action-btn delete-btn" data-game-type="5cr" data-time="night">Delete</button>
                             </div>
                         </div>
                     </div>
@@ -522,30 +522,30 @@
             </div>
             
             <div class="tab-content" id="prediction">
-                <h2>লাকি নাম্বার</h2>
+                <h2>Lucky Numbers</h2>
                 
                 <div class="game-type-selector">
-                    <button class="game-type-btn active" data-game-type="1cr">1CR গেম</button>
-                    <button class="game-type-btn" data-game-type="5cr">5CR गेम</button>
+                    <button class="game-type-btn active" data-game-type="1cr">1CR Game</button>
+                    <button class="game-type-btn" data-game-type="5cr">5CR Game</button>
                 </div>
                 
-                <button id="generateLucky">লাকি নাম্বার তৈরি করুন</button>
+                <button id="generateLucky">Generate Lucky Numbers</button>
                 
                 <div class="result">
-                    <h3 id="luckyNumberTitle">1CR গেমের লাকি নাম্বار</h3>
+                    <h3 id="luckyNumberTitle">1CR Game Lucky Numbers</h3>
                     <div class="lottery-number" id="luckyNumber">---</div>
                     
                     <div class="game-results">
                         <div class="game-result">
-                            <h3>দুপুর ১টার জন্য</h3>
+                            <h3>For 1:00 PM</h3>
                             <div class="lottery-number" id="luckyAfternoon">---</div>
                         </div>
                         <div class="game-result">
-                            <h3>সন্ধ্যা ৬টার জন্য</h3>
+                            <h3>For 6:00 PM</h3>
                             <div class="lottery-number" id="luckyEvening">---</div>
                         </div>
                         <div class="game-result">
-                            <h3>রাত ৮টার জন্য</h3>
+                            <h3>For 8:00 PM</h3>
                             <div class="lottery-number" id="luckyNight">---</div>
                         </div>
                     </div>
@@ -553,63 +553,75 @@
             </div>
             
             <div class="tab-content" id="history">
-                <h2>রেজাল্ট ইতিহাস</h2>
+                <h2>Result History</h2>
                 
                 <div class="game-type-selector">
-                    <button class="game-type-btn active" data-game-type="1cr">1CR গেম</button>
-                    <button class="game-type-btn" data-game-type="5cr">5CR गेम</button>
+                    <button class="game-type-btn active" data-game-type="1cr">1CR Game</button>
+                    <button class="game-type-btn" data-game-type="5cr">5CR Game</button>
                 </div>
                 
                 <div class="input-group">
-                    <label for="historyDate">তারিখ নির্বাচন</label>
+                    <label for="historyDate">Select Date</label>
                     <input type="date" id="historyDate">
                 </div>
                 
-                <button id="loadHistory">ইতিহাস দেখুন</button>
+                <button id="loadHistory">View History</button>
                 
                 <div class="result">
-                    <h3 id="historyDateTitle">1CR গেমের ইতিহাস</h3>
+                    <h3 id="historyDateTitle">1CR Game History</h3>
                     <div id="historyResults"></div>
                 </div>
             </div>
             
             <div class="tab-content" id="manage">
-                <h2>ডেটা ম্যানেজমেন্ট</h2>
+                <h2>Data Management</h2>
                 
                 <div class="result">
-                    <h3>সমস্ত ডেটا ম্যানেজ করুন</h3>
+                    <h3>Manage All Data</h3>
                     
                     <div class="input-group">
-                        <label for="manageDate">তারিখ নির্বাচন করুন</label>
+                        <label for="manageDate">Select Date</label>
                         <input type="date" id="manageDate">
                     </div>
                     
-                    <button id="loadManageData">ডেটা লোড করুন</button>
+                    <button id="loadManageData">Load Data</button>
                     
                     <div id="manageResults" style="margin-top: 20px;"></div>
                     
                     <div style="margin-top: 30px;">
-                        <h3>ডেটা রিসেট</h3>
-                        <p style="color: #b21f1f; margin: 15px 0;">সতর্কতা: এই অপারেশনটি বিপরীতযোগ্য নয়। সমস্ত ডেটা মুছে ফেলা হবে।</p>
-                        <button class="btn-danger" id="resetAllData">সমস্ত ডেটা রিসেট করুন</button>
+                        <h3>Data Reset</h3>
+                        <p style="color: #b21f1f; margin: 15px 0;">Warning: This operation is irreversible. All data will be deleted.</p>
+                        <button class="btn-danger" id="resetAllData">Reset All Data</button>
                     </div>
                 </div>
             </div>
             
             <div class="footer">
-                <p>ভাগ্য আপনার সহায় হোক! দয়া করে জুয়াখেলার প্রতি দায়িত্বশীল আচরণ করুন।</p>
+                <footer style="text-align: center; font-size: 12px; color: #444; padding: 15px; border-top: 1px solid #ccc; background: #f8f8f8;">
+  <p>
+    <strong>⚠️ Disclaimer:</strong><br>
+    Lottery Guru is created for entertainment purposes only. The lottery numbers or lucky number suggestions 
+    are generated based on daily results and certain calculations combined with randomization. 
+    These numbers should not be considered guaranteed winning predictions. 
+    Any decision to purchase lottery tickets or invest is entirely at your own risk. 
+    The app owner or developer is not responsible for any financial loss, damage, or unexpected outcomes.
+  </p>
+  <p style="margin-top: 10px;">
+    🔗 Visit: <a href="https://cryptonixdigital.github.io/cryptonix/frontend/dear_lottry_main.html" target="_blank" style="color: #007BFF; text-decoration: none;">Lottery Guru</a>
+  </p>
+</footer>
             </div>
         </div>
     </div>
 
-    <!-- কনফার্মেশন মোডাল -->
+    <!-- Confirmation Modal -->
     <div class="confirmation-modal" id="confirmationModal">
         <div class="modal-content">
-            <h3 id="modalTitle">আপনি কি নিশ্চিত?</h3>
-            <p id="modalMessage">এই কাজটিUndo করা যাবে না।</p>
+            <h3 id="modalTitle">Are you sure?</h3>
+            <p id="modalMessage">This action cannot be undone.</p>
             <div class="modal-buttons">
-                <button class="btn-danger" id="modalConfirm">হ্যাঁ</button>
-                <button id="modalCancel">বাতিল করুন</button>
+                <button class="btn-danger" id="modalConfirm">Yes</button>
+                <button id="modalCancel">Cancel</button>
             </div>
         </div>
     </div>
@@ -671,24 +683,24 @@
             return getUserRef('saveCount');
         }
 
-        // সময়ের নাম ফাংশন
+        // Time name function
         function getTimeName(time) {
             const timeNames = {
-                'afternoon': 'দুপুর ১টা',
-                'evening': 'সন্ধ্যা ৬টা', 
-                'night': 'রাত ৮টা'
+                'afternoon': '1:00 PM',
+                'evening': '6:00 PM', 
+                'night': '8:00 PM'
             };
             return timeNames[time] || time;
         }
 
-        // নাম্বার ভ্যালিডেশন ফাংশন
+        // Number validation function
         function isValidNumber(number) {
-            // 8 অক্ষরের নাম্বার, প্রথম দুটি সংখ্যা, তারপর একটি ইংরেজি অক্ষর, তারপর পাঁচটি সংখ্যা
+            // 8 character number, first two digits, then one English letter, then five digits
             const regex = /^[0-9]{2}[A-Z]{1}[0-9]{5}$/;
             return regex.test(number);
         }
 
-        // কনফার্মেশন মোডাল ফাংশন
+        // Confirmation modal functions
         function showConfirmationModal(title, message, callback) {
             document.getElementById('modalTitle').textContent = title;
             document.getElementById('modalMessage').textContent = message;
@@ -702,27 +714,27 @@
             currentAction.callback = null;
         }
 
-        // গেম টাইপ UI আপডেট ফাংশন
+        // Game type UI update function
         function updateGameTypeUI() {
-            // লাকি নাম্বার টাইটেল আপডেট
+            // Lucky number title update
             const gameTypeText = selectedGameType === '1cr' ? '1CR' : '5CR';
-            document.getElementById('luckyNumberTitle').textContent = `${gameTypeText} গেমের লাকি নাম্বার`;
+            document.getElementById('luckyNumberTitle').textContent = `${gameTypeText} Game Lucky Numbers`;
             
-            // ইতিহাস টাইটেল আপডেট
-            document.getElementById('historyDateTitle').textContent = `${gameTypeText} গেমের ইতিহাস`;
+            // History title update
+            document.getElementById('historyDateTitle').textContent = `${gameTypeText} Game History`;
             
-            // তারিখের রেজাল্ট রিলোড
+            // Reload date results
             loadDateResults(document.getElementById('resultDate').value);
         }
 
         document.addEventListener('DOMContentLoaded', function() {
-            // তারিখ সেট করুন
+            // Set today's date
             const today = new Date();
             document.getElementById('resultDate').valueAsDate = today;
             document.getElementById('historyDate').valueAsDate = today;
             document.getElementById('manageDate').valueAsDate = today;
             
-            // রেজাল্ট সেভ করার ইভেন্ট
+            // Save result event
             document.getElementById('saveResult').addEventListener('click', function() {
                 const date = document.getElementById('resultDate').value;
                 const time = document.getElementById('drawTime').value;
@@ -731,36 +743,36 @@
                 saveResult(date, time, number);
             });
             
-            // লাকি নাম্বার জেনারেট করুন
+            // Generate lucky numbers
             document.getElementById('generateLucky').addEventListener('click', function() {
                 analyzeAndGenerateLuckyNumber();
             });
             
-            // ইতিহাস লোড করুন
+            // Load history
             document.getElementById('loadHistory').addEventListener('click', function() {
                 loadHistory();
             });
             
-            // ম্যানেজ ডেটা লোড করুন
+            // Load manage data
             document.getElementById('loadManageData').addEventListener('click', function() {
                 loadManageData();
             });
             
-            // সমস্ত ডেটা রিসেট করুন
+            // Reset all data
             document.getElementById('resetAllData').addEventListener('click', function() {
                 showConfirmationModal(
-                    'সমস্ত ডেটা রিসেট করুন', 
-                    'আপনি কি নিশ্চিত যে আপনি সমস্ত ডেটা মুছে ফেলতে চান? এই কাজটিUndo করা যাবে না।',
+                    'Reset All Data', 
+                    'Are you sure you want to delete all data? This action cannot be undone.',
                     resetAllData
                 );
             });
             
-            // তারিখ পরিবর্তন হলে রেজাল্ট লোড করুন
+            // Load results when date changes
             document.getElementById('resultDate').addEventListener('change', function() {
                 loadDateResults(this.value);
             });
             
-            // এডিট বাটন ইভেন্ট
+            // Edit button events
             document.querySelectorAll('.edit-btn').forEach(btn => {
                 btn.addEventListener('click', function() {
                     const gameType = this.getAttribute('data-game-type');
@@ -769,21 +781,21 @@
                 });
             });
             
-            // ডিলিট বাটন ইভেন্ট
+            // Delete button events
             document.querySelectorAll('.delete-btn').forEach(btn => {
                 btn.addEventListener('click', function() {
                     const gameType = this.getAttribute('data-game-type');
                     const time = this.getAttribute('data-time');
                     
                     showConfirmationModal(
-                        'রেজাল্ট ডিলিট করুন', 
-                        `আপনি কি ${getTimeName(time)} এর ${gameType.toUpperCase()} রেজাল্ট ডিলিট করতে চান?`,
+                        'Delete Result', 
+                        `Are you sure you want to delete ${getTimeName(time)} ${gameType.toUpperCase()} result?`,
                         function() { deleteResult(gameType, time); }
                     );
                 });
             });
             
-            // মোডাল ইভেন্ট
+            // Modal events
             document.getElementById('modalConfirm').addEventListener('click', function() {
                 if (currentAction.callback) {
                     currentAction.callback();
@@ -795,7 +807,7 @@
                 hideConfirmationModal();
             });
 
-            // ট্যাব ফাংশনালিটি
+            // Tab functionality
             const tabs = document.querySelectorAll('.tab');
             const tabContents = document.querySelectorAll('.tab-content');
             
@@ -803,22 +815,22 @@
                 tab.addEventListener('click', () => {
                     const tabId = tab.getAttribute('data-tab');
                     
-                    // সকল ট্যাব এবং কন্টেন্ট থেকে active ক্লাস সরান
+                    // Remove active class from all tabs and contents
                     tabs.forEach(t => t.classList.remove('active'));
                     tabContents.forEach(tc => tc.classList.remove('active'));
                     
-                    // নির্বাচিত ট্যাব এবং কন্টেন্টে active ক্লাস যোগ করুন
+                    // Add active class to selected tab and content
                     tab.classList.add('active');
                     document.getElementById(tabId).classList.add('active');
                     
-                    // মোবাইল ডিভাইসে ট্যাব ক্লিক করলে পেজ স্ক্রল করে উপরে নিয়ে আসে
+                    // Scroll to top on mobile devices when clicking tabs
                     if (window.innerWidth < 768) {
                         window.scrollTo({ top: 0, behavior: 'smooth' });
                     }
                 });
             });
             
-            // গেম টাইপ সিলেক্টর
+            // Game type selector
             const gameTypeBtns = document.querySelectorAll('.game-type-btn');
             gameTypeBtns.forEach(btn => {
                 btn.addEventListener('click', () => {
@@ -826,15 +838,15 @@
                     btn.classList.add('active');
                     selectedGameType = btn.getAttribute('data-game-type');
                     
-                    // UI আপডেট করুন
+                    // Update UI
                     updateGameTypeUI();
                 });
             });
         });
         
-        // ফাংশনগুলি
+        // Functions
         function loadAllData() {
-            // সেভ কাউন্টার লোড করুন
+            // Load save count
             const saveCountRef = getSaveCountRef();
             if (!saveCountRef) return;
             
@@ -846,7 +858,7 @@
                 console.error("Error loading save count:", error);
             });
             
-            // আজকের রেজাল্ট লোড করুন
+            // Load today's results
             loadDateResults(new Date().toISOString().slice(0, 10));
         }
         
@@ -860,20 +872,17 @@
                 const results = snapshot.val() || {};
                 console.log("Loaded results for", dateKey, ":", results);
                 
-                // তারিখ শিরোনাম আপডেট করুন
-                const dateTitle = date.toLocaleDateString('bn-BD', {
-                    year: 'numeric',
-                    month: 'long',
-                    day: 'numeric'
-                });
-                document.getElementById('selectedDateResult').textContent = `${dateTitle} এর রেজাল্ট`;
+                // Update date title
+                const options = { year: 'numeric', month: 'long', day: 'numeric' };
+                const dateTitle = date.toLocaleDateString('en-US', options);
+                document.getElementById('selectedDateResult').textContent = `Results for ${dateTitle}`;
                 
-                // 1CR গেমের রেজাল্ট
+                // 1CR game results
                 document.getElementById('1crAfternoonResult').textContent = (results[dateKey] && results[dateKey]['1cr_afternoon']) || '---';
                 document.getElementById('1crEveningResult').textContent = (results[dateKey] && results[dateKey]['1cr_evening']) || '---';
                 document.getElementById('1crNightResult').textContent = (results[dateKey] && results[dateKey]['1cr_night']) || '---';
                 
-                // 5CR গেমের রেজাল্ট
+                // 5CR game results
                 document.getElementById('5crAfternoonResult').textContent = (results[dateKey] && results[dateKey]['5cr_afternoon']) || '---';
                 document.getElementById('5crEveningResult').textContent = (results[dateKey] && results[dateKey]['5cr_evening']) || '---';
                 document.getElementById('5crNightResult').textContent = (results[dateKey] && results[dateKey]['5cr_night']) || '---';
@@ -884,12 +893,12 @@
         
         function saveResult(dateString, time, number) {
             if (!number) {
-                alert('দয়া করে একটি বৈধ নাম্বার লিখুন');
+                alert('Please enter a valid number');
                 return;
             }
             
             if (!isValidNumber(number)) {
-                alert('দয়া করে সঠিক ফরম্যাটে নাম্বার লিখুন (যেমন: 65G93018) - প্রথম দুটি সংখ্যা, তারপর একটি ইংরেজি অক্ষর, তারপর পাঁচটি সংখ্যা');
+                alert('Please enter a number in the correct format (e.g., 65G93018) - first two digits, then one English letter, then five digits');
                 return;
             }
             
@@ -906,32 +915,32 @@
                     results[dateKey] = {};
                 }
                 
-                // গেমের কী তৈরি করুন (যেমন: 1cr_afternoon)
+                // Create game key (e.g., 1cr_afternoon)
                 const gameKey = `${selectedGameType}_${time}`;
                 results[dateKey][gameKey] = number;
                 
-                // Firebase-এ ডেটা সেভ করুন
+                // Save data to Firebase
                 resultsRef.set(results).then(() => {
                     console.log("Result saved successfully:", results);
                     
-                    // সেভ কাউন্টার বাড়ান
+                    // Increase save count
                     saveCountRef.once('value').then((countSnapshot) => {
                         const saveCount = (countSnapshot.val() || 0) + 1;
                         saveCountRef.set(saveCount).then(() => {
                             document.getElementById('saveCount').textContent = saveCount;
                             
-                            // UI আপডেট করুন
+                            // Update UI
                             loadDateResults(dateString);
                             
-                            // ইনপুট ফিল্ড ক্লিয়ার করুন
+                            // Clear input field
                             document.getElementById('lotteryNumber').value = '';
                             
-                            alert(`${selectedGameType.toUpperCase()} - ${getTimeName(time)} এর রেজাল্ট সেভ হয়েছে!`);
+                            alert(`${selectedGameType.toUpperCase()} - ${getTimeName(time)} result saved successfully!`);
                         });
                     });
                 }).catch((error) => {
                     console.error("Error saving result:", error);
-                    alert('রেজাল্ট সেভ করতে সমস্যা হয়েছে। দয়া করে আবার চেষ্টা করুন।');
+                    alert('Error saving result. Please try again.');
                 });
             });
         }
@@ -946,22 +955,22 @@
                 const results = snapshot.val() || {};
                 
                 if (results[dateKey] && results[dateKey][`${gameType}_${time}`]) {
-                    // গেম টাইপ সিলেক্ট করুন
+                    // Select game type
                     document.querySelectorAll('.game-type-btn').forEach(btn => {
                         if (btn.getAttribute('data-game-type') === gameType) {
                             btn.click();
                         }
                     });
                     
-                    // সময় সিলেক্ট করুন
+                    // Select time
                     document.getElementById('drawTime').value = time;
                     
-                    // নাম্বার সেট করুন
+                    // Set number
                     document.getElementById('lotteryNumber').value = results[dateKey][`${gameType}_${time}`];
                     
-                    alert(`${gameType.toUpperCase()} - ${getTimeName(time)} এর রেজাল্ট এডিট করার জন্য প্রস্তুত। সেভ করুন বাটনে ক্লিক করে আপডেট করুন।`);
+                    alert(`${gameType.toUpperCase()} - ${getTimeName(time)} result ready for editing. Click Save to update.`);
                 } else {
-                    alert('এই সময়ের জন্য কোন রেজাল্ট পাওয়া যায়নি।');
+                    alert('No result found for this time.');
                 }
             });
         }
@@ -979,34 +988,34 @@
                 if (results[dateKey] && results[dateKey][`${gameType}_${time}`]) {
                     delete results[dateKey][`${gameType}_${time}`];
                     
-                    // যদি তারিখে আর কোন ডেটা না থাকে, তাহলে পুরো তারিখ ডিলিট করুন
+                    // If no data left for the date, delete the entire date
                     if (Object.keys(results[dateKey]).length === 0) {
                         delete results[dateKey];
                     }
                     
-                    // Firebase-এ আপডেটেড ডেটা সেভ করুন
+                    // Save updated data to Firebase
                     resultsRef.set(results).then(() => {
-                        // সেভ কাউন্টার কমান
+                        // Decrease save count
                         saveCountRef.once('value').then((countSnapshot) => {
                             const saveCount = Math.max(0, (countSnapshot.val() || 0) - 1);
                             saveCountRef.set(saveCount).then(() => {
                                 document.getElementById('saveCount').textContent = saveCount;
                                 
-                                // UI আপডেট করুন
+                                // Update UI
                                 loadDateResults(date);
                                 
-                                alert(`${gameType.toUpperCase()} - ${getTimeName(time)} এর রেজাল্ট ডিলিট হয়েছে!`);
+                                alert(`${gameType.toUpperCase()} - ${getTimeName(time)} result deleted successfully!`);
                             });
                         });
                     }).catch((error) => {
                         console.error("Error deleting result:", error);
-                        alert('রেজাল্ট ডিলিট করতে সমস্যা হয়েছে। দয়া করে আবার চেষ্টা করুন।');
+                        alert('Error deleting result. Please try again.');
                     });
                 }
             });
         }
         
-        // সমস্ত ডেটা বিশ্লেষণ করে লাকি নাম্বার জেনারেটর (হট নাম্বার)
+        // Analyze all data and generate lucky number (hot number)
         function analyzeAndGenerateLuckyNumber() {
             const resultsRef = getResultsRef();
             if (!resultsRef) return;
@@ -1015,7 +1024,7 @@
                 const results = snapshot.val() || {};
                 const allNumbers = [];
                 
-                // সমস্ত সেভকৃত নাম্বার সংগ্রহ করুন
+                // Collect all saved numbers
                 for (const date in results) {
                     for (const key in results[date]) {
                         if (results[date][key] && results[date][key] !== '---') {
@@ -1025,16 +1034,16 @@
                 }
                 
                 if (allNumbers.length === 0) {
-                    alert('কোন ডেটা পাওয়া যায়নি। প্রথমে কিছু রেজাল্ট সেভ করুন।');
+                    alert('No data found. Please save some results first.');
                     return;
                 }
                 
-                // ফ্রিকোয়েন্সি এনালাইসিস
+                // Frequency analysis
                 const digitFrequency = {0:0,1:0,2:0,3:0,4:0,5:0,6:0,7:0,8:0,9:0};
                 const letterFrequency = {A:0,B:0,C:0,D:0,E:0,G:0,H:0,J:0,K:0,L:0};
                 
                 allNumbers.forEach(number => {
-                    // সংখ্যা অংশ বিশ্লেষণ (পজিশন 0,1,3,4,5,6,7)
+                    // Analyze number part (positions 0,1,3,4,5,6,7)
                     for (let i = 0; i < 8; i++) {
                         if (i !== 2) { // 3rd position is letter, skip
                             const char = number[i];
@@ -1044,33 +1053,33 @@
                         }
                     }
                     
-                    // অক্ষর অংশ বিশ্লেষণ (পজিশন 2)
+                    // Analyze letter part (position 2)
                     const letter = number[2];
                     if (letterFrequency.hasOwnProperty(letter)) {
                         letterFrequency[letter]++;
                     }
                 });
                 
-                // সবচেয়ে বেশি ব্যবহৃত সংখ্যা এবং অক্ষর খুঁজুন (হট নাম্বার)
+                // Find most used digits and letters (hot numbers)
                 const mostUsedDigits = findMostUsed(digitFrequency, 2);
                 const mostUsedLetter = findMostUsed(letterFrequency, 1)[0];
                 
-                // লাকি নাম্বার তৈরি করুন (হট নাম্বার)
+                // Create lucky number (hot number)
                 const baseNumber = mostUsedDigits[0] + mostUsedDigits[1] + mostUsedLetter + 
                                   getRandomDigits(5, digitFrequency, true);
                 
                 document.getElementById('luckyNumber').textContent = baseNumber;
                 
-                // প্রতিটি সময়ের জন্য আলাদা নাম্বার জেনারেট করুন
+                // Generate different numbers for each time
                 document.getElementById('luckyAfternoon').textContent = generateTimeSpecificNumber(baseNumber, 'afternoon');
                 document.getElementById('luckyEvening').textContent = generateTimeSpecificNumber(baseNumber, 'evening');
                 document.getElementById('luckyNight').textContent = generateTimeSpecificNumber(baseNumber, 'night');
                 
-                // বিশ্লেষণ রিপোর্ট দেখান
+                // Show analysis report
                 showAnalysisReport(digitFrequency, letterFrequency, baseNumber);
             }).catch((error) => {
                 console.error("Error generating lucky number:", error);
-                alert('লাকি নাম্বার জেনারেট করতে সমস্যা হয়েছে। দয়া করে আবার চেষ্টা করুন।');
+                alert('Error generating lucky numbers. Please try again.');
             });
         }
         
@@ -1088,7 +1097,7 @@
                 .slice(0, 10);
             
             for (let i = 0; i < length; i++) {
-                // বেশি ব্যবহৃত সংখ্যাগুলো থেকে র‍্যান্ডমলি নির্বাচন
+                // Randomly select from most used numbers
                 const randomIndex = Math.floor(Math.random() * Math.min(5, sortedDigits.length));
                 result += sortedDigits[randomIndex][0];
             }
@@ -1096,10 +1105,10 @@
         }
         
         function generateTimeSpecificNumber(baseNumber, time) {
-            // অনুমোদিত ইংরেজি অক্ষর
+            // Allowed English letters
             const allowedLetters = ['A', 'B', 'C', 'D', 'E', 'G', 'H', 'J', 'K', 'L'];
             
-            // সময়ের উপর ভিত্তি করে নাম্বার পরিবর্তন করুন
+            // Change number based on time
             const timeFactors = {
                 'afternoon': 3,
                 'evening': 7,
@@ -1108,18 +1117,18 @@
             
             const factor = timeFactors[time];
             
-            // প্রথম দুটি সংখ্যা পরিবর্তন
+            // Change first two digits
             let firstTwo = parseInt(baseNumber.substring(0, 2));
             firstTwo = (firstTwo + factor) % 100;
             const newFirstTwo = firstTwo.toString().padStart(2, '0');
             
-            // মধ্যের অক্ষর পরিবর্তন (শুধুমাত্র অনুমোদিত অক্ষর ব্যবহার)
+            // Change middle letter (only use allowed letters)
             const originalChar = baseNumber.substring(2, 3);
             const currentIndex = allowedLetters.indexOf(originalChar);
             const newIndex = (currentIndex + factor) % allowedLetters.length;
             const newChar = allowedLetters[newIndex];
             
-            // শেষ পাঁচটি সংখ্যা পরিবর্তন
+            // Change last five digits
             let lastFive = parseInt(baseNumber.substring(3));
             lastFive = (lastFive + factor) % 100000;
             const newLastFive = lastFive.toString().padStart(5, '0');
@@ -1128,12 +1137,12 @@
         }
         
         function showAnalysisReport(digitFrequency, letterFrequency, luckyNumber) {
-            console.log('ডিজিট ফ্রিকোয়েন্সি:', digitFrequency);
-            console.log('লেটার ফ্রিকোয়েন্সি:', letterFrequency);
-            console.log('জেনারেটেড লাকি নাম্বার:', luckyNumber);
+            console.log('Digit frequency:', digitFrequency);
+            console.log('Letter frequency:', letterFrequency);
+            console.log('Generated lucky number:', luckyNumber);
         }
         
-        // ইতিহাস লোড ফাংশন
+        // Load history function
         function loadHistory() {
             const date = document.getElementById('historyDate').value;
             const dateKey = new Date(date).toDateString();
@@ -1147,7 +1156,7 @@
                 if (results[dateKey]) {
                     let html = '<div class="game-results">';
                     
-                    // নির্বাচিত গেম টাইপের রেজাল্ট দেখান
+                    // Show selected game type results
                     ['afternoon', 'evening', 'night'].forEach(time => {
                         const resultKey = `${selectedGameType}_${time}`;
                         const result = results[dateKey][resultKey] || '---';
@@ -1162,11 +1171,11 @@
                     html += '</div>';
                     historyResults.innerHTML = html;
                 } else {
-                    historyResults.innerHTML = '<p>এই তারিখে কোন রেজাল্ট পাওয়া যায়নি।</p>';
+                    historyResults.innerHTML = '<p>No results found for this date.</p>';
                 }
             }).catch((error) => {
                 console.error("Error loading history:", error);
-                alert('ইতিহাস লোড করতে সমস্যা হয়েছে। দয়া করে আবার চেষ্টা করুন।');
+                alert('Error loading history. Please try again.');
             });
         }
         
@@ -1181,10 +1190,10 @@
                 const manageResults = document.getElementById('manageResults');
                 
                 if (results[dateKey]) {
-                    let html = '<h3>রেজাল্টসমূহ:</h3><div class="game-results">';
+                    let html = '<h3>Results:</h3><div class="game-results">';
                     
-                    // 1CR গেমের রেজাল্ট
-                    html += '<div style="width: 100%; margin-bottom: 20px;"><h4>1CR গেম</h4>';
+                    // 1CR game results
+                    html += '<div style="width: 100%; margin-bottom: 20px;"><h4>1CR Game</h4>';
                     ['afternoon', 'evening', 'night'].forEach(time => {
                         const result = results[dateKey][`1cr_${time}`] || '---';
                         html += `
@@ -1192,16 +1201,16 @@
                                 <h3>${getTimeName(time)}</h3>
                                 <div class="lottery-number">${result}</div>
                                 <div class="action-buttons">
-                                    <button class="action-btn edit-btn" onclick="manageEditResult('1cr', '${time}', '${date}')">এডিট</button>
-                                    <button class="action-btn delete-btn" onclick="manageDeleteResult('1cr', '${time}', '${date}')">ডিলিট</button>
+                                    <button class="action-btn edit-btn" onclick="manageEditResult('1cr', '${time}', '${date}')">Edit</button>
+                                    <button class="action-btn delete-btn" onclick="manageDeleteResult('1cr', '${time}', '${date}')">Delete</button>
                                 </div>
                             </div>
                         `;
                     });
                     html += '</div>';
                     
-                    // 5CR গেমের রেজাল্ট
-                    html += '<div style="width: 100%;"><h4>5CR गेম</h4>';
+                    // 5CR game results
+                    html += '<div style="width: 100%;"><h4>5CR Game</h4>';
                     ['afternoon', 'evening', 'night'].forEach(time => {
                         const result = results[dateKey][`5cr_${time}`] || '---';
                         html += `
@@ -1209,8 +1218,8 @@
                                 <h3>${getTimeName(time)}</h3>
                                 <div class="lottery-number">${result}</div>
                                 <div class="action-buttons">
-                                    <button class="action-btn edit-btn" onclick="manageEditResult('5cr', '${time}', '${date}')">এডিট</button>
-                                    <button class="action-btn delete-btn" onclick="manageDeleteResult('5cr', '${time}', '${date}')">डिलিট</button>
+                                    <button class="action-btn edit-btn" onclick="manageEditResult('5cr', '${time}', '${date}')">Edit</button>
+                                    <button class="action-btn delete-btn" onclick="manageDeleteResult('5cr', '${time}', '${date}')">Delete</button>
                                 </div>
                             </div>
                         `;
@@ -1219,15 +1228,15 @@
                     
                     manageResults.innerHTML = html;
                 } else {
-                    manageResults.innerHTML = '<p>এই তারিখে কোন রেজাল্ট পাওয়া যায়নি।</p>';
+                    manageResults.innerHTML = '<p>No results found for this date.</p>';
                 }
             }).catch((error) => {
                 console.error("Error loading manage data:", error);
-                alert('ডেটা লোড করতে সমস্যা হয়েছে। দয়া করে আবার চেষ্টা করুন।');
+                alert('Error loading data. Please try again.');
             });
         }
         
-        // গ্লোবাল ফাংশন ম্যানেজমেন্ট এর জন্য
+        // Global functions for management
         window.manageEditResult = function(gameType, time, date) {
             document.getElementById('resultDate').value = date;
             document.querySelector(`.tab[data-tab="entry"]`).click();
@@ -1256,8 +1265,8 @@
         
         window.manageDeleteResult = function(gameType, time, date) {
             showConfirmationModal(
-                'রেজাল্ট ডিলিট করুন', 
-                `আপনি কি ${date} তারিখের ${getTimeName(time)} এর ${gameType.toUpperCase()} রেজাল্ট ডিলিট করতে চান?`,
+                'Delete Result', 
+                `Are you sure you want to delete ${date} ${getTimeName(time)} ${gameType.toUpperCase()} result?`,
                 function() { 
                     const dateKey = new Date(date).toDateString();
                     const resultsRef = getResultsRef();
@@ -1270,29 +1279,29 @@
                         if (results[dateKey] && results[dateKey][`${gameType}_${time}`]) {
                             delete results[dateKey][`${gameType}_${time}`];
                             
-                            // যদি তারিখে আর কোন ডেটা না থাকে, তাহলে পুরো তারিখ ডিলিট করুন
+                            // If no data left for the date, delete the entire date
                             if (Object.keys(results[dateKey]).length === 0) {
                                 delete results[dateKey];
                             }
                             
-                            // Firebase-এ আপডেটেড ডেটা সেভ করুন
+                            // Save updated data to Firebase
                             resultsRef.set(results).then(() => {
-                                // সেভ কাউন্টার কমান
+                                // Decrease save count
                                 saveCountRef.once('value').then((countSnapshot) => {
                                     const saveCount = Math.max(0, (countSnapshot.val() || 0) - 1);
                                     saveCountRef.set(saveCount).then(() => {
                                         document.getElementById('saveCount').textContent = saveCount;
                                         
-                                        // UI আপডেট করুন
+                                        // Update UI
                                         loadManageData();
                                         loadDateResults(document.getElementById('resultDate').value);
                                         
-                                        alert(`${gameType.toUpperCase()} - ${getTimeName(time)} এর রেজাল্ট ডিলিট হয়েছে!`);
+                                        alert(`${gameType.toUpperCase()} - ${getTimeName(time)} result deleted successfully!`);
                                     });
                                 });
                             }).catch((error) => {
                                 console.error("Error deleting result:", error);
-                                alert('রেজাল্ট ডিলিট করতে সমস্যা হয়েছে। দয়া করে আবার চেষ্টা করুন।');
+                                alert('Error deleting result. Please try again.');
                             });
                         }
                     });
@@ -1305,19 +1314,19 @@
             const saveCountRef = getSaveCountRef();
             if (!resultsRef || !saveCountRef) return;
             
-            // Firebase থেকে ডেটা ডিলিট করুন
+            // Delete data from Firebase
             resultsRef.set({}).then(() => {
                 saveCountRef.set(0).then(() => {
-                    // UI আপডেট করুন
+                    // Update UI
                     document.getElementById('saveCount').textContent = '0';
                     loadDateResults(document.getElementById('resultDate').value);
                     document.getElementById('manageResults').innerHTML = '';
                     
-                    alert('সমস্ত ডেটা রিসেট করা হয়েছে!');
+                    alert('All data has been reset!');
                 });
             }).catch((error) => {
                 console.error("Error resetting data:", error);
-                alert('ডেটা রিসেট করতে সমস্যা হয়েছে। দয়া করে আবার চেষ্টা করুন।');
+                alert('Error resetting data. Please try again.');
             });
         }
     </script>
