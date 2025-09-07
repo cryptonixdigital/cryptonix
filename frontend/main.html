@@ -461,6 +461,35 @@ auth.onAuthStateChanged((user) => {
         });
     }
 });
+
+
+
+
+    // Search functionality
+    document.addEventListener('DOMContentLoaded', function() {
+        const searchInput = document.querySelector('.search-bar input');
+        const searchIcon = document.querySelector('.search-bar i');
+        
+        // Redirect to search page when clicking on search input or icon
+        searchInput.addEventListener('click', function() {
+            window.open('search.html', '_blank');
+        });
+        
+        searchIcon.addEventListener('click', function() {
+            window.open('search.html', '_blank');
+        });
+        
+        // Optional: Enable search from main page without opening new window
+        // searchInput.addEventListener('keypress', function(e) {
+        //     if (e.key === 'Enter') {
+        //         const query = this.value.trim();
+        //         if (query) {
+        //             window.open(`search.html?q=${encodeURIComponent(query)}`, '_blank');
+        //         }
+        //     }
+        // });
+    });
+
     </script>
     
 
