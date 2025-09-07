@@ -1,0 +1,589 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lottery Ticket Number Generator</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-database-compat.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Roboto', sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #1a2a6c, #b21f1f, #fdbb2d);
+            min-height: 100vh;
+            padding: 20px;
+            color: #fff;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: rgba(0, 0, 0, 0.7);
+            border-radius: 15px;
+            padding: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+        }
+        
+        header {
+            text-align: center;
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 2px solid rgba(255, 255, 255, 0.2);
+        }
+        
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            color: #fdbb2d;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+        }
+        
+        .auth-section {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+        
+        .auth-form {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 15px;
+            border-radius: 10px;
+            width: 300px;
+        }
+        
+        .auth-form h3 {
+            margin-bottom: 15px;
+            text-align: center;
+        }
+        
+        input, select {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 10px;
+            border: none;
+            border-radius: 5px;
+            background: rgba(255, 255, 255, 0.9);
+        }
+        
+        button {
+            padding: 10px 15px;
+            border: none;
+            border-radius: 5px;
+            background: #fdbb2d;
+            color: #1a2a6c;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        button:hover {
+            background: #ffa500;
+            transform: translateY(-2px);
+        }
+        
+        .app-content {
+            display: none;
+        }
+        
+        .number-display {
+            background: rgba(0, 0, 0, 0.5);
+            border-radius: 10px;
+            padding: 20px;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        
+        .number {
+            font-size: 3rem;
+            letter-spacing: 5px;
+            color: #fdbb2d;
+            margin: 20px 0;
+            font-weight: bold;
+            text-shadow: 0 0 10px rgba(253, 187, 45, 0.8);
+        }
+        
+        .controls {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+        
+        .upload-section {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 30px;
+        }
+        
+        .upload-section h3 {
+            margin-bottom: 15px;
+            text-align: center;
+        }
+        
+        textarea {
+            width: 100%;
+            padding: 10px;
+            border-radius: 5px;
+            background: rgba(255, 255, 255, 0.9);
+            margin-bottom: 10px;
+            height: 100px;
+        }
+        
+        .date-selection {
+            display: flex;
+            gap: 10px;
+            margin: 15px 0;
+            flex-wrap: wrap;
+        }
+        
+        .date-input {
+            flex: 1;
+            min-width: 200px;
+        }
+        
+        .time-input {
+            display: none;
+        }
+        
+        .file-upload {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-top: 15px;
+            padding: 15px;
+            border: 2px dashed #fdbb2d;
+            border-radius: 10px;
+        }
+        
+        .file-upload p {
+            margin-bottom: 10px;
+        }
+        
+        .csv-format {
+            margin-top: 10px;
+            font-size: 0.9rem;
+            color: #fdbb2d;
+            text-align: center;
+        }
+        
+        .results-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            overflow: hidden;
+        }
+        
+        .results-table th, .results-table td {
+            padding: 12px 15px;
+            text-align: center;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        
+        .results-table th {
+            background-color: rgba(253, 187, 45, 0.3);
+            color: #fdbb2d;
+        }
+        
+        .results-table tr:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+        
+        .action-btn {
+            padding: 5px 10px;
+            margin: 0 5px;
+        }
+        
+        .delete-btn {
+            background: #b21f1f;
+            color: white;
+        }
+        
+        .edit-btn {
+            background: #1a2a6c;
+            color: white;
+        }
+        
+        .lucky-number {
+            text-align: center;
+            padding: 20px;
+            background: rgba(0, 0, 0, 0.5);
+            border-radius: 10px;
+            margin-bottom: 30px;
+        }
+        
+        .lucky-number h3 {
+            margin-bottom: 10px;
+            color: #fdbb2d;
+        }
+        
+        .lucky-number-display {
+            font-size: 2rem;
+            letter-spacing: 3px;
+            color: #fff;
+            margin: 15px 0;
+            font-weight: bold;
+        }
+        
+        .load-more {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 20px;
+        }
+        
+        .load-more-btn {
+            background: #1a2a6c;
+            color: white;
+            padding: 10px 20px;
+        }
+        
+        .download-btn {
+            background: #2d8c2d;
+            color: white;
+            padding: 10px 20px;
+        }
+        
+        footer {
+            text-align: center;
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 2px solid rgba(255, 255, 255, 0.2);
+            color: #ccc;
+        }
+        
+        @media (max-width: 768px) {
+            .auth-section {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .controls {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .number {
+                font-size: 2rem;
+            }
+            
+            .date-selection {
+                flex-direction: column;
+            }
+            
+            .load-more {
+                flex-direction: column;
+                gap: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Lottery Ticket Number Generator</h1>
+            <p>Generate lucky numbers for your lottery tickets</p>
+        </header>
+        
+        <div class="auth-section">
+            <div class="auth-form">
+                <h3>Login</h3>
+                <input type="email" id="login-email" placeholder="Email">
+                <input type="password" id="login-password" placeholder="Password">
+                <button id="login-btn">Login</button>
+            </div>
+            
+            <div class="auth-form">
+                <h3>Register</h3>
+                <input type="email" id="register-email" placeholder="Email">
+                <input type="password" id="register-password" placeholder="Password">
+                <button id="register-btn">Register</button>
+            </div>
+        </div>
+        
+        <div class="app-content" id="app-content">
+            <div class="number-display">
+                <h2>Your Lottery Number</h2>
+                <div class="number" id="lottery-number">65E93081</div>
+                <p>This number updates every minute</p>
+            </div>
+            
+            <div class="controls">
+                <button id="generate-btn">Generate New Number</button>
+                <button id="copy-btn">Copy Number</button>
+            </div>
+            
+            <div class="upload-section">
+                <h3>Upload Previous Results</h3>
+                <textarea id="result-data" placeholder="Paste results here. Format: 65E93081, 72B45123, ..."></textarea>
+                
+                <div class="date-selection">
+                    <div class="date-input">
+                        <label for="custom-date">Select Date:</label>
+                        <input type="date" id="custom-date">
+                    </div>
+                    <div class="time-input">
+                        <label for="custom-time">Select Time:</label>
+                        <input type="time" id="custom-time" value="12:00">
+                    </div>
+                </div>
+                
+                <button id="upload-btn">Upload Results</button>
+                
+                <div class="file-upload">
+                    <p>Or select a CSV file to upload:</p>
+                    <input type="file" id="file-input" accept=".csv">
+                    <button id="file-upload-btn" style="margin-top: 10px;">Upload CSV File</button>
+                    <div class="csv-format">
+                        CSV format: date,number (e.g., 2023-06-15,65E93081)
+                    </div>
+                </div>
+            </div>
+            
+            <div class="lucky-number">
+                <h3>Your Lucky Number</h3>
+                <p>Based on your uploaded results</p>
+                <div class="lucky-number-display" id="lucky-number">72E45123</div>
+                <button id="copy-lucky-btn">Copy Lucky Number</button>
+            </div>
+            
+            <div class="results-table-container">
+                <h3>Previous Results (Last 10)</h3>
+                <table class="results-table">
+                    <thead>
+                        <tr>
+                            <th>Date</th>
+                            <th>Number</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="results-body">
+                        <!-- Results will be populated here -->
+                    </tbody>
+                </table>
+                <div class="load-more">
+                    <button id="load-more-btn" class="load-more-btn">Load More Results</button>
+                    <button id="download-csv-btn" class="download-btn">Download CSV</button>
+                </div>
+            </div>
+        </div>
+        
+        <footer>
+            <p>© 2023 Lottery Ticket Generator | Secure and Reliable</p>
+        </footer>
+    </div>
+
+    <script>
+        // Firebase configuration
+        const firebaseConfig = {
+            apiKey: "AIzaSyCi5n-L_ogUif2Bsq7l8qfU9Yoq9h7J6VE",
+            authDomain: "cryptonix-67333.firebaseapp.com",
+            databaseURL: "https://cryptonix-67333-default-rtdb.firebaseio.com",
+            projectId: "cryptonix-67333",
+            storageBucket: "cryptonix-67333.firebasestorage.app",
+            appId: "1:701360318410:web:050c6ced8857cc0d2b5133",
+            measurementId: "G-Y131E5B1QF"
+        };
+
+        // Initialize Firebase
+        firebase.initializeApp(firebaseConfig);
+        const auth = firebase.auth();
+        const database = firebase.database();
+
+        // DOM Elements
+        const loginEmail = document.getElementById('login-email');
+        const loginPassword = document.getElementById('login-password');
+        const loginBtn = document.getElementById('login-btn');
+        const registerEmail = document.getElementById('register-email');
+        const registerPassword = document.getElementById('register-password');
+        const registerBtn = document.getElementById('register-btn');
+        const appContent = document.getElementById('app-content');
+        const lotteryNumber = document.getElementById('lottery-number');
+        const generateBtn = document.getElementById('generate-btn');
+        const copyBtn = document.getElementById('copy-btn');
+        const resultData = document.getElementById('result-data');
+        const customDate = document.getElementById('custom-date');
+        const customTime = document.getElementById('custom-time');
+        const uploadBtn = document.getElementById('upload-btn');
+        const fileInput = document.getElementById('file-input');
+        const fileUploadBtn = document.getElementById('file-upload-btn');
+        const resultsBody = document.getElementById('results-body');
+        const luckyNumber = document.getElementById('lucky-number');
+        const copyLuckyBtn = document.getElementById('copy-lucky-btn');
+        const loadMoreBtn = document.getElementById('load-more-btn');
+        const downloadCsvBtn = document.getElementById('download-csv-btn');
+
+        // Set default date to today
+        const today = new Date();
+        const formattedDate = today.toISOString().split('T')[0];
+        customDate.value = formattedDate;
+
+        // Variables for results management
+        let allResults = [];
+        let displayedResults = 10;
+        let currentUser = null;
+        
+        // Authentication state observer
+        auth.onAuthStateChanged(user => {
+            if (user) {
+                // User is signed in
+                currentUser = user;
+                appContent.style.display = 'block';
+                document.querySelector('.auth-section').style.display = 'none';
+                loadUserData(user.uid);
+            } else {
+                // User is signed out
+                currentUser = null;
+                appContent.style.display = 'none';
+                document.querySelector('.auth-section').style.display = 'flex';
+            }
+        });
+
+        // Load user data from Firebase Realtime Database
+        function loadUserData(userId) {
+            database.ref('users/' + userId + '/results').orderByChild('timestamp').once('value')
+                .then(snapshot => {
+                    allResults = [];
+                    snapshot.forEach(childSnapshot => {
+                        const data = childSnapshot.val();
+                        allResults.push({
+                            id: childSnapshot.key,
+                            date: data.date,
+                            number: data.number,
+                            timestamp: data.timestamp
+                        });
+                    });
+                    
+                    // Sort by timestamp (newest first)
+                    allResults.sort((a, b) => b.timestamp - a.timestamp);
+                    
+                    // Display first 10 results
+                    displayedResults = 10;
+                    displayResults(0, displayedResults);
+                    
+                    // Calculate lucky number
+                    calculateLuckyNumber();
+                })
+                .catch(error => {
+                    console.error('Error loading data: ', error);
+                    alert('Error loading data: ' + error.message);
+                });
+        }
+
+        // Save result to Firebase Realtime Database
+        function saveResultToDatabase(result) {
+            if (!currentUser) return Promise.reject('No user logged in');
+            
+            const newResultKey = database.ref().child('users/' + currentUser.uid + '/results').push().key;
+            const updates = {};
+            updates['users/' + currentUser.uid + '/results/' + newResultKey] = {
+                date: result.date,
+                number: result.number,
+                timestamp: Date.now()
+            };
+            
+            return database.ref().update(updates)
+                .then(() => newResultKey);
+        }
+
+        // Update result in Firebase Realtime Database
+        function updateResultInDatabase(resultId, newData) {
+            if (!currentUser) return Promise.reject('No user logged in');
+            
+            const updates = {};
+            updates['users/' + currentUser.uid + '/results/' + resultId + '/date'] = newData.date;
+            updates['users/' + currentUser.uid + '/results/' + resultId + '/number'] = newData.number;
+            
+            return database.ref().update(updates);
+        }
+
+        // Delete result from Firebase Realtime Database
+        function deleteResultFromDatabase(resultId) {
+            if (!currentUser) return Promise.reject('No user logged in');
+            
+            return database.ref('users/' + currentUser.uid + '/results/' + resultId).remove();
+        }
+
+        // Display results in the table
+        function displayResults(startIndex, count) {
+            const endIndex = Math.min(startIndex + count, allResults.length);
+            const resultsToShow = allResults.slice(startIndex, endIndex);
+            
+            resultsBody.innerHTML = '';
+            
+            resultsToShow.forEach(result => {
+                const newRow = document.createElement('tr');
+                newRow.innerHTML = `
+                    <td>${result.date}</td>
+                    <td>${result.number}</td>
+                    <td>
+                        <button class="action-btn edit-btn" data-id="${result.id}">Edit</button>
+                        <button class="action-btn delete-btn" data-id="${result.id}">Delete</button>
+                    </td>
+                `;
+                resultsBody.appendChild(newRow);
+            });
+            
+            // Update load more button visibility
+            if (endIndex >= allResults.length) {
+                loadMoreBtn.style.display = 'none';
+            } else {
+                loadMoreBtn.style.display = 'block';
+            }
+            
+            // Update results count title
+            document.querySelector('.results-table-container h3').textContent = 
+                `Previous Results (Showing ${startIndex + 1}-${endIndex} of ${allResults.length})`;
+        }
+
+        // Login function
+        loginBtn.addEventListener('click', () => {
+            const email = loginEmail.value;
+            const password = loginPassword.value;
+            
+            if (!email || !password) {
+                alert('Please enter both email and password');
+                return;
+            }
+            
+            auth.signInWithEmailAndPassword(email, password)
+                .then(() => {
+                    alert('Logged in successfully!');
+                })
+                .catch(error => {
+                    alert('Error: ' + error.message);
+                });
+        });
+
+        // Register function
+        registerBtn.addEventListener('click', () => {
+            const email = registerEmail.value;
+            const password = registerPassword.value;
+            
+            if (!email || !password) {
+                alert('Please enter both email and password');
+                return;
+            }
+            
+            auth.createUserWithEmailAndPassword(email, password)
+                .then(() => {
+                    alert('Registered successfully!');
+                })
+                .catch(error => {
+                    alert('Error: ' + error.message);
+                });
+        });
+
+        // Generate lottery number
+        functi
