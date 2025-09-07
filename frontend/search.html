@@ -196,7 +196,7 @@
         </div>
 
         <div class="debug-toggle">
-            
+            <button class="debug-btn" onclick="toggleDebug()">Show Debug Info</button>
         </div>
         
         <div class="debug-info" id="debugInfo">
@@ -246,9 +246,15 @@
         // Reference to games in database
         const gamesRef = db.ref('games');
 
-        // Function to go back
+        // Function to go back - FIXED
         function goBack() {
-            window.history.back();
+            // Check if there's a previous page in history
+            if (window.history.length > 1) {
+                window.history.back();
+            } else {
+                // If no history, redirect to main page
+                window.location.href = 'dear_lottry_main.html';
+            }
         }
 
         // Function to search games
