@@ -46,47 +46,27 @@
             text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
         }
         
-        .auth-section {
-            display: flex;
-            justify-content: center;
-            gap: 20px;
-            margin-bottom: 20px;
-        }
-        
-        .auth-form {
-            background: rgba(255, 255, 255, 0.1);
-            padding: 15px;
-            border-radius: 10px;
-            width: 300px;
-        }
-        
-        .auth-form h3 {
-            margin-bottom: 15px;
+        .login-redirect {
             text-align: center;
+            margin: 20px 0;
+            padding: 15px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
         }
         
-        input, select {
-            width: 100%;
-            padding: 10px;
-            margin-bottom: 10px;
-            border: none;
-            border-radius: 5px;
-            background: rgba(255, 255, 255, 0.9);
-        }
-        
-        button {
-            padding: 10px 15px;
-            border: none;
-            border-radius: 5px;
-            background: #fdbb2d;
-            color: #1a2a6c;
+        .login-redirect a {
+            color: #fdbb2d;
+            text-decoration: none;
             font-weight: bold;
-            cursor: pointer;
+            padding: 10px 20px;
+            background: rgba(253, 187, 45, 0.2);
+            border-radius: 5px;
             transition: all 0.3s;
+            display: inline-block;
         }
         
-        button:hover {
-            background: #ffa500;
+        .login-redirect a:hover {
+            background: rgba(253, 187, 45, 0.4);
             transform: translateY(-2px);
         }
         
@@ -118,6 +98,30 @@
             margin-bottom: 30px;
         }
         
+        button {
+            padding: 12px 20px;
+            border: none;
+            border-radius: 8px;
+            background: #fdbb2d;
+            color: #1a2a6c;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-size: 1rem;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+        }
+        
+        button:hover {
+            background: #ffa500;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 8px rgba(0, 0, 0, 0.3);
+        }
+        
+        button:active {
+            transform: translateY(0);
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+        }
+        
         .upload-section {
             background: rgba(255, 255, 255, 0.1);
             padding: 20px;
@@ -128,15 +132,23 @@
         .upload-section h3 {
             margin-bottom: 15px;
             text-align: center;
+            color: #fdbb2d;
         }
         
         textarea {
             width: 100%;
-            padding: 10px;
-            border-radius: 5px;
+            padding: 12px;
+            border-radius: 8px;
             background: rgba(255, 255, 255, 0.9);
             margin-bottom: 10px;
             height: 100px;
+            border: 2px solid transparent;
+            transition: border 0.3s;
+        }
+        
+        textarea:focus {
+            outline: none;
+            border: 2px solid #fdbb2d;
         }
         
         .date-selection {
@@ -149,6 +161,29 @@
         .date-input {
             flex: 1;
             min-width: 200px;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 5px;
+            color: #fdbb2d;
+            font-weight: 500;
+        }
+        
+        input[type="date"], input[type="time"], input[type="text"], input[type="file"] {
+            width: 100%;
+            padding: 12px;
+            border: none;
+            border-radius: 8px;
+            background: rgba(255, 255, 255, 0.9);
+            margin-bottom: 10px;
+            border: 2px solid transparent;
+            transition: border 0.3s;
+        }
+        
+        input[type="date"]:focus, input[type="time"]:focus, input[type="text"]:focus {
+            outline: none;
+            border: 2px solid #fdbb2d;
         }
         
         .time-input {
@@ -167,6 +202,7 @@
         
         .file-upload p {
             margin-bottom: 10px;
+            color: #fff;
         }
         
         .csv-format {
@@ -201,8 +237,10 @@
         }
         
         .action-btn {
-            padding: 5px 10px;
+            padding: 8px 12px;
             margin: 0 5px;
+            font-size: 0.9rem;
+            border-radius: 5px;
         }
         
         .delete-btn {
@@ -210,9 +248,17 @@
             color: white;
         }
         
+        .delete-btn:hover {
+            background: #8a1919;
+        }
+        
         .edit-btn {
             background: #1a2a6c;
             color: white;
+        }
+        
+        .edit-btn:hover {
+            background: #132048;
         }
         
         .lucky-number {
@@ -246,13 +292,21 @@
         .load-more-btn {
             background: #1a2a6c;
             color: white;
-            padding: 10px 20px;
+            padding: 12px 20px;
+        }
+        
+        .load-more-btn:hover {
+            background: #132048;
         }
         
         .download-btn {
             background: #2d8c2d;
             color: white;
-            padding: 10px 20px;
+            padding: 12px 20px;
+        }
+        
+        .download-btn:hover {
+            background: #237023;
         }
         
         footer {
@@ -263,12 +317,61 @@
             color: #ccc;
         }
         
+        .status-message {
+            padding: 10px;
+            margin: 10px 0;
+            border-radius: 5px;
+            text-align: center;
+            font-weight: 500;
+        }
+        
+        .success {
+            background-color: rgba(46, 204, 113, 0.2);
+            color: #27ae60;
+        }
+        
+        .error {
+            background-color: rgba(231, 76, 60, 0.2);
+            color: #e74c3c;
+        }
+        
+        /* Modal styles for edit functionality */
+        .modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.7);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+        
+        .modal-content {
+            background: white;
+            padding: 25px;
+            border-radius: 12px;
+            width: 400px;
+            max-width: 90%;
+            color: #333;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+        }
+        
+        .modal h3 {
+            margin-bottom: 15px;
+            color: #1a2a6c;
+            text-align: center;
+        }
+        
+        .modal-buttons {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 20px;
+        }
+        
         @media (max-width: 768px) {
-            .auth-section {
-                flex-direction: column;
-                align-items: center;
-            }
-            
             .controls {
                 flex-direction: column;
                 align-items: center;
@@ -286,6 +389,15 @@
                 flex-direction: column;
                 gap: 10px;
             }
+            
+            button {
+                width: 100%;
+                margin-bottom: 10px;
+            }
+            
+            .action-btn {
+                margin-bottom: 5px;
+            }
         }
     </style>
 </head>
@@ -296,20 +408,8 @@
             <p>Generate lucky numbers for your lottery tickets</p>
         </header>
         
-        <div class="auth-section">
-            <div class="auth-form">
-                <h3>Login</h3>
-                <input type="email" id="login-email" placeholder="Email">
-                <input type="password" id="login-password" placeholder="Password">
-                <button id="login-btn">Login</button>
-            </div>
-            
-            <div class="auth-form">
-                <h3>Register</h3>
-                <input type="email" id="register-email" placeholder="Email">
-                <input type="password" id="register-password" placeholder="Password">
-                <button id="register-btn">Register</button>
-            </div>
+        <div class="login-redirect" id="login-redirect">
+            <p>Please <a href="../login.html">login to your account</a> to use the Lottery Ticket Generator.</p>
         </div>
         
         <div class="app-content" id="app-content">
@@ -326,6 +426,8 @@
             
             <div class="upload-section">
                 <h3>Upload Previous Results</h3>
+                <div id="upload-status"></div>
+                
                 <textarea id="result-data" placeholder="Paste results here. Format: 65E93081, 72B45123, ..."></textarea>
                 
                 <div class="date-selection">
@@ -402,12 +504,7 @@
         const database = firebase.database();
 
         // DOM Elements
-        const loginEmail = document.getElementById('login-email');
-        const loginPassword = document.getElementById('login-password');
-        const loginBtn = document.getElementById('login-btn');
-        const registerEmail = document.getElementById('register-email');
-        const registerPassword = document.getElementById('register-password');
-        const registerBtn = document.getElementById('register-btn');
+        const loginRedirect = document.getElementById('login-redirect');
         const appContent = document.getElementById('app-content');
         const lotteryNumber = document.getElementById('lottery-number');
         const generateBtn = document.getElementById('generate-btn');
@@ -423,6 +520,7 @@
         const copyLuckyBtn = document.getElementById('copy-lucky-btn');
         const loadMoreBtn = document.getElementById('load-more-btn');
         const downloadCsvBtn = document.getElementById('download-csv-btn');
+        const uploadStatus = document.getElementById('upload-status');
 
         // Set default date to today
         const today = new Date();
@@ -434,19 +532,27 @@
         let displayedResults = 10;
         let currentUser = null;
         
+        // Show status message
+        function showStatus(message, type) {
+            uploadStatus.innerHTML = `<div class="status-message ${type}">${message}</div>`;
+            setTimeout(() => {
+                uploadStatus.innerHTML = '';
+            }, 5000);
+        }
+        
         // Authentication state observer
         auth.onAuthStateChanged(user => {
             if (user) {
                 // User is signed in
                 currentUser = user;
                 appContent.style.display = 'block';
-                document.querySelector('.auth-section').style.display = 'none';
+                loginRedirect.style.display = 'none';
                 loadUserData(user.uid);
             } else {
                 // User is signed out
                 currentUser = null;
                 appContent.style.display = 'none';
-                document.querySelector('.auth-section').style.display = 'flex';
+                loginRedirect.style.display = 'block';
             }
         });
 
@@ -477,7 +583,7 @@
                 })
                 .catch(error => {
                     console.error('Error loading data: ', error);
-                    alert('Error loading data: ' + error.message);
+                    showStatus('Error loading data: ' + error.message, 'error');
                 });
         }
 
@@ -522,6 +628,17 @@
             
             resultsBody.innerHTML = '';
             
+            if (resultsToShow.length === 0) {
+                resultsBody.innerHTML = `
+                    <tr>
+                        <td colspan="3" style="text-align: center; padding: 20px;">
+                            No results found. Upload some results to see them here.
+                        </td>
+                    </tr>
+                `;
+                return;
+            }
+            
             resultsToShow.forEach(result => {
                 const newRow = document.createElement('tr');
                 newRow.innerHTML = `
@@ -547,43 +664,442 @@
                 `Previous Results (Showing ${startIndex + 1}-${endIndex} of ${allResults.length})`;
         }
 
-        // Login function
-        loginBtn.addEventListener('click', () => {
-            const email = loginEmail.value;
-            const password = loginPassword.value;
-            
-            if (!email || !password) {
-                alert('Please enter both email and password');
-                return;
-            }
-            
-            auth.signInWithEmailAndPassword(email, password)
-                .then(() => {
-                    alert('Logged in successfully!');
-                })
-                .catch(error => {
-                    alert('Error: ' + error.message);
-                });
-        });
-
-        // Register function
-        registerBtn.addEventListener('click', () => {
-            const email = registerEmail.value;
-            const password = registerPassword.value;
-            
-            if (!email || !password) {
-                alert('Please enter both email and password');
-                return;
-            }
-            
-            auth.createUserWithEmailAndPassword(email, password)
-                .then(() => {
-                    alert('Registered successfully!');
-                })
-                .catch(error => {
-                    alert('Error: ' + error.message);
-                });
-        });
-
         // Generate lottery number
-        functi
+        function generateLotteryNumber() {
+            const digits = '0123456789';
+            const letters = 'ABCDEFGHJKL';
+            
+            // First two digits
+            let number = '';
+            for (let i = 0; i < 2; i++) {
+                number += digits[Math.floor(Math.random() * digits.length)];
+            }
+            
+            // Letter
+            number += letters[Math.floor(Math.random() * letters.length)];
+            
+            // Last five digits
+            for (let i = 0; i < 5; i++) {
+                number += digits[Math.floor(Math.random() * digits.length)];
+            }
+            
+            return number;
+        }
+
+        // Update display with new number
+        function updateNumberDisplay() {
+            lotteryNumber.textContent = generateLotteryNumber();
+        }
+
+        // Initial number generation
+        updateNumberDisplay();
+
+        // Generate new number on button click
+        generateBtn.addEventListener('click', updateNumberDisplay);
+
+        // Copy number to clipboard
+        copyBtn.addEventListener('click', () => {
+            navigator.clipboard.writeText(lotteryNumber.textContent)
+                .then(() => {
+                    showStatus('Number copied to clipboard!', 'success');
+                })
+                .catch(err => {
+                    showStatus('Failed to copy: ' + err, 'error');
+                });
+        });
+
+        // Upload results from textarea
+        uploadBtn.addEventListener('click', () => {
+            if (!currentUser) {
+                showStatus('Please log in to upload results', 'error');
+                return;
+            }
+            
+            const results = resultData.value.split(',').map(r => r.trim()).filter(r => r !== '');
+            
+            // Get custom date
+            const dateValue = customDate.value;
+            
+            if (!dateValue) {
+                showStatus('Please select a date', 'error');
+                return;
+            }
+            
+            // Create date object from input
+            const customDateTime = new Date(dateValue);
+            
+            processResults(results, customDateTime);
+        });
+
+        // Upload results from CSV file
+        fileUploadBtn.addEventListener('click', () => {
+            if (!currentUser) {
+                showStatus('Please log in to upload results', 'error');
+                return;
+            }
+            
+            const file = fileInput.files[0];
+            if (!file) {
+                showStatus('Please select a CSV file first', 'error');
+                return;
+            }
+            
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                const contents = e.target.result;
+                processCSVFile(contents);
+            };
+            reader.readAsText(file);
+        });
+
+        // Process CSV file contents
+        function processCSVFile(contents) {
+            const lines = contents.split('\n').filter(line => line.trim() !== '');
+            const results = [];
+            
+            for (let i = 0; i < lines.length; i++) {
+                const line = lines[i].trim();
+                // Skip empty lines or header rows
+                if (line === '' || line.toLowerCase().includes('date') || line.toLowerCase().includes('number')) {
+                    continue;
+                }
+                
+                // Split by comma and remove quotes if present
+                const parts = line.split(',').map(part => part.replace(/"/g, '').trim());
+                
+                if (parts.length >= 2) {
+                    // If CSV contains both date and number
+                    const dateStr = parts[0];
+                    const numberStr = parts[1];
+                    
+                    if (numberStr && numberStr.length === 8) {
+                        results.push({
+                            date: new Date(dateStr).toLocaleString(),
+                            number: numberStr
+                        });
+                    }
+                } else if (parts.length === 1 && parts[0].length === 8) {
+                    // If CSV contains only numbers (without dates)
+                    results.push({
+                        date: new Date().toLocaleString(), // Use current date as default
+                        number: parts[0]
+                    });
+                }
+            }
+            
+            if (results.length === 0) {
+                showStatus('No valid results found in the CSV file', 'error');
+                return;
+            }
+            
+            // Save results to Firebase
+            const savePromises = results.map(result => saveResultToDatabase(result));
+            
+            Promise.all(savePromises)
+                .then(() => {
+                    showStatus(`Uploaded ${results.length} results from CSV successfully!`, 'success');
+                    // Reload data from Firebase
+                    loadUserData(currentUser.uid);
+                })
+                .catch(error => {
+                    showStatus('Error saving results: ' + error.message, 'error');
+                });
+            
+            // Clear the file input
+            fileInput.value = '';
+        }
+
+        // Process and validate results
+        function processResults(results, customDateTime) {
+            if (results.length === 0) {
+                showStatus('No valid results found', 'error');
+                return;
+            }
+            
+            // Validate each result
+            for (const result of results) {
+                if (result.length !== 8) {
+                    showStatus(`Invalid result format: ${result}. Must be 8 characters long.`, 'error');
+                    return;
+                }
+                
+                // Check if the third character is a letter
+                if (!/[A-Z]/.test(result[2])) {
+                    showStatus(`Invalid result format: ${result}. Third character must be a letter.`, 'error');
+                    return;
+                }
+                
+                // Check if other characters are digits
+                for (let i = 0; i < 8; i++) {
+                    if (i !== 2 && !/\d/.test(result[i])) {
+                        showStatus(`Invalid result format: ${result}. All characters except the third must be digits.`, 'error');
+                        return;
+                    }
+                }
+            }
+            
+            // Prepare results for saving
+            const resultsToSave = results.map(result => ({
+                date: customDateTime.toLocaleString(),
+                number: result
+            }));
+            
+            // Save results to Firebase
+            const savePromises = resultsToSave.map(result => saveResultToDatabase(result));
+            
+            Promise.all(savePromises)
+                .then(() => {
+                    showStatus(`Uploaded ${results.length} results successfully with date: ${customDateTime.toLocaleString()}!`, 'success');
+                    // Reload data from Firebase
+                    loadUserData(currentUser.uid);
+                })
+                .catch(error => {
+                    showStatus('Error saving results: ' + error.message, 'error');
+                });
+            
+            // Clear the textarea
+            resultData.value = '';
+        }
+
+        // Load more results
+        loadMoreBtn.addEventListener('click', () => {
+            displayedResults += 10;
+            displayResults(0, displayedResults);
+        });
+
+        // Download CSV
+        downloadCsvBtn.addEventListener('click', () => {
+            if (allResults.length === 0) {
+                showStatus('No results to download', 'error');
+                return;
+            }
+            
+            // Create CSV content
+            let csvContent = 'Date,Number\n';
+            allResults.forEach(result => {
+                csvContent += `"${result.date}","${result.number}"\n`;
+            });
+            
+            // Create download link
+            const encodedUri = encodeURI('data:text/csv;charset=utf-8,' + csvContent);
+            const link = document.createElement('a');
+            link.setAttribute('href', encodedUri);
+            link.setAttribute('download', 'lottery_results.csv');
+            document.body.appendChild(link);
+            
+            // Trigger download
+            link.click();
+            document.body.removeChild(link);
+            
+            showStatus('CSV download started', 'success');
+        });
+
+        // Handle edit and delete actions
+        resultsBody.addEventListener('click', (e) => {
+            if (e.target.classList.contains('delete-btn')) {
+                if (!currentUser) {
+                    showStatus('Please log in to delete results', 'error');
+                    return;
+                }
+                
+                const resultId = e.target.getAttribute('data-id');
+                const row = e.target.closest('tr');
+                const rowIndex = Array.from(resultsBody.children).indexOf(row);
+                
+                // Delete from Firebase
+                deleteResultFromDatabase(resultId)
+                    .then(() => {
+                        // Remove from allResults
+                        allResults = allResults.filter(result => result.id !== resultId);
+                        
+                        // Update display
+                        displayResults(0, displayedResults);
+                        
+                        showStatus('Result deleted successfully!', 'success');
+                        calculateLuckyNumber();
+                    })
+                    .catch(error => {
+                        showStatus('Error deleting result: ' + error.message, 'error');
+                    });
+            }
+            
+            if (e.target.classList.contains('edit-btn')) {
+                if (!currentUser) {
+                    showStatus('Please log in to edit results', 'error');
+                    return;
+                }
+                
+                const resultId = e.target.getAttribute('data-id');
+                const result = allResults.find(r => r.id === resultId);
+                
+                // Parse the current date for the edit form
+                const currentDate = new Date(result.date);
+                const formattedDate = currentDate.toISOString().split('T')[0];
+                
+                // Create edit form
+                const editForm = document.createElement('div');
+                editForm.innerHTML = `
+                    <div style="margin-bottom: 15px;">
+                        <label style="display: block; margin-bottom: 5px;">Edit Date:</label>
+                        <input type="date" id="edit-date" value="${formattedDate}" style="width: 100%; padding: 8px; margin-bottom: 10px;">
+                    </div>
+                    <div style="margin-bottom: 15px;">
+                        <label style="display: block; margin-bottom: 5px;">Edit Number:</label>
+                        <input type="text" id="edit-number" value="${result.number}" style="width: 100%; padding: 8px;">
+                    </div>
+                `;
+                
+                // Show edit dialog
+                const editDialog = document.createElement('div');
+                editDialog.className = 'modal';
+                editDialog.innerHTML = `
+                    <div class="modal-content">
+                        <h3>Edit Result</h3>
+                        ${editForm.innerHTML}
+                        <div class="modal-buttons">
+                            <button id="save-edit-btn" style="padding: 10px 15px; background: #1a2a6c; color: white; border: none; border-radius: 5px; cursor: pointer;">Save</button>
+                            <button id="cancel-edit-btn" style="padding: 10px 15px; background: #b21f1f; color: white; border: none; border-radius: 5px; cursor: pointer;">Cancel</button>
+                        </div>
+                    </div>
+                `;
+                
+                document.body.appendChild(editDialog);
+                
+                // Add event listeners to edit dialog buttons
+                document.getElementById('save-edit-btn').addEventListener('click', () => {
+                    const newDate = document.getElementById('edit-date').value;
+                    const newNumber = document.getElementById('edit-number').value;
+                    
+                    if (!newDate) {
+                        showStatus('Please select a date', 'error');
+                        return;
+                    }
+                    
+                    if (newNumber.length !== 8) {
+                        showStatus('Number must be 8 characters long', 'error');
+                        return;
+                    }
+                    
+                    if (!/[A-Z]/.test(newNumber[2])) {
+                        showStatus('Third character must be a letter', 'error');
+                        return;
+                    }
+                    
+                    let isValid = true;
+                    for (let i = 0; i < 8; i++) {
+                        if (i !== 2 && !/\d/.test(newNumber[i])) {
+                            isValid = false;
+                            break;
+                        }
+                    }
+                    
+                    if (!isValid) {
+                        showStatus('All characters except the third must be digits', 'error');
+                        return;
+                    }
+                    
+                    // Create new date object
+                    const newDateTime = new Date(newDate);
+                    
+                    // Update in Firebase
+                    updateResultInDatabase(resultId, {
+                        date: newDateTime.toLocaleString(),
+                        number: newNumber
+                    })
+                    .then(() => {
+                        // Update local data
+                        result.date = newDateTime.toLocaleString();
+                        result.number = newNumber;
+                        
+                        // Update display
+                        displayResults(0, displayedResults);
+                        
+                        // Remove the dialog
+                        document.body.removeChild(editDialog);
+                        
+                        showStatus('Result updated successfully!', 'success');
+                        calculateLuckyNumber();
+                    })
+                    .catch(error => {
+                        showStatus('Error updating result: ' + error.message, 'error');
+                    });
+                });
+                
+                document.getElementById('cancel-edit-btn').addEventListener('click', () => {
+                    document.body.removeChild(editDialog);
+                });
+            }
+        });
+
+        // Calculate lucky number based on frequency
+        function calculateLuckyNumber() {
+            if (allResults.length === 0) {
+                luckyNumber.textContent = '00A00000';
+                return;
+            }
+            
+            const digitCounts = Array(8).fill(0).map(() => ({}));
+            const letterPosition = 2;
+            const letterCounts = {};
+            
+            allResults.forEach(result => {
+                const number = result.number;
+                for (let i = 0; i < number.length; i++) {
+                    const char = number[i];
+                    if (i === letterPosition) {
+                        letterCounts[char] = (letterCounts[char] || 0) + 1;
+                    } else {
+                        digitCounts[i][char] = (digitCounts[i][char] || 0) + 1;
+                    }
+                }
+            });
+            
+            let luckyNumberStr = '';
+            for (let i = 0; i < 8; i++) {
+                if (i === 2) {
+                    // Find most frequent letter
+                    let maxChar = 'A';
+                    let maxCount = 0;
+                    for (const char in letterCounts) {
+                        if (letterCounts[char] > maxCount) {
+                            maxCount = letterCounts[char];
+                            maxChar = char;
+                        }
+                    }
+                    luckyNumberStr += maxChar;
+                } else {
+                    // Find most frequent digit
+                    let maxChar = '0';
+                    let maxCount = 0;
+                    for (const char in digitCounts[i]) {
+                        if (digitCounts[i][char] > maxCount) {
+                            maxCount = digitCounts[i][char];
+                            maxChar = char;
+                        }
+                    }
+                    luckyNumberStr += maxChar;
+                }
+            }
+            
+            luckyNumber.textContent = luckyNumberStr;
+        }
+
+        // Copy lucky number to clipboard
+        copyLuckyBtn.addEventListener('click', () => {
+            navigator.clipboard.writeText(luckyNumber.textContent)
+                .then(() => {
+                    showStatus('Lucky number copied to clipboard!', 'success');
+                })
+                .catch(err => {
+                    showStatus('Failed to copy: ' + err, 'error');
+                });
+        });
+
+        // Update number every minute (60000 milliseconds)
+        setInterval(updateNumberDisplay, 60000);
+        
+        // Initial lucky number calculation
+        calculateLuckyNumber();
+    </script>
+</body>
+</html>
